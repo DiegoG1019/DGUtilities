@@ -2,3 +2,8 @@ C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\obj\Debug\
 C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\obj\Debug\netstandard2.0\DGUtilities.AssemblyInfoInputs.cache
 C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\obj\Debug\netstandard2.0\DGUtilities.AssemblyInfo.cs
 C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\obj\Debug\netstandard2.0\DGUtilities.csproj.CoreCompileInputs.cache
+C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\bin\Debug\netstandard2.0\DGUtilities.deps.json
+C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\bin\Debug\netstandard2.0\DGUtilities.dll
+C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\bin\Debug\netstandard2.0\DGUtilities.pdb
+C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\obj\Debug\netstandard2.0\DGUtilities.dll
+C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\obj\Debug\netstandard2.0\DGUtilities.pdb
