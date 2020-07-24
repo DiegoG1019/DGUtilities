@@ -2,6 +2,7 @@
 
 namespace DiegoG.Utilities
 {
+    [Serializable]
     public struct UDecimal
     {
 

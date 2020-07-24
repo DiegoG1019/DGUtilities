@@ -2,6 +2,7 @@
 
 namespace DiegoG.Utilities
 {
+    [Serializable]
     public sealed class NumberRelation
     {
         public ulong GCD { get; private set; }

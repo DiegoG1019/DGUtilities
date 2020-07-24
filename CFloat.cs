@@ -1,5 +1,7 @@
-﻿namespace DiegoG.Utilities
+﻿using System;
+namespace DiegoG.Utilities
 {
+    [Serializable]
     public struct CFloat
     {
 

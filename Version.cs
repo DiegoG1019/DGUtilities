@@ -1,5 +1,8 @@
-﻿namespace DiegoG.Utilities
+﻿using System;
+
+namespace DiegoG.Utilities
 {
+    [Serializable]
     public struct Version
     {
         private readonly byte[] v;

@@ -2,6 +2,7 @@
 
 namespace DiegoG.Utilities
 {
+    [Serializable]
     public struct CUInt32
     {
         private uint _uint32;

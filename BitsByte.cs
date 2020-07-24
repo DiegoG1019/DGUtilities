@@ -4,6 +4,7 @@ using System.IO;
 
 namespace DiegoG.Utilities
 {
+    [Serializable]
     public struct BitsByte
     {
         private static bool Null;

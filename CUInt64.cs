@@ -2,6 +2,7 @@
 
 namespace DiegoG.Utilities
 {
+    [Serializable]
     public struct CUInt64
     {
         private ulong _uint64;
