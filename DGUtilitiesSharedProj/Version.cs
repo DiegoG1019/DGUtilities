@@ -1,4 +1,5 @@
 ﻿using System;
+using Version = DiegoG.Utilities.Version;
 
 namespace DiegoG.Utilities
 {
@@ -26,7 +27,7 @@ namespace DiegoG.Utilities
         {
             get
             {
-                return $"{Major}.{Release}.{Minor}.{Addition}";
+                return $"{Major}.{Build}.{Minor}.{Addition}";
             }
         }
         public string Preppendix { get; private set; }
@@ -37,7 +38,7 @@ namespace DiegoG.Utilities
                 return v[0];
             }
         }
-        public byte Release
+        public byte Build
         {
             get
             {
@@ -59,6 +60,35 @@ namespace DiegoG.Utilities
             }
         }
 
+        private static bool[] comparison = new bool[5];
+        public static bool[] CompareLargerThan(Version a, Version b)
+        {
+            comparison[0] = a.Major > b.Major;
+            comparison[1] = a.Major > b.Major;
+            comparison[2] = a.Build > b.Build;
+            comparison[3] = a.Minor > b.Minor;
+            comparison[4] = a.Addition > b.Addition;
+            return comparison;
+        }
+        public static bool[] CompareEqualTo(Version a, Version b)
+        {
+            comparison[0] = a.Preppendix == b.Preppendix;
+            comparison[1] = a.Major == b.Major;
+            comparison[2] = a.Build == b.Build;
+            comparison[3] = a.Minor == b.Minor;
+            comparison[4] = a.Addition == b.Addition;
+            return comparison;
+        }
+        public static bool[] CompareLessThan(Version a, Version b)
+        {
+            var c = CompareLargerThan(a, b);
+            for(int i = 0; i < c.Length; i++)
+            {
+                comparison[i] = !c[i];
+            }
+            return comparison;
+        }
+
         public static bool operator==(Version a, Version b)
         {
             return a.Full == b.Full;
@@ -69,11 +99,11 @@ namespace DiegoG.Utilities
         }
         public static bool operator>(Version a, Version b)
         {
-            return a.Major > b.Major || a.Release > b.Release || a.Minor > b.Minor || a.Addition > b.Addition;
+            return a.Major > b.Major || a.Build > b.Build || a.Minor > b.Minor || a.Addition > b.Addition;
         }
         public static bool operator<(Version a, Version b)
         {
-            return a.Major < b.Major || a.Release < b.Release || a.Minor < b.Minor || a.Addition < b.Addition;
+            return a.Major < b.Major || a.Build < b.Build || a.Minor < b.Minor || a.Addition < b.Addition;
         }
         public static bool operator>=(Version a, Version b)
         {
