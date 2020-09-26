@@ -6,6 +6,8 @@ namespace DiegoG.Utilities
     [Serializable]
     public struct Version
     {
+        public static Version Assembly { get; } = new Version("", 0, 0, 1, 0);
+
         private readonly byte[] v;
         public Version(string p, byte w, byte z, byte y, byte x)
         {
