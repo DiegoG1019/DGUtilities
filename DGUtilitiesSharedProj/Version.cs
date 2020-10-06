@@ -9,14 +9,14 @@ namespace DiegoG.Utilities
         public static Version Assembly { get; } = new Version("", 0, 0, 1, 0);
 
         private readonly byte[] v;
-        public Version(string p, byte w, byte z, byte y, byte x)
+        public Version(string preppendix, byte major, byte build, byte minor, byte addition)
         {
             v = new byte[4];
-            v[0] = w;
-            v[1] = z;
-            v[2] = y;
-            v[3] = x;
-            Preppendix = p;
+            v[0] = major;
+            v[1] = build;
+            v[2] = minor;
+            v[3] = addition;
+            Preppendix = preppendix;
         }
         public string Full
         {
@@ -33,34 +33,10 @@ namespace DiegoG.Utilities
             }
         }
         public string Preppendix { get; private set; }
-        public byte Major
-        {
-            get
-            {
-                return v[0];
-            }
-        }
-        public byte Build
-        {
-            get
-            {
-                return v[1];
-            }
-        }
-        public byte Minor
-        {
-            get
-            {
-                return v[2];
-            }
-        }
-        public byte Addition
-        {
-            get
-            {
-                return v[1];
-            }
-        }
+        public byte Major => v[0];
+        public byte Build => v[1];
+        public byte Minor => v[2];
+        public byte Addition => v[3];
 
         private static bool[] comparison = new bool[5];
         public static bool[] CompareLargerThan(Version a, Version b)

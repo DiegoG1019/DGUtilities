@@ -6,9 +6,10 @@
     <SharedGUID>e7813ee5-9c23-4b9c-9c93-38a04843f197</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>DGUtilitiesSharedProj</Import_RootNamespace>
+    <Import_RootNamespace>DiegoG.Utilities</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AES256CBCEncrypter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BitsByte.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CFloat.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CUInt32.cs" />
@@ -17,6 +18,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)NumberRelation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Other.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Serialization.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SQLiteDatabase.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UDecimal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Version.cs" />
   </ItemGroup>
