@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.IO;
 using System.Data.Linq;
 using System.Data.SQLite;
 
@@ -8,7 +9,8 @@ namespace DiegoG.Utilities
     public class SQLiteDatabase
     {
         public string Name { get; private set; }
-        public string Address { get; private set; }
+        public string Directory { get; private set; }
+        public string Address => Path.Combine(Directory, Name + FileExtension);
         public SQLiteConnection Connection { get; private set; }
         public DataContext Context { get; private set; }
 
@@ -38,12 +40,28 @@ namespace DiegoG.Utilities
         public SQLiteDatabase(string name, string adrs, string pass)
         {
             Name = name;
-            Address = adrs;
+            Directory = adrs;
             HasPassword = true;
             Password = pass;
-            Connection = new SQLiteConnection($@"Data Source={System.IO.Path.Combine(adrs, name + FileExtension)}");
+            Connection = new SQLiteConnection($@"Data Source={Address}");
             Context = new DataContext(Connection);
         }
+        /// <summary>
+        /// returns true if database was created
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckAndCreateDatabase()
+        {
+            if (DatabaseExists)
+                return false;
+            CreateDatabase();
+            return true;
+        }
+        public void CreateDatabase()
+        {
+            SQLiteConnection.CreateFile(Address);
+        }
+        public bool DatabaseExists => File.Exists(Address);
 
     }
 }
