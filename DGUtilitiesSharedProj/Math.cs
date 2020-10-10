@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DiegoG.Utilities
+﻿namespace DiegoG.Utilities
 {
     public static class MoreMath
     {
@@ -15,9 +11,13 @@ namespace DiegoG.Utilities
             while (a != 0 && b != 0)
             {
                 if (a > b)
+                {
                     a %= b;
+                }
                 else
+                {
                     b %= a;
+                }
             }
             return a == 0 ? b : a;
         }

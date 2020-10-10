@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Security;
+﻿using System.Security;
 
 namespace DiegoG.Utilities
 {
@@ -10,7 +7,9 @@ namespace DiegoG.Utilities
         public static SecureString ToSecureString(this string plainString)
         {
             if (plainString == null)
+            {
                 return null;
+            }
 
             SecureString secureString = new SecureString();
             foreach (char c in plainString.ToCharArray())

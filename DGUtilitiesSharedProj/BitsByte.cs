@@ -107,7 +107,7 @@ namespace DiegoG.Utilities
 
         public static implicit operator BitsByte(byte b)
         {
-            BitsByte result = default(BitsByte);
+            BitsByte result = default;
             result.value = b;
             return result;
         }

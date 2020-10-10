@@ -8,7 +8,7 @@ namespace DiegoG.Utilities
         private uint _uint32;
         private const byte _lower = 0;
         private const uint _upper = UInt32.MaxValue;
-        public uint value
+        public uint Value
         {
             get
             {
@@ -38,73 +38,26 @@ namespace DiegoG.Utilities
         public CUInt32(uint d) :
             this()
         {
-            value = d;
+            Value = d;
         }
 
-        public static implicit operator uint(CUInt32 d)
-        {
-            return d.value;
-        }
-
-        public static implicit operator int(CUInt32 d)
-        {
-            return (int)d.value;
-        }
-
-        public static implicit operator CUInt32(uint d)
-        {
-            return new CUInt32(d);
-        }
-
-        public static implicit operator CUInt32(int d)
-        {
-            return new CUInt32((uint)d);
-        }
-
-        public static bool operator <(CUInt32 a, CUInt32 b)
-        {
-            return a.value < b.value;
-        }
-
-        public static bool operator >(CUInt32 a, CUInt32 b)
-        {
-            return a.value > b.value;
-        }
-
-        public static bool operator ==(CUInt32 a, CUInt32 b)
-        {
-            return a.value == b.value;
-        }
-
-        public static bool operator !=(CUInt32 a, CUInt32 b)
-        {
-            return a.value != b.value;
-        }
-
-        public static bool operator <=(CUInt32 a, CUInt32 b)
-        {
-            return a.value <= b.value;
-        }
-
-        public static bool operator >=(CUInt32 a, CUInt32 b)
-        {
-            return a.value >= b.value;
-        }
-
-        public override bool Equals(object a)
-        {
-            return a is CUInt32 && this == (CUInt32)a;
-        }
-
-        public override int GetHashCode()
-        {
-            return value.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return value.ToString();
-        }
-
+        public static implicit operator uint(CUInt32 d) => d.Value;
+        public static explicit operator int(CUInt32 d) => (int)d.Value;
+        public static implicit operator CUInt32(uint d) => new CUInt32(d);
+        public static implicit operator CUInt32(int d) => new CUInt32((uint)d);
+        public static CUInt32 operator -(CUInt32 a, CUInt32 b) => a.Value - b.Value;
+        public static CUInt32 operator +(CUInt32 a, CUInt32 b) => a.Value + b.Value;
+        public static CUInt32 operator *(CUInt32 a, CUInt32 b) => a.Value * b.Value;
+        public static CUInt32 operator /(CUInt32 a, CUInt32 b) => a.Value / b.Value;
+        public static long operator -(CUInt32 a) => -a.Value;
+        public static bool operator <(CUInt32 a, CUInt32 b) => a.Value < b.Value;
+        public static bool operator >(CUInt32 a, CUInt32 b) => a.Value > b.Value;
+        public static bool operator ==(CUInt32 a, CUInt32 b) => a.Value == b.Value;
+        public static bool operator !=(CUInt32 a, CUInt32 b) => !(a == b);
+        public static bool operator <=(CUInt32 a, CUInt32 b) => a.Value <= b.Value;
+        public static bool operator >=(CUInt32 a, CUInt32 b) => a.Value >= b.Value;
+        public override bool Equals(object a) => a is CUInt32 @int && this == @int;
+        public override int GetHashCode() => Value.GetHashCode();
+        public override string ToString() => Value.ToString();
     }
 }

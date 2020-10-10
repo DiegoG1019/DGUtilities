@@ -11,14 +11,8 @@ namespace DiegoG.Utilities
         public float LowerLimit { get; private set; }
         private float value
         {
-            get
-            {
-                return __float;
-            }
-            set
-            {
-                __float = value > LowerLimit ? (value > UpperLimit ? UpperLimit : __float) : LowerLimit;
-            }
+            get => __float;
+            set => __float = value > LowerLimit ? (value > UpperLimit ? UpperLimit : __float) : LowerLimit;
         }
 
         public CFloat(float v) :
@@ -70,7 +64,7 @@ namespace DiegoG.Utilities
 
         public override bool Equals(object a)
         {
-            return !(a is CFloat) ? false : this == (CFloat)a;
+            return a is CFloat @float && this == @float;
         }
 
         public override int GetHashCode()

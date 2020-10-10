@@ -1,5 +1,4 @@
 ﻿using System;
-using Version = DiegoG.Utilities.Version;
 
 namespace DiegoG.Utilities
 {
@@ -38,7 +37,7 @@ namespace DiegoG.Utilities
         public byte Minor => v[2];
         public byte Addition => v[3];
 
-        private static bool[] comparison = new bool[5];
+        private static readonly bool[] comparison = new bool[5];
         public static bool[] CompareLargerThan(Version a, Version b)
         {
             comparison[0] = a.Major > b.Major;
@@ -60,34 +59,34 @@ namespace DiegoG.Utilities
         public static bool[] CompareLessThan(Version a, Version b)
         {
             var c = CompareLargerThan(a, b);
-            for(int i = 0; i < c.Length; i++)
+            for (int i = 0; i < c.Length; i++)
             {
                 comparison[i] = !c[i];
             }
             return comparison;
         }
 
-        public static bool operator==(Version a, Version b)
+        public static bool operator ==(Version a, Version b)
         {
             return a.Full == b.Full;
         }
-        public static bool operator!=(Version a, Version b)
+        public static bool operator !=(Version a, Version b)
         {
             return !(a == b);
         }
-        public static bool operator>(Version a, Version b)
+        public static bool operator >(Version a, Version b)
         {
             return a.Major > b.Major || a.Build > b.Build || a.Minor > b.Minor || a.Addition > b.Addition;
         }
-        public static bool operator<(Version a, Version b)
+        public static bool operator <(Version a, Version b)
         {
             return a.Major < b.Major || a.Build < b.Build || a.Minor < b.Minor || a.Addition < b.Addition;
         }
-        public static bool operator>=(Version a, Version b)
+        public static bool operator >=(Version a, Version b)
         {
             return a == b || a > b;
         }
-        public static bool operator<=(Version a, Version b)
+        public static bool operator <=(Version a, Version b)
         {
             return a == b || a < b;
         }

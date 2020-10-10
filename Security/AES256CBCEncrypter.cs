@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web.Script.Serialization;
 
-namespace DiegoG.Utilities
+namespace DiegoG.Utilities.Security
 {
     class AES256CBCEncrypter
 	{
@@ -14,14 +14,15 @@ namespace DiegoG.Utilities
 		{
 			try
 			{
-				RijndaelManaged aes = new RijndaelManaged();
-				aes.KeySize = 256;
-				aes.BlockSize = 128;
-				aes.Padding = PaddingMode.PKCS7;
-				aes.Mode = CipherMode.CBC;
-
-				aes.Key = encoding.GetBytes(key);
-				aes.GenerateIV();
+                RijndaelManaged aes = new RijndaelManaged
+                {
+                    KeySize = 256,
+                    BlockSize = 128,
+                    Padding = PaddingMode.PKCS7,
+                    Mode = CipherMode.CBC,
+                    Key = encoding.GetBytes(key)
+                };
+                aes.GenerateIV();
 
 				ICryptoTransform AESEncrypt = aes.CreateEncryptor(aes.Key, aes.IV);
 				byte[] buffer = encoding.GetBytes(plainText);

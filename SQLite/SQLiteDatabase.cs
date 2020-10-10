@@ -4,7 +4,7 @@ using System.IO;
 using System.Data.Linq;
 using System.Data.SQLite;
 
-namespace DiegoG.Utilities
+namespace DiegoG.Utilities.SQLiteDatabase
 {
     public class SQLiteDatabase
     {

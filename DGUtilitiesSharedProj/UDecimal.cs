@@ -15,13 +15,14 @@ namespace DiegoG.Utilities
         /// Represents the largest possible value of <see cref="UDecimal"/> (equivalent to <see cref="decimal.MaxValue"/>).
         /// </summary>
         public static UDecimal MaxValue = decimal.MaxValue;
-
-        decimal value;
+        decimal value { get; set; }
 
         public UDecimal(decimal Value)
         {
             if (Double.IsNegativeInfinity((double)Value))
+            {
                 throw new NotSupportedException();
+            }
 
             value = Value < 0 ? 0 : Value;
         }
@@ -68,7 +69,7 @@ namespace DiegoG.Utilities
 
         public override bool Equals(object a)
         {
-            return !(a is UDecimal) ? false : this == (UDecimal)a;
+            return a is UDecimal @decimal && this == @decimal;
         }
 
         public override int GetHashCode()

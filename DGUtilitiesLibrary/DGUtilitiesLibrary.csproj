@@ -6,4 +6,8 @@
 
   <Import Project="..\DGUtilitiesSharedProj\DGUtilitiesSharedProj.projitems" Label="Shared" />
 
+  <Import Project="..\Security\Security.projitems" Label="Shared" />
+
+  <Import Project="..\SQLite\SQLite.projitems" Label="Shared" />
+
 </Project>

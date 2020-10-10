@@ -3,13 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "DGUtilitiesSharedProj", "DGUtilitiesSharedProj\DGUtilitiesSharedProj.shproj", "{E7813EE5-9C23-4B9C-9C93-38A04843F197}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Common", "DGUtilitiesSharedProj\Common.shproj", "{E7813EE5-9C23-4B9C-9C93-38A04843F197}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DGUtilitiesLibrary", "DGUtilitiesLibrary\DGUtilitiesLibrary.csproj", "{C0280483-3812-4A61-AE54-467556642C8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGUtilitiesLibrary", "DGUtilitiesLibrary\DGUtilitiesLibrary.csproj", "{C0280483-3812-4A61-AE54-467556642C8F}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SQLite", "SQLite\SQLite.shproj", "{8936620C-E989-4BD1-9755-AC826D968632}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Security", "Security\Security.shproj", "{273C9191-591D-4EC2-9AA6-8F5FA2387F48}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Security\Security.projitems*{273c9191-591d-4ec2-9aa6-8f5fa2387f48}*SharedItemsImports = 13
+		SQLite\SQLite.projitems*{8936620c-e989-4bd1-9755-ac826d968632}*SharedItemsImports = 13
 		DGUtilitiesSharedProj\DGUtilitiesSharedProj.projitems*{c0280483-3812-4a61-ae54-467556642c8f}*SharedItemsImports = 5
+		Security\Security.projitems*{c0280483-3812-4a61-ae54-467556642c8f}*SharedItemsImports = 5
+		SQLite\SQLite.projitems*{c0280483-3812-4a61-ae54-467556642c8f}*SharedItemsImports = 5
 		DGUtilitiesSharedProj\DGUtilitiesSharedProj.projitems*{e7813ee5-9c23-4b9c-9c93-38a04843f197}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
