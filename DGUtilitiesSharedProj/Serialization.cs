@@ -12,10 +12,7 @@ namespace DiegoG.Utilities
         public const string XmlExtension = ".xml";
         public const string JsonExtension = ".json";
 
-        public static object CopyByBinarySerialization(object obj)
-        {
-            return Deserialize<object>.Binary(Serialize.Binary(obj));
-        }
+        public static object CopyByBinarySerialization(object obj) => Deserialize<object>.Binary(Serialize.Binary(obj));
 
         public static class Deserialize<T>
         {
@@ -24,21 +21,9 @@ namespace DiegoG.Utilities
                 var binf = new BinaryFormatter();
                 return (T)binf.Deserialize(stm);
             }
-            public static T Binary(string path, string file)
-            {
-                return Binary(File.OpenRead(Path.Combine(path, file)));
-            }
-
-            public static async Task<T> BinaryAsync(Stream stm)
-            {
-                return await new Task<T>(new Func<T>(delegate { return Binary(stm); }));
-            }
-
-            public static async Task<T> BinaryAsync(string path, string file)
-            {
-                return await new Task<T>(new Func<T>(delegate { return Binary(path, file); }));
-            }
-
+            public static T Binary(string path, string file) => Binary(File.OpenRead(Path.Combine(path, file)));
+            public static async Task<T> BinaryAsync(Stream stm) => await new Task<T>(new Func<T>(delegate { return Binary(stm); }));
+            public static async Task<T> BinaryAsync(string path, string file) => await new Task<T>(new Func<T>(delegate { return Binary(path, file); }));
             public static T Xml(string xmlString)
             {
                 var t = typeof(T);
@@ -58,19 +43,10 @@ namespace DiegoG.Utilities
                 }
             }
 
-            public static async Task<T> XmlAsync(string xmlString)
-            {
-                return await new Task<T>(new Func<T>(delegate { return Xml(xmlString); }));
-            }
-            public static async Task<T> XmlAsync(string path, string file)
-            {
-                return await new Task<T>(new Func<T>(delegate { return Xml(path, file); })); 
-            }
+            public static async Task<T> XmlAsync(string xmlString) => await new Task<T>(new Func<T>(delegate { return Xml(xmlString); }));
+            public static async Task<T> XmlAsync(string path, string file) => await new Task<T>(new Func<T>(delegate { return Xml(path, file); }));
 
-            public static T Json(string jsonString)
-            {
-                return JsonSerializer.Deserialize<T>(jsonString);
-            }
+            public static T Json(string jsonString) => JsonSerializer.Deserialize<T>(jsonString);
             public static T Json(string path, string file)
             {
                 string fullpath = Path.Combine(path, file + JsonExtension);
@@ -81,15 +57,8 @@ namespace DiegoG.Utilities
                 }
             }
 
-            public static async Task<T> JsonAsync(string jsonString)
-            {
-                return await new Task<T>(new Func<T>(delegate { return Json(jsonString); })); 
-            }
-            public static async Task<T> JsonAsync(string path, string file)
-            {
-                return await new Task<T>(new Func<T>(delegate { return Json(path, file); })); 
-            }
-
+            public static async Task<T> JsonAsync(string jsonString) => await new Task<T>(new Func<T>(delegate { return Json(jsonString); }));
+            public static async Task<T> JsonAsync(string path, string file) => await new Task<T>(new Func<T>(delegate { return Json(path, file); }));
         }
 
         public static class Serialize
@@ -112,24 +81,10 @@ namespace DiegoG.Utilities
                 return stm;
             }
 
-            public static async Task<Stream> BinaryAsync(object obj)
-            {
-                return await new Task<Stream>(new Func<Stream>(delegate { return Binary(obj); })); 
-            }
-            public static async Task<Stream> BinaryAsync(object obj, string path, string file)
-            {
-                return await new Task<Stream>(new Func<Stream>(delegate { return Binary(obj, path, file); })); 
-            }
-
-            public static async Task<string> XmlAsync(object obj)
-            {
-                return await new Task<string>(new Func<string>(delegate { return Xml(obj); })); 
-            }
-            public static async Task<string> XmlAsync(object obj, string path, string file)
-            {
-                return await new Task<string>(new Func<string>(delegate { return Xml(obj, path, file); })); 
-            }
-
+            public static async Task<Stream> BinaryAsync(object obj) => await new Task<Stream>(new Func<Stream>(delegate { return Binary(obj); }));
+            public static async Task<Stream> BinaryAsync(object obj, string path, string file) => await new Task<Stream>(new Func<Stream>(delegate { return Binary(obj, path, file); }));
+            public static async Task<string> XmlAsync(object obj) => await new Task<string>(new Func<string>(delegate { return Xml(obj); }));
+            public static async Task<string> XmlAsync(object obj, string path, string file) => await new Task<string>(new Func<string>(delegate { return Xml(obj, path, file); }));
             public static string Xml(object obj)
             {
                 var t = obj.GetType();
@@ -152,19 +107,9 @@ namespace DiegoG.Utilities
                 return xmlstring;
             }
 
-            public static async Task<string> JsonAsync(object obj)
-            {
-                return await new Task<string>(new Func<string>(delegate { return Json(obj); })); 
-            }
-            public static async Task<string> JsonAsync(object obj, string path, string file)
-            {
-                return await new Task<string>(new Func<string>(delegate { return Json(obj, path, file); })); 
-            }
-
-            public static string Json(object obj)
-            {
-                return JsonSerializer.Serialize(obj);
-            }
+            public static async Task<string> JsonAsync(object obj) => await new Task<string>(new Func<string>(delegate { return Json(obj); }));
+            public static async Task<string> JsonAsync(object obj, string path, string file) => await new Task<string>(new Func<string>(delegate { return Json(obj, path, file); }));
+            public static string Json(object obj) => JsonSerializer.Serialize(obj);
             public static string Json(object obj, string path, string file)
             {
                 string fullpath = Path.Combine(path, file + JsonExtension);
