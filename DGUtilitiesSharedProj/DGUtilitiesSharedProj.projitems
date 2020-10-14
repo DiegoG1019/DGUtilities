@@ -11,6 +11,9 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BitsByte.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CFloat.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\IndexedProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\ReadOnlyIndexedProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Collections\WriteOnlyIndexedProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CUInt32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CUInt64.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Length.cs" />
