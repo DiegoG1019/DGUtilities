@@ -181,7 +181,7 @@ namespace DiegoG.Utilities
 
         private void Adjust()
         {
-            GCD = MoreMath.GreatestCommonDivisor((ulong)BaseA, (ulong)BaseB);
+            GCD = DiegoGMath.GreatestCommonDivisor((ulong)BaseA, (ulong)BaseB);
             if (GCD > 0)
             {
                 valuea = BaseA / GCD;

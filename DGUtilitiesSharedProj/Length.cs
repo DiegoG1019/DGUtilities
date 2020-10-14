@@ -1,4 +1,6 @@
 ﻿using DiegoG.DnDTDesktop.Properties;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace DiegoG.Utilities
 {
@@ -8,6 +10,18 @@ namespace DiegoG.Utilities
         {
             Meter, Foot, Inch, Square
         }
+
+        public static ImmutableDictionary<Units, string> ShortUnits { get; }
+        static Length()
+        {
+            var builder = ImmutableDictionary.CreateBuilder<Units, string>();
+            builder.Add(Units.Meter, "Mts");
+            builder.Add(Units.Foot, "\"");
+            builder.Add(Units.Inch, "\'");
+            builder.Add(Units.Square, "Square");
+            ShortUnits = builder.ToImmutable();
+        }
+
         public const decimal MCm = 100M; //Meter to Centimeter
         public const decimal MFt = 3.28084M; //Meter to Foot
         public const decimal MIn = 39.37008M; //Meter to Inch
@@ -18,58 +32,75 @@ namespace DiegoG.Utilities
         public decimal Meter { get; set; } = 0;
         public decimal Foot
         {
-            get
-            {
-                return Meter * MFt;
-            }
-            set
-            {
-                Meter = value * FtM;
-            }
+            get => Meter * MFt;
+            set => Meter = value * FtM;
         }
         public decimal Inch
         {
-            get
-            {
-                return Meter * MIn;
-            }
-            set
-            {
-                Meter = value * InM;
-            }
+            get => Meter * MIn;
+            set => Meter = value * InM;
         }
         public int Square
         {
+            get => (int)(Foot / Settings.Default.SquareSize);
+            set => Foot = value * Settings.Default.SquareSize;
+        }
+        public decimal this[Units index]
+        {
             get
             {
-                return (int)(Foot / Settings.Default.SquareSize);
+                switch (index)
+                {
+                    case Units.Meter:
+                        return Meter;
+                    case Units.Square:
+                        return Square;
+                    case Units.Foot:
+                        return Foot;
+                    case Units.Inch:
+                        return Inch;
+                    default:
+                        return Meter;
+                }
             }
             set
             {
-                Foot = value * Settings.Default.SquareSize;
+                switch (index)
+                {
+                    case Units.Meter:
+                        Meter = value;
+                        break;
+                    case Units.Square:
+                        Square = (int)value;
+                        break;
+                    case Units.Foot:
+                        Foot = value;
+                        break;
+                    case Units.Inch:
+                        Inch = value;
+                        break;
+                    default:
+                        Meter = value;
+                        break;
+                }
             }
         }
-        public Length(decimal V, Units a)
+        public Length(decimal v, Units a)
         {
-            if (a == Units.Foot)
+            switch (a)
             {
-                Foot = V;
-                return;
-            }
-            if (a == Units.Meter)
-            {
-                Meter = V;
-                return;
-            }
-            if (a == Units.Inch)
-            {
-                Inch = V;
-                return;
-            }
-            if (a == Units.Square)
-            {
-                Square = (int)V;
-                return;
+                case Units.Meter:
+                    Meter = v;
+                    break;
+                case Units.Inch:
+                    Inch = v;
+                    break;
+                case Units.Foot:
+                    Foot = v;
+                    break;
+                case Units.Square:
+                    Square = (int)v;
+                    break;
             }
         }
         public static bool operator >(Length A, Length B) => A.Meter > B.Meter;
