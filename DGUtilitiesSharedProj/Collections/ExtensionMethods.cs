@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DiegoG.Utilities.Collections
 {
     public static class ExtensionMethods
     {
         ///<summary>Finds the index of the first item matching an expression in an enumerable.</summary>
-         ///<param name="items">The enumerable to search.</param>
-         ///<param name="predicate">The expression to test the items against.</param>
-         ///<returns>The index of the first matching item, or -1 if no items match.</returns>
+        ///<param name="items">The enumerable to search.</param>
+        ///<param name="predicate">The expression to test the items against.</param>
+        ///<returns>The index of the first matching item, or -1 if no items match.</returns>
         public static int FindIndex<T>(this IEnumerable<T> items, Func<T, bool> predicate)
         {
             if (items == null) throw new ArgumentNullException("items");

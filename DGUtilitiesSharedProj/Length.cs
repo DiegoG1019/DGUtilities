@@ -1,5 +1,4 @@
 ﻿using DiegoG.DnDTDesktop.Properties;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace DiegoG.Utilities
