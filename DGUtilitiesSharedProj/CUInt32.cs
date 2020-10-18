@@ -42,9 +42,7 @@ namespace DiegoG.Utilities
         }
 
         public static implicit operator uint(CUInt32 d) => d.Value;
-        public static explicit operator int(CUInt32 d) => (int)d.Value;
         public static implicit operator CUInt32(uint d) => new CUInt32(d);
-        public static implicit operator CUInt32(int d) => new CUInt32((uint)d);
         public static CUInt32 operator -(CUInt32 a, CUInt32 b) => a.Value - b.Value;
         public static CUInt32 operator +(CUInt32 a, CUInt32 b) => a.Value + b.Value;
         public static CUInt32 operator *(CUInt32 a, CUInt32 b) => a.Value * b.Value;
@@ -56,7 +54,7 @@ namespace DiegoG.Utilities
         public static bool operator !=(CUInt32 a, CUInt32 b) => !(a == b);
         public static bool operator <=(CUInt32 a, CUInt32 b) => a.Value <= b.Value;
         public static bool operator >=(CUInt32 a, CUInt32 b) => a.Value >= b.Value;
-        public override bool Equals(object a) => a is CUInt32 @int && this == @int;
+        public override bool Equals(object a) => a is CUInt32 @uint && this == @uint;
         public override int GetHashCode() => Value.GetHashCode();
         public override string ToString() => Value.ToString();
     }
