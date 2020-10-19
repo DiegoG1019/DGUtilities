@@ -5,22 +5,15 @@ namespace DiegoG.Utilities
 {
     public static class DiegoGMath
     {
-        public static double NthRoot(double A, int N)
-        {
-            return System.Math.Pow(A, 1.0 / N);
-        }
+        public static double NthRoot(double A, int N) => Math.Pow(A, 1.0 / N);
         public static ulong GreatestCommonDivisor(ulong a, ulong b)
         {
             while (a != 0 && b != 0)
             {
                 if (a > b)
-                {
                     a %= b;
-                }
                 else
-                {
                     b %= a;
-                }
             }
             return a == 0 ? b : a;
         }
@@ -44,17 +37,11 @@ namespace DiegoG.Utilities
             string newstring = new string(result);
 
             for (int b = (Digits[(int)fm] - newstring.Length); b > 0; b--)
-            {
                 newstring += "0";
-            }
-
             return newstring;
         }
 
-        private static readonly byte[] Digits =
-        {
-            10, 11, 8, 32, 7, 6
-        };
+        private static readonly byte[] Digits = { 10, 11, 8, 32, 7, 6 };
         public static string FormatInt(int value, IntFormat ifm)
         {
             switch (ifm)

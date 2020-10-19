@@ -1,4 +1,7 @@
 ﻿using System.Collections.Immutable;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace DiegoG.Utilities
 {
@@ -24,6 +27,7 @@ namespace DiegoG.Utilities
             get => Kilogram * KgLb;
             set => Kilogram = value * LbKg;
         }
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
         public decimal this[Units index]
         {
             get

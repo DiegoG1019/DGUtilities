@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace DiegoG.Utilities
 {
@@ -11,10 +14,7 @@ namespace DiegoG.Utilities
         private UDecimal valueb;
         public UDecimal ValueA
         {
-            get
-            {
-                return valuea;
-            }
+            get => valuea;
             set
             {
                 basea = (value * Quotient) * baseb;
@@ -23,10 +23,7 @@ namespace DiegoG.Utilities
         }
         public UDecimal ValueB
         {
-            get
-            {
-                return valueb;
-            }
+            get => valueb;
             set
             {
                 baseb = (value * Quotient) * basea;
@@ -38,10 +35,7 @@ namespace DiegoG.Utilities
         private UDecimal baseb;
         public UDecimal BaseA
         {
-            get
-            {
-                return basea;
-            }
+            get => basea;
             set
             {
                 basea = value;
@@ -50,10 +44,7 @@ namespace DiegoG.Utilities
         }
         public UDecimal BaseB
         {
-            get
-            {
-                return baseb;
-            }
+            get => baseb;
             set
             {
                 baseb = value;
@@ -66,14 +57,8 @@ namespace DiegoG.Utilities
         /// </summary>
         public UDecimal Current
         {
-            get
-            {
-                return BaseA;
-            }
-            set
-            {
-                BaseA = value;
-            }
+            get => BaseA;
+            set => BaseA = value;
         }
 
         /// <summary>
@@ -81,95 +66,30 @@ namespace DiegoG.Utilities
         /// </summary>
         public UDecimal Limit
         {
-            get
-            {
-                return BaseB;
-            }
-            set
-            {
-                BaseB = value;
-            }
+            get => BaseB;
+            set => BaseB = value;
         }
 
-        public decimal Percentage
-        {
-            get
-            {
-                return Quotient * 100;
-            }
-        }
-
-        public string PercentageString
-        {
-            get
-            {
-                return String.Format("{0}%", Math.Round(Percentage, 2, MidpointRounding.ToEven));
-            }
-        }
-
-        public decimal RatioA
-        {
-            get
-            {
-                return (decimal)ValueA;
-            }
-        }
-        public decimal RatioB
-        {
-            get
-            {
-                return (decimal)ValueB;
-            }
-        }
-
-        public string RatioColon
-        {
-            get
-            {
-                return String.Format("{0}:{1}", RatioA, RatioB);
-            }
-        }
-
-        public string RatioFraction
-        {
-            get
-            {
-                return String.Format("{0}/{1}", RatioA, RatioB);
-            }
-        }
-
-        public string RatioText
-        {
-            get
-            {
-                return String.Format("{0} to {1}", RatioA, RatioB);
-            }
-        }
-
-        public decimal Quotient
-        {
-            get
-            {
-                return GCD == 0 ? 0 : RatioA / RatioB;
-            }
-        }
-
-        public decimal Difference
-        {
-            get
-            {
-                return BaseA - BaseB;
-            }
-        }
-
-        public string ValuesString
-        {
-            get
-            {
-                return String.Format("{0} out of {1}", BaseA, BaseB);
-            }
-        }
-
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public decimal Percentage => Quotient * 100;
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public string PercentageString => String.Format("{0}%", Math.Round(Percentage, 2, MidpointRounding.ToEven));
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public decimal RatioA => ValueA;
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public decimal RatioB => ValueB;
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public string RatioColon => String.Format("{0}:{1}", RatioA, RatioB);
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public string RatioFraction => String.Format("{0}/{1}", RatioA, RatioB);
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public string RatioText => String.Format("{0} to {1}", RatioA, RatioB);
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public decimal Quotient => GCD == 0 ? 0 : RatioA / RatioB;
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public decimal Difference => BaseA - BaseB;
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public string ValuesString => String.Format("{0} out of {1}", BaseA, BaseB);
         private NumberRelation()
         {
             ValueA = 1;

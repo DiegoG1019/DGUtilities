@@ -20,66 +20,20 @@ namespace DiegoG.Utilities
         public UDecimal(decimal Value)
         {
             if (Double.IsNegativeInfinity((double)Value))
-            {
                 throw new NotSupportedException();
-            }
-
             value = Value < 0 ? 0 : Value;
         }
 
-        public static implicit operator decimal(UDecimal d)
-        {
-            return d.value;
-        }
-
-        public static implicit operator UDecimal(decimal d)
-        {
-            return new UDecimal(d);
-        }
-
-        public static bool operator <(UDecimal a, UDecimal b)
-        {
-            return a.value < b.value;
-        }
-
-        public static bool operator >(UDecimal a, UDecimal b)
-        {
-            return a.value > b.value;
-        }
-
-        public static bool operator ==(UDecimal a, UDecimal b)
-        {
-            return a.value == b.value;
-        }
-
-        public static bool operator !=(UDecimal a, UDecimal b)
-        {
-            return a.value != b.value;
-        }
-
-        public static bool operator <=(UDecimal a, UDecimal b)
-        {
-            return a.value <= b.value;
-        }
-
-        public static bool operator >=(UDecimal a, UDecimal b)
-        {
-            return a.value >= b.value;
-        }
-
-        public override bool Equals(object a)
-        {
-            return a is UDecimal @decimal && this == @decimal;
-        }
-
-        public override int GetHashCode()
-        {
-            return value.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return value.ToString();
-        }
+        public static implicit operator decimal(UDecimal d) => d.value;
+        public static implicit operator UDecimal(decimal d) => new UDecimal(d);
+        public static bool operator <(UDecimal a, UDecimal b) => a.value < b.value;
+        public static bool operator >(UDecimal a, UDecimal b) => a.value > b.value;
+        public static bool operator ==(UDecimal a, UDecimal b) => a.value == b.value;
+        public static bool operator !=(UDecimal a, UDecimal b) => a.value != b.value;
+        public static bool operator <=(UDecimal a, UDecimal b) => a.value <= b.value;
+        public static bool operator >=(UDecimal a, UDecimal b) => a.value >= b.value;
+        public override bool Equals(object a) => a is UDecimal @decimal && this == @decimal;
+        public override int GetHashCode() => value.GetHashCode();
+        public override string ToString() => value.ToString();
     }
 }

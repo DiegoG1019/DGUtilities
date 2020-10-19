@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace DiegoG.Utilities
 {
+    [Serializable]
     public struct Percentage
     {
         private static Random Rand { get; } = new Random();
@@ -32,30 +34,19 @@ namespace DiegoG.Utilities
                 v += value;
             }
         }
-        [IgnoreDataMember]
-        [JsonIgnore]
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
         public double Percent => Value / 100f;
 
-        [IgnoreDataMember]
-        [JsonIgnore]
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
         public string String => $"{v}%";
         public static bool ThrowChance(float chance) => new Percentage(chance).ThrowChance();
 
         public bool ThrowChance()
         {
             if (Value == 100f)
-            {
                 return true;
-            }
-
             return Rand.Next(0, 100) <= Value;
         }
-
-        public Percentage(float v) :
-            this()
-        {
-            this.v = v;
-        }
-
+        public Percentage(float v) : this() => this.v = v;
     }
 }

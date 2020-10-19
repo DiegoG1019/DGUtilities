@@ -1,5 +1,8 @@
 ﻿using DiegoG.DnDTDesktop.Properties;
 using System.Collections.Immutable;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace DiegoG.Utilities
 {
@@ -44,6 +47,8 @@ namespace DiegoG.Utilities
             get => (int)(Foot / Settings.Default.SquareSize);
             set => Foot = value * Settings.Default.SquareSize;
         }
+
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
         public decimal this[Units index]
         {
             get

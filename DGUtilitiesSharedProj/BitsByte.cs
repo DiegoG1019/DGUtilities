@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace DiegoG.Utilities
 {
@@ -8,25 +11,17 @@ namespace DiegoG.Utilities
     public struct BitsByte
     {
         private static bool Null;
-
         private byte value;
 
         public bool this[int key]
         {
-            get
-            {
-                return (value & (1 << key)) != 0;
-            }
+            get => (value & (1 << key)) != 0;
             set
             {
                 if (value)
-                {
                     this.value |= (byte)(1 << key);
-                }
                 else
-                {
-                    this.value &= (byte)(~(1 << key));
-                }
+                    this.value &= (byte)~(1 << key);
             }
         }
 
@@ -43,51 +38,15 @@ namespace DiegoG.Utilities
             this[7] = b8;
         }
 
-        public void ClearAll()
-        {
-            value = 0;
-        }
-
-        public void SetAll()
-        {
-            value = byte.MaxValue;
-        }
-
-        public void Retrieve(ref bool b0)
-        {
-            Retrieve(ref b0, ref Null, ref Null, ref Null, ref Null, ref Null, ref Null, ref Null);
-        }
-
-        public void Retrieve(ref bool b0, ref bool b1)
-        {
-            Retrieve(ref b0, ref b1, ref Null, ref Null, ref Null, ref Null, ref Null, ref Null);
-        }
-
-        public void Retrieve(ref bool b0, ref bool b1, ref bool b2)
-        {
-            Retrieve(ref b0, ref b1, ref b2, ref Null, ref Null, ref Null, ref Null, ref Null);
-        }
-
-        public void Retrieve(ref bool b0, ref bool b1, ref bool b2, ref bool b3)
-        {
-            Retrieve(ref b0, ref b1, ref b2, ref b3, ref Null, ref Null, ref Null, ref Null);
-        }
-
-        public void Retrieve(ref bool b0, ref bool b1, ref bool b2, ref bool b3, ref bool b4)
-        {
-            Retrieve(ref b0, ref b1, ref b2, ref b3, ref b4, ref Null, ref Null, ref Null);
-        }
-
-        public void Retrieve(ref bool b0, ref bool b1, ref bool b2, ref bool b3, ref bool b4, ref bool b5)
-        {
-            Retrieve(ref b0, ref b1, ref b2, ref b3, ref b4, ref b5, ref Null, ref Null);
-        }
-
-        public void Retrieve(ref bool b0, ref bool b1, ref bool b2, ref bool b3, ref bool b4, ref bool b5, ref bool b6)
-        {
-            Retrieve(ref b0, ref b1, ref b2, ref b3, ref b4, ref b5, ref b6, ref Null);
-        }
-
+        public void ClearAll() => value = 0;
+        public void SetAll() => value = byte.MaxValue;
+        public void Retrieve(ref bool b0) => Retrieve(ref b0, ref Null, ref Null, ref Null, ref Null, ref Null, ref Null, ref Null);
+        public void Retrieve(ref bool b0, ref bool b1) => Retrieve(ref b0, ref b1, ref Null, ref Null, ref Null, ref Null, ref Null, ref Null);
+        public void Retrieve(ref bool b0, ref bool b1, ref bool b2) => Retrieve(ref b0, ref b1, ref b2, ref Null, ref Null, ref Null, ref Null, ref Null);
+        public void Retrieve(ref bool b0, ref bool b1, ref bool b2, ref bool b3) => Retrieve(ref b0, ref b1, ref b2, ref b3, ref Null, ref Null, ref Null, ref Null);
+        public void Retrieve(ref bool b0, ref bool b1, ref bool b2, ref bool b3, ref bool b4) => Retrieve(ref b0, ref b1, ref b2, ref b3, ref b4, ref Null, ref Null, ref Null);
+        public void Retrieve(ref bool b0, ref bool b1, ref bool b2, ref bool b3, ref bool b4, ref bool b5) => Retrieve(ref b0, ref b1, ref b2, ref b3, ref b4, ref b5, ref Null, ref Null);
+        public void Retrieve(ref bool b0, ref bool b1, ref bool b2, ref bool b3, ref bool b4, ref bool b5, ref bool b6) => Retrieve(ref b0, ref b1, ref b2, ref b3, ref b4, ref b5, ref b6, ref Null);
         public void Retrieve(ref bool b0, ref bool b1, ref bool b2, ref bool b3, ref bool b4, ref bool b5, ref bool b6, ref bool b7)
         {
             b0 = this[0];
@@ -100,11 +59,7 @@ namespace DiegoG.Utilities
             b7 = this[7];
         }
 
-        public static implicit operator byte(BitsByte bb)
-        {
-            return bb.value;
-        }
-
+        public static implicit operator byte(BitsByte bb) => bb.value;
         public static implicit operator BitsByte(byte b)
         {
             BitsByte result = default;

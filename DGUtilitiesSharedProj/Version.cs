@@ -1,41 +1,32 @@
 ﻿using System;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace DiegoG.Utilities
 {
     [Serializable]
     public struct Version
     {
-        public static Version Assembly { get; } = new Version("", 0, 0, 1, 0);
-
-        private readonly byte[] v;
+#warning Remember to update this
+        public static Version Assembly { get; } = new Version("", 0, 0, 3, 0);
         public Version(string preppendix, byte major, byte build, byte minor, byte addition)
         {
-            v = new byte[4];
-            v[0] = major;
-            v[1] = build;
-            v[2] = minor;
-            v[3] = addition;
+            Major = major;
+            Build = build;
+            Minor = minor;
+            Addition = addition;
             Preppendix = preppendix;
         }
-        public string Full
-        {
-            get
-            {
-                return $"{Preppendix}-{Short}";
-            }
-        }
-        public string Short
-        {
-            get
-            {
-                return $"{Major}.{Build}.{Minor}.{Addition}";
-            }
-        }
-        public string Preppendix { get; private set; }
-        public byte Major => v[0];
-        public byte Build => v[1];
-        public byte Minor => v[2];
-        public byte Addition => v[3];
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public string Full => $"{Preppendix}-{Short}";
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public string Short => $"{Major}.{Build}.{Minor}.{Addition}";
+        public string Preppendix { get; set; }
+        public byte Major { get; set; }
+        public byte Build { get; set; }
+        public byte Minor { get; set; }
+        public byte Addition { get; set; }
 
         private static readonly bool[] comparison = new bool[5];
         public static bool[] CompareLargerThan(Version a, Version b)
@@ -60,45 +51,17 @@ namespace DiegoG.Utilities
         {
             var c = CompareLargerThan(a, b);
             for (int i = 0; i < c.Length; i++)
-            {
                 comparison[i] = !c[i];
-            }
             return comparison;
         }
 
-        public static bool operator ==(Version a, Version b)
-        {
-            return a.Full == b.Full;
-        }
-        public static bool operator !=(Version a, Version b)
-        {
-            return !(a == b);
-        }
-        public static bool operator >(Version a, Version b)
-        {
-            return a.Major > b.Major || a.Build > b.Build || a.Minor > b.Minor || a.Addition > b.Addition;
-        }
-        public static bool operator <(Version a, Version b)
-        {
-            return a.Major < b.Major || a.Build < b.Build || a.Minor < b.Minor || a.Addition < b.Addition;
-        }
-        public static bool operator >=(Version a, Version b)
-        {
-            return a == b || a > b;
-        }
-        public static bool operator <=(Version a, Version b)
-        {
-            return a == b || a < b;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
+        public static bool operator ==(Version a, Version b) => a.Full == b.Full;
+        public static bool operator !=(Version a, Version b) => !(a == b);
+        public static bool operator >(Version a, Version b) => a.Major > b.Major || a.Build > b.Build || a.Minor > b.Minor || a.Addition > b.Addition;
+        public static bool operator <(Version a, Version b) => a.Major < b.Major || a.Build < b.Build || a.Minor < b.Minor || a.Addition < b.Addition;
+        public static bool operator >=(Version a, Version b) => a == b || a > b;
+        public static bool operator <=(Version a, Version b) => a == b || a < b;
+        public override bool Equals(object obj) => base.Equals(obj);
+        public override int GetHashCode() => base.GetHashCode();
     }
 }
