@@ -2,13 +2,42 @@
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Linq;
+using System.Runtime.Serialization;
 
 namespace DiegoG.Utilities.IO
 {
     public static class Serialization
     {
+        static Serialization()
+        {
+            JsonSerializerOptions.Converters.Add(new CallbacksJsonConverter<object>());
+        }
+        public static JsonSerializerOptions JsonSerializerOptions { get; } = new JsonSerializerOptions();
+        private class CallbacksJsonConverter<T> : JsonConverter<T>
+        {
+            public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+            {
+                T obj = (T)JsonSerializer.Deserialize(ref reader, typeToConvert, options);
+                var methods = from method in typeof(T).GetMethods() where method.GetCustomAttributes(typeof(OnDeserializedAttribute), false).FirstOrDefault() != null select method;
+                foreach(var method in methods)
+                    method.Invoke(obj, null);
+                return obj;
+            }
+            public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
+            {
+                var methods = from method in typeof(T).GetMethods() where method.GetCustomAttributes(typeof(OnSerializedAttribute), false).FirstOrDefault() != null select method;
+                foreach (var method in methods)
+                    method.Invoke(value, null);
+                JsonSerializer.Serialize(writer, value, options);
+            }
+        }
+
+        public static void RegisterClasSCallbacksJsonConverter<T>() => JsonSerializerOptions.Converters.Add(new CallbacksJsonConverter<T>());
+
         public const string XmlExtension = ".xml";
         public const string JsonExtension = ".json";
 
@@ -46,7 +75,7 @@ namespace DiegoG.Utilities.IO
             public static async Task<T> XmlAsync(string xmlString) => await new Task<T>(new Func<T>(delegate { return Xml(xmlString); }));
             public static async Task<T> XmlAsync(string path, string file) => await new Task<T>(new Func<T>(delegate { return Xml(path, file); }));
 
-            public static T Json(string jsonString) => JsonSerializer.Deserialize<T>(jsonString);
+            public static T Json(string jsonString) => JsonSerializer.Deserialize<T>(jsonString, JsonSerializerOptions);
             public static T Json(string path, string file)
             {
                 string fullpath = Path.Combine(path, file + JsonExtension);
@@ -109,7 +138,7 @@ namespace DiegoG.Utilities.IO
 
             public static async Task<string> JsonAsync(object obj) => await new Task<string>(new Func<string>(delegate { return Json(obj); }));
             public static async Task<string> JsonAsync(object obj, string path, string file) => await new Task<string>(new Func<string>(delegate { return Json(obj, path, file); }));
-            public static string Json(object obj) => JsonSerializer.Serialize(obj);
+            public static string Json(object obj) => JsonSerializer.Serialize(obj, JsonSerializerOptions);
             public static string Json(object obj, string path, string file)
             {
                 string fullpath = Path.Combine(path, file + JsonExtension);

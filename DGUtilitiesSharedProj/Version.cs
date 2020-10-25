@@ -9,7 +9,7 @@ namespace DiegoG.Utilities
     public struct Version
     {
 #warning Remember to update this
-        public static Version Assembly { get; } = new Version("", 0, 0, 3, 0);
+        public static Version Assembly { get; } = new Version("", 0, 0, 4, 0);
         public Version(string preppendix, byte major, byte build, byte minor, byte addition)
         {
             Major = major;

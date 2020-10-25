@@ -23,8 +23,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)NumberRelation.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Other.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Percentage.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Serialization.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IO\Serialization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UDecimal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Version.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)IO\" />
   </ItemGroup>
 </Project>
