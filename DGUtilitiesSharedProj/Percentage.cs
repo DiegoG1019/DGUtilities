@@ -14,24 +14,11 @@ namespace DiegoG.Utilities
         private float v;
         public float Value
         {
-            get
-            {
-                return v;
-            }
+            get => v;
             set
             {
-                double a = 0;
-                if ((value + a) > Max)
-                {
-                    v = Max;
-                    return;
-                }
-                if ((value + a) < Min)
-                {
-                    v = Min;
-                    return;
-                }
                 v += value;
+                v.Cap(0, 100);
             }
         }
         [JsonIgnore, IgnoreDataMember, XmlIgnore]

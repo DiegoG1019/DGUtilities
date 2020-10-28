@@ -22,6 +22,8 @@ namespace DiegoG.Utilities
         public const decimal KgLb = 2.20462M;
         public const decimal LbKg = 0.453592M;
         public decimal Kilogram { get; set; }
+
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public decimal Pound
         {
             get => Kilogram * KgLb;
@@ -55,6 +57,10 @@ namespace DiegoG.Utilities
                 }
             }
         }
+        public Mass()
+        {
+            Kilogram = 0;
+        }
         public Mass(decimal V, Units i)
         {
             switch (i)
@@ -67,6 +73,7 @@ namespace DiegoG.Utilities
                     break;
             }
         }
+        public string ToString(Units unit) => $"{this[unit]}{ShortUnits[unit]}";
         public static bool operator >(Mass A, Mass B) => A.Kilogram > B.Kilogram;
         public static bool operator <(Mass A, Mass B) => !(A > B);
         public static bool operator >=(Mass A, Mass B) => A.Kilogram >= B.Kilogram;
@@ -80,5 +87,8 @@ namespace DiegoG.Utilities
         public static Mass operator %(Mass A, Mass B) => new Mass(A.Kilogram % B.Kilogram, Units.Kilogram);
         public override bool Equals(object obj) => base.Equals(obj);
         public override int GetHashCode() => base.GetHashCode();
+
+        public static Mass Zero => new Mass(0, Units.Kilogram);
+
     }
 }

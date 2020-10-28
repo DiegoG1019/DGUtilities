@@ -41,5 +41,29 @@ namespace DiegoG.Utilities
         {
             return Color.FromArgb(int.MaxValue - c.ToArgb());
         }
+        public static T CapNumber<T>(T number, T min, T max)
+            where T : struct,
+            IComparable,
+            IComparable<T>,
+            IConvertible,
+            IEquatable<T>,
+            IFormattable
+        {
+            if (number.CompareTo(max) > 0)
+                return max;
+            if (number.CompareTo(min) < 0)
+                return min;
+            return number;
+        }
+        public static void Cap<T>(ref this T number, T min, T max)
+            where T : struct,
+            IComparable,
+            IComparable<T>,
+            IConvertible,
+            IEquatable<T>,
+            IFormattable
+        {
+            number = CapNumber(number, min, max);
+        }
     }
 }

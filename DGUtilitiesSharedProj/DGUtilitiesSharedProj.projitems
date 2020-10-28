@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Collections\WriteOnlyIndexedProperty.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CUInt32.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CUInt64.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IO\JsonSerializationSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Length.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Mass.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Math.cs" />
@@ -26,8 +27,5 @@
     <Compile Include="$(MSBuildThisFileDirectory)IO\Serialization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UDecimal.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Version.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)IO\" />
   </ItemGroup>
 </Project>

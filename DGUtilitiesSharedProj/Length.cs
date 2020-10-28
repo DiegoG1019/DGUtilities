@@ -32,16 +32,22 @@ namespace DiegoG.Utilities
         public const decimal FtM = 0.3048M; //Foot to Meter
         public const decimal InM = 0.0254M; //Inch to Meter
         public decimal Meter { get; set; } = 0;
+
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public decimal Foot
         {
             get => Meter * MFt;
             set => Meter = value * FtM;
         }
+
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public decimal Inch
         {
             get => Meter * MIn;
             set => Meter = value * InM;
         }
+
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public int Square
         {
             get => (int)(Foot / Settings.Default.SquareSize);
@@ -89,6 +95,10 @@ namespace DiegoG.Utilities
                 }
             }
         }
+        public Length()
+        {
+            Meter = 0;
+        }
         public Length(decimal v, Units a)
         {
             switch (a)
@@ -107,6 +117,8 @@ namespace DiegoG.Utilities
                     break;
             }
         }
+
+        public string ToString(Units unit) => $"{this[unit]}{ShortUnits[unit]}";
         public static bool operator >(Length A, Length B) => A.Meter > B.Meter;
         public static bool operator <(Length A, Length B) => A.Meter < B.Meter;
         public static bool operator >=(Length A, Length B) => A.Meter >= B.Meter;
@@ -120,5 +132,8 @@ namespace DiegoG.Utilities
         public static Length operator %(Length A, Length B) => new Length(A.Meter % B.Meter, Units.Meter);
         public override bool Equals(object obj) => base.Equals(obj);
         public override int GetHashCode() => base.GetHashCode();
+
+        public static Length Zero => new Length(0, Units.Meter);
+
     }
 }
