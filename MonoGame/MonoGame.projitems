@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>0fa075e6-256e-4343-84fd-7ad313e84d35</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>DiegoG.MonoGame</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BodyTag.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Canvas.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DirectionVector2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntityInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\Exceptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ID.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IDrawable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IDynamic.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IGameLiveObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IGenericObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IPhysical.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IUpdateable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LengthVector2.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\Assets\AssetManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\Assets\Assets.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\Assets\ControlledAsset.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\Camera.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\CameraStructs.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Managers\LoadedLists.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)MouseBodyObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Noise.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Util.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UtilMath.cs" />
+  </ItemGroup>
+</Project>

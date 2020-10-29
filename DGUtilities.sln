@@ -11,8 +11,11 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SQLite", "SQLite\SQLite.shp
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Security", "Security\Security.shproj", "{273C9191-591D-4EC2-9AA6-8F5FA2387F48}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MonoGame", "MonoGame\MonoGame.shproj", "{0FA075E6-256E-4343-84FD-7AD313E84D35}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		MonoGame\MonoGame.projitems*{0fa075e6-256e-4343-84fd-7ad313e84d35}*SharedItemsImports = 13
 		Security\Security.projitems*{273c9191-591d-4ec2-9aa6-8f5fa2387f48}*SharedItemsImports = 13
 		SQLite\SQLite.projitems*{8936620c-e989-4bd1-9755-ac826d968632}*SharedItemsImports = 13
 		DGUtilitiesSharedProj\DGUtilitiesSharedProj.projitems*{c0280483-3812-4a61-ae54-467556642c8f}*SharedItemsImports = 5
