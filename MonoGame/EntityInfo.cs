@@ -1,4 +1,6 @@
-﻿namespace DiegoG.MonoGame
+﻿using MagicGame;
+
+namespace DiegoG.MonoGame
 {
     public class EntityInfo
     {
@@ -11,13 +13,7 @@
         public EntityRaces Race { get; private set; }
         public EntityOrders Order { get; private set; }
         private EntitySpecies _species { get; set; }
-        public string Species
-        {
-            get
-            {
-                return _species.ToString();
-            }
-        }
+        public string Species => _species.ToString();
         private EntityInfo(EntityRaces race, EntityOrders order, EntitySpecies species)
         {
             Race = race;
@@ -29,11 +25,7 @@
             Name = name;
             Class = _class;
         }
-        public override string ToString()
-        {
-            return $"({Name}, {Race}, {Species}, {Order}, {Class})";
-        }
-
+        public override string ToString() => $"({Name}, {Race}, {Species}, {Order}, {Class})";
         //Species list
 
         public static class SpeciesList
@@ -41,14 +33,7 @@
             /// <summary>
             /// Anthropomorphic, Living, Human
             /// </summary>
-            public static EntityInfo Human
-            {
-                get
-                {
-                    return new EntityInfo(EntityRaces.Anthropomorphic, EntityOrders.Living, EntitySpecies.Human);
-                }
-            }
-
+            public static EntityInfo Human => new EntityInfo(EntityRaces.Anthropomorphic, EntityOrders.Living, EntitySpecies.Human);
         }
 
     }

@@ -1,4 +1,6 @@
-﻿namespace DiegoG.MonoGame
+﻿using Microsoft.Xna.Framework;
+
+namespace DiegoG.MonoGame
 {
     public interface IGenericObject : IUpdateable, IDynamic
     {

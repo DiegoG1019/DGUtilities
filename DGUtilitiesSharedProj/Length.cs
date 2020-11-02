@@ -1,4 +1,5 @@
-﻿using DiegoG.DnDTDesktop.Properties;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
@@ -8,10 +9,40 @@ namespace DiegoG.Utilities
 {
     public class Length
     {
-        public enum Units
+        public class LengthMeasureProperty<T> where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T>
         {
-            Meter, Foot, Inch, Square
+            public Units BaseUnit { get; set; }
+            public T ConversionValue { get; set; }
+            public LengthMeasureProperty(Units unit, T value)
+            {
+                BaseUnit = unit;
+                ConversionValue = value;
+            }
         }
+
+        public static LengthMeasureProperty<int> SquareUnitDefinition { get; set; } = new LengthMeasureProperty<int>(Units.Meter, 1);
+        public static LengthMeasureProperty<decimal> UserUnitDefinition { get; set; } = new LengthMeasureProperty<decimal>(Units.Meter, 1);
+        public static LengthMeasureProperty<int> PixelUnitDefinition { get; set; } = new LengthMeasureProperty<int>(Units.Meter, 1);
+        public enum Units { Meter, Foot, Inch, Square, UserUnit, Pixel }
+
+        private static Dictionary<Units, Func<Length, decimal>> Getters = new Dictionary<Units, Func<Length, decimal>>()
+        {
+            { Units.Meter, (m) => m.Meter },
+            { Units.Foot, (m) => m.Foot },
+            { Units.Inch, (m) => m.Inch },
+            { Units.Square, (m) => m.Square },
+            { Units.UserUnit, (m) => m.UserUnit },
+            { Units.Pixel, (m) => m.Pixel }
+        };
+        private static Dictionary<Units, Action<Length, decimal>> Setters = new Dictionary<Units, Action<Length, decimal>>()
+        {
+            { Units.Meter, (m,v) => m.Meter = v },
+            { Units.Foot, (m,v) => m.Foot = v },
+            { Units.Inch, (m,v) => m.Inch = v },
+            { Units.Square, (m,v) => m.Square = (int)v },
+            { Units.UserUnit, (m,v) => m.UserUnit = v },
+            { Units.Pixel, (m,v) => m.Pixel = (int)v }
+        };
 
         public static ImmutableDictionary<Units, string> ShortUnits { get; }
         static Length()
@@ -50,74 +81,32 @@ namespace DiegoG.Utilities
         [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public int Square
         {
-            get => (int)(Foot / Settings.Default.SquareSize);
-            set => Foot = value * Settings.Default.SquareSize;
+            get => (int)(this[SquareUnitDefinition.BaseUnit] * SquareUnitDefinition.ConversionValue);
+            set => this[SquareUnitDefinition.BaseUnit] = value / SquareUnitDefinition.ConversionValue;
+        }
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
+        public decimal UserUnit
+        {
+            get => this[UserUnitDefinition.BaseUnit] * UserUnitDefinition.ConversionValue;
+            set => this[UserUnitDefinition.BaseUnit] = value / UserUnitDefinition.ConversionValue;
+        }
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
+        public int Pixel
+        {
+            get => (int)(this[PixelUnitDefinition.BaseUnit] * PixelUnitDefinition.ConversionValue);
+            set => this[PixelUnitDefinition.BaseUnit] = value / PixelUnitDefinition.ConversionValue;
         }
 
         [JsonIgnore, IgnoreDataMember, XmlIgnore]
         public decimal this[Units index]
         {
-            get
-            {
-                switch (index)
-                {
-                    case Units.Meter:
-                        return Meter;
-                    case Units.Square:
-                        return Square;
-                    case Units.Foot:
-                        return Foot;
-                    case Units.Inch:
-                        return Inch;
-                    default:
-                        return Meter;
-                }
-            }
-            set
-            {
-                switch (index)
-                {
-                    case Units.Meter:
-                        Meter = value;
-                        break;
-                    case Units.Square:
-                        Square = (int)value;
-                        break;
-                    case Units.Foot:
-                        Foot = value;
-                        break;
-                    case Units.Inch:
-                        Inch = value;
-                        break;
-                    default:
-                        Meter = value;
-                        break;
-                }
-            }
+            get => Getters[index](this);
+            set => Setters[index](this, value);
         }
-        public Length()
-        {
-            Meter = 0;
-        }
-        public Length(decimal v, Units a)
-        {
-            switch (a)
-            {
-                case Units.Meter:
-                    Meter = v;
-                    break;
-                case Units.Inch:
-                    Inch = v;
-                    break;
-                case Units.Foot:
-                    Foot = v;
-                    break;
-                case Units.Square:
-                    Square = (int)v;
-                    break;
-            }
-        }
+        public Length() => Meter = 0;
+        public Length(decimal V, Units i) : this() => this[i] = V;
 
+        public override string ToString() => ToString(Units.Meter);
         public string ToString(Units unit) => $"{this[unit]}{ShortUnits[unit]}";
         public static bool operator >(Length A, Length B) => A.Meter > B.Meter;
         public static bool operator <(Length A, Length B) => A.Meter < B.Meter;
@@ -133,7 +122,6 @@ namespace DiegoG.Utilities
         public override bool Equals(object obj) => base.Equals(obj);
         public override int GetHashCode() => base.GetHashCode();
 
-        public static Length Zero => new Length(0, Units.Meter);
-
+        public static Length Zero => new Length(0M, Units.Meter);
     }
 }

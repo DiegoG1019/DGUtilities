@@ -5,42 +5,39 @@ using PrimitiveBuddy;
 using Serilog;
 using System;
 using System.Collections.Generic;
-using static MagicGame.Program;
 using DiegoG.Utilities;
+using DiegoG.Utilities.Enumerations;
 
 namespace DiegoG.MonoGame
 {
-    public partial class Camera //Camera.cs
+    public partial class Camera : IGameObjectDependant //Camera.cs
     {
+        public static Verbosity Verbosity { get; set; }
+        public class Layer
+        {
+            public float Base { get; set; }
+            public float Terrain { get; set; }
+            public float WorldObject { get; set; }
+            public float GUI { get; set; }
+            public float DebugText { get; set; }
+        }
+        
+        public Game Game { get; set; }
+        public GraphicsDeviceManager GraphicsManager { get; set; }
         public SpriteBatch SpriteBatch { get; set; }
         public Primitive Primitive { get; set; }
         private CameraPosition current { get; set; }
         private CameraPosition goal { get; set; }
         public Color? Tint { get; set; }
 
-        public CameraPosition Current
-        {
-            get
-            {
-                return current.InvertedPos();
-            }
-        }
-        public CameraPosition Goal
-        {
-            get
-            {
-                return goal.InvertedPos();
-            }
-        }
+        public Layer Layers { get; set; }
 
-        public MouseState GetRelativeMouseState()
-        {
-            return GetRelativeMouseState(Program.GameObject.Window);
-        }
 
+        public CameraPosition Current => current.InvertedPos();
+        public CameraPosition Goal => goal.InvertedPos();
+        public MouseState GetRelativeMouseState() => GetRelativeMouseState(Game.Window);
         public MouseState GetRelativeMouseState(GameWindow gameWindow)
         {
-
             float curx = current.Position.X, cury = current.Position.Y;
 
             MouseState newms = Mouse.GetState(gameWindow);
@@ -59,82 +56,54 @@ namespace DiegoG.MonoGame
 
         }
 
-        public Camera()
+        public Camera(Game game, GraphicsDeviceManager graphicsDeviceManager)
         {
-            GraphicsDevice gd = Program.GameObject.GraphicsDevice;
+            Game = game;
+            GraphicsManager = graphicsDeviceManager;
 
             current = new CameraPosition(new Vector2(0, 0), 0, 1f);
             goal = new CameraPosition(new Vector2(0, 0), 0, 1f);
 
-            SpriteBatch = new SpriteBatch(Program.GameObject.GraphicsDevice);
+            SpriteBatch = new SpriteBatch(Game.GraphicsDevice);
 
-            Program.GameObject.KeyboardStateChanged += new MagicGameClass.KeyboardInput(KeyboardInput);
-            Primitive = new Primitive(GameObject.GraphicsDevice, SpriteBatch);
+            InputEvents.InputChanged.KeyboardStateChanged += KeyboardInput;
+            Primitive = new Primitive(Game.GraphicsDevice, SpriteBatch);
 
             //TEST CODE
             SetInputReaction();
 
         }
 
-        public void Move(float X, float Y)
-        {
-            Move(new Vector2(X, Y));
-        }
-        public void Move(Vector2 pos)
-        {
-            goal.Position += pos;
-        }
-
-        public void Set(float X, float Y)
-        {
-            Set(new Vector2(X, Y));
-        }
-        public void Set(Vector2 pos)
-        {
-            goal.Position = pos;
-        }
-
-        public void Rotate(float r)
-        {
-            goal.Rotation += r;
-        }
-
-        public void SetRotation(float r)
-        {
-            goal.Rotation = r;
-        }
-
-        public void Zoom(float z)
-        {
-            SetZoom(goal.ZoomLevel + z);
-        }
-        public void SetZoom(float z)
-        {
-            goal.ZoomLevel = new CFloat(z, goal.ZoomLevel.UpperLimit, goal.ZoomLevel.LowerLimit);
-        }
-
-        public bool isLocked { get; private set; }
+        public void Move(float X, float Y) => Move(new Vector2(X, Y));
+        public void Move(Vector2 pos) => goal.Position += pos;
+        public void Set(float X, float Y) => Set(new Vector2(X, Y));
+        public void Set(Vector2 pos) => goal.Position = pos;
+        public void Rotate(float r) => goal.Rotation += r;
+        public void SetRotation(float r) => goal.Rotation = r;
+        public void Zoom(float z) => SetZoom(goal.ZoomLevel + z);
+        public void SetZoom(float z) => goal.ZoomLevel = new CFloat(z, goal.ZoomLevel.UpperLimit, goal.ZoomLevel.LowerLimit);
+        public bool IsLocked { get; private set; }
         public IGameLiveObject LockedTo { get; private set; }
         public void LockTo(IGameLiveObject obj)
         {
-            isLocked = true;
+            IsLocked = true;
             LockedTo = obj;
         }
         public void ReleaseLock()
         {
-            isLocked = false;
+            IsLocked = false;
             LockedTo = null;
         }
 
         public void Update(GameTime gt)
         {
 
-            if (isLocked)
+            if (IsLocked)
             {
-                var a = (w: GameObject.GraphicsManager.PreferredBackBufferWidth, h: GameObject.GraphicsManager.PreferredBackBufferHeight);
+                var a = (w: GraphicsManager.PreferredBackBufferWidth, h: GraphicsManager.PreferredBackBufferHeight);
                 goal.Position = new Vector2(
-                    (-LockedTo.Position.X.Pixels) + (a.w / 2),
-                    (-LockedTo.Position.Y.Pixels) + (a.h / 2)
+                    (-LockedTo.Position.X.Pixel) + (a.w / 2),
+                    (-LockedTo.Position.Y.Pixel) + (a.h / 2)
                 );
             }
 
@@ -156,7 +125,7 @@ namespace DiegoG.MonoGame
         {
             try
             {
-                Color newcolor = (Tint != null ? UtilMath.TintColor(c.Color, (Color)Tint) : c.Color);
+                Color newcolor = (Tint != null ? Other.TintColor(c.Color, (Color)Tint) : c.Color);
                 Vector2 pos = c.Position.ToVector2(Length.Units.Pixel) + current.Position;
                 float depth = c.LayerDepth + (pos.Y / 10000);
 
@@ -183,33 +152,29 @@ namespace DiegoG.MonoGame
         }
 
         public void DrawString(string fontname, string text, Vector2 position, Color color, Vector2 origin, float rotation = 0, float scale = 1, SpriteEffects fx = SpriteEffects.None, float layer = 0)
-        {
-            DrawString(Assets.GetSpriteFont(fontname), text, position, color, origin, rotation, scale, fx, layer);
-        }
+            => DrawString(Assets.GetSpriteFont(fontname), text, position, color, origin, rotation, scale, fx, layer);
         public void DrawString(SpriteFont font, string text, Vector2 position, Color color, Vector2 origin, float rotation = 0, float scale = 1, SpriteEffects fx = SpriteEffects.None, float layer = 0)
         {
             if(font == null)
-            {
                 font = Assets.GetSpriteFont("Default");
-            }
             SpriteBatch.DrawString(font, text, position + current.Position, color, rotation + current.Rotation, origin, scale + current.ZoomLevel, fx, layer);
         }
 
         private int DebugPrint_lines = 0;
         public void DebugPrint(string s)
         {
-            if (Configurations.System.Debug)
+            if (Verbosity == (Verbosity.Debug | Verbosity.Verbose))
             {
-                SpriteBatch.DrawString(Assets.GetSpriteFont("DebugFont"), s, new Vector2(5, 15 * DebugPrint_lines + 5), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, Layer.DebugText);
+                SpriteBatch.DrawString(Assets.GetSpriteFont("DebugFont"), s, new Vector2(5, 15 * DebugPrint_lines + 5), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, Layers.DebugText);
                 DebugPrint_lines += s.Split('\n').Length + 1;
             }
         }
 
         public void VerbosePrint(string s)
         {
-            if (Configurations.System.Verbose)
+            if (Verbosity == Verbosity.Verbose)
             {
-                SpriteBatch.DrawString(Assets.GetSpriteFont("DebugFont"), s, new Vector2(5, 15 * DebugPrint_lines + 5), Color.Crimson, 0, Vector2.Zero, 1, SpriteEffects.None, Layer.DebugText);
+                SpriteBatch.DrawString(Assets.GetSpriteFont("DebugFont"), s, new Vector2(5, 15 * DebugPrint_lines + 5), Color.Crimson, 0, Vector2.Zero, 1, SpriteEffects.None, Layers.DebugText);
                 DebugPrint_lines += s.Split('\n').Length + 1;
             }
         }
@@ -221,20 +186,14 @@ namespace DiegoG.MonoGame
         /// <param name="position"></param>
         /// <param name="radius"></param>
         /// <param name="color"></param>
-        public void DrawShape(Vector2 position, float radius, Color color)
-        {
-            Primitive.Circle(position + current.Position, radius, color);
-        }
+        public void DrawShape(Vector2 position, float radius, Color color) => Primitive.Circle(position + current.Position, radius, color);
         /// <summary>
         /// Draw Line
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <param name="color"></param>
-        public void DrawShape(Vector2 start, Vector2 end, Color color)
-        {
-            Primitive.Line(start + current.Position, end + current.Position, color);
-        }
+        public void DrawShape(Vector2 start, Vector2 end, Color color) => Primitive.Line(start + current.Position, end + current.Position, color);
         /// <summary>
         /// Draw Pie
         /// </summary>
@@ -244,18 +203,13 @@ namespace DiegoG.MonoGame
         /// <param name="sweepAngle"></param>
         /// <param name="color"></param>
         public void DrawShape(Vector2 position, float radius, float startAngle, float sweepAngle, Color color)
-        {
-            Primitive.Pie(position + current.Position, radius, startAngle, sweepAngle, color);
-        }
+            => Primitive.Pie(position + current.Position, radius, startAngle, sweepAngle, color);
         /// <summary>
         /// Draw Point
         /// </summary>
         /// <param name="position"></param>
         /// <param name="color"></param>
-        public void DrawShape(Vector2 position, Color color)
-        {
-            Primitive.Point(position + current.Position, color);
-        }
+        public void DrawShape(Vector2 position, Color color) => Primitive.Point(position + current.Position, color);
         /// <summary>
         /// Draw Rectangle
         /// </summary>
@@ -280,9 +234,7 @@ namespace DiegoG.MonoGame
         /// <param name="amplitude"></param>
         /// <param name="color"></param>
         public void DrawShape(Vector2 start, Vector2 end, float frequency, float amplitude, Color color)
-        {
-            Primitive.SineWave(start + current.Position, end + current.Position, frequency, amplitude, color);
-        }
+            => Primitive.SineWave(start + current.Position, end + current.Position, frequency, amplitude, color);
 
         //TEST-CODE
         Dictionary<Keys, Vector2> InputReaction;
@@ -303,12 +255,10 @@ namespace DiegoG.MonoGame
                 foreach (Keys k in ksnow.GetPressedKeys())
                 {
                     if (InputReaction.ContainsKey(k))
-                    {
                         Move(InputReaction[k]);
-                    }
                     if (k == Keys.L)
                     {
-                        if (isLocked)
+                        if (IsLocked)
                         {
                             Log.Verbose("Releasing Camera");
                             ReleaseLock();
@@ -319,6 +269,5 @@ namespace DiegoG.MonoGame
                 }
             }
         }
-
     }
 }

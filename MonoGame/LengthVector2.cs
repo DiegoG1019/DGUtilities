@@ -1,5 +1,7 @@
 ﻿using DiegoG.Utilities;
 using Microsoft.Xna.Framework;
+using System;
+using static DiegoG.Utilities.Other;
 
 namespace DiegoG.MonoGame
 {
@@ -8,86 +10,57 @@ namespace DiegoG.MonoGame
         public Length X { get; set; }
         public Length Y { get; set; }
 
-        public Vector2 ToVector2()
-        {
-            return ToVector2(Length.Units.Meter);
-        }
-        public Vector2 ToVector2(Length.Units unit)
-        {
-            return new Vector2(X.GetValue(unit), Y.GetValue(unit));
-        }
-
+        public Vector2 ToVector2() => ToVector2(Length.Units.Meter);
+        public Vector2 ToVector2(Length.Units unit) => new Vector2((float)X[unit], (float)Y[unit]);
         public static LengthVector2 operator +(LengthVector2 a, LengthVector2 b)
         {
             return new LengthVector2(
-                new Length(a.X.Meters + b.X.Meters, Length.Units.Meter),
-                new Length(a.Y.Meters + b.Y.Meters, Length.Units.Meter)
+                new Length(a.X.Meter + b.X.Meter, Length.Units.Meter),
+                new Length(a.Y.Meter + b.Y.Meter, Length.Units.Meter)
                 );
         }
         public static LengthVector2 operator -(LengthVector2 a, LengthVector2 b)
         {
             return new LengthVector2(
-                new Length(a.X.Meters - b.X.Meters, Length.Units.Meter),
-                new Length(a.Y.Meters - b.Y.Meters, Length.Units.Meter)
+                new Length(a.X.Meter - b.X.Meter, Length.Units.Meter),
+                new Length(a.Y.Meter - b.Y.Meter, Length.Units.Meter)
                 );
         }
         public static LengthVector2 operator -(LengthVector2 a)
         {
             return new LengthVector2(
-                new Length(-a.X.Meters, Length.Units.Meter),
-                new Length(-a.Y.Meters, Length.Units.Meter)
+                new Length(-a.X.Meter, Length.Units.Meter),
+                new Length(-a.Y.Meter, Length.Units.Meter)
                 );
         }
 
         public LengthVector2(Vector2 v, Length.Units unit) :
-            this(new Length(v.X, unit), new Length(v.Y, unit))
+            this(new Length((decimal)v.X, unit), new Length((decimal)v.Y, unit))
         { }
         public LengthVector2(float x, float y, Length.Units unit) :
-            this(new Length(x, unit), new Length(y, unit))
+            this(new Length((decimal)x, unit), new Length((decimal)y, unit))
         { }
         public LengthVector2(Length value) :
             this(value, value)
         { }
-        public LengthVector2(Length x, Length y) :
-            this()
+        public LengthVector2(Length x, Length y)
         {
             X = x;
             Y = y;
         }
 
-        public static readonly LengthVector2 Zero = new LengthVector2(0f, 0f);
+        public static readonly LengthVector2 Zero = new LengthVector2(0f, 0f, Length.Units.Meter);
 
-        public static LengthVector2 Clamp(LengthVector2 v, Length max, Length min)
+        public static void Clamp(LengthVector2 v, Length max, Length min)
         {
-            var newv = (x: v.X, y: v.Y);
-
-            if (v.X > max)
-            {
-                newv.x = max;
-            }
-            else
-            {
-                if (v.X < min)
-                {
-                    newv.x = min;
-                }
-            }
-
-            if (v.Y > max)
-            {
-                newv.y = max;
-            }
-            else
-            {
-                if (v.Y < min)
-                {
-                    newv.y = min;
-                }
-            }
-
-            return new LengthVector2(newv.x, newv.y);
-
+            v.X.Meter = CapNumber(v.X.Meter, min.Meter, max.Meter);
+            v.Y.Meter = CapNumber(v.Y.Meter, min.Meter, max.Meter);
         }
 
+        internal static void Clamp(LengthVector2 v, float max, float min)
+        {
+            v.X.Meter = CapNumber(v.X.Meter, (decimal)min, (decimal)max);
+            v.Y.Meter = CapNumber(v.Y.Meter, (decimal)min, (decimal)max);
+        }
     }
 }

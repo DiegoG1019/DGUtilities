@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Linq;
+using static DiegoG.MonoGame.LoadedLists;
 using static DiegoG.Utilities.DiegoGMath;
 
 namespace DiegoG.MonoGame
 {
     public class ID
     {
-        public bool Active { get; set; }
-        public object Holder { get; set; }
+        public bool Active { get; private set; }
+        public object Holder { get; private set; }
         public Type HolderType => Holder.GetType();
+        public ILoadedList HolderList { get; private set; }
         public int Value { get; set; }
-
         public IntFormat Format { get; set; }
 
         public static implicit operator string(ID i) => $"{i.HolderType.Name}_{FormatInt(i.Value, i.Format)}";
@@ -21,78 +22,42 @@ namespace DiegoG.MonoGame
         public override int GetHashCode() => base.GetHashCode();
         public override bool Equals(object obj) => base.Equals(obj);
         public override string ToString() => this;
+        public string ToString(IntFormat format) => $"{HolderType.Name}_{FormatInt(Value, format)}";
+        public void Activate(object holder, ILoadedList list)
+        {
+            HolderList = list;
+            Holder = holder;
+            Active = true;
+        }
+        public void Deactivate()
+        {
+            HolderList = null;
+            Holder = null;
+            Active = false;
+        }
         public bool GetHolder<T>(out T holder) where T : class, IDynamic
         {
             if (typeof(T) != HolderType)
                 throw new ArgumentException("Cannot request a holder type different from this ID's");
-            if (Active)
-                holder = (T)Holder ?? ;
+            holder = (T)Holder;
+            return Active;
         }
 
-        public ID(int v, object holder) :
-            this(v, holder, IntFormat.Hexadecimal)
+        public ID(int v) :
+            this(v, IntFormat.Hexadecimal)
         { }
-        public ID(int v, Type holder) :
-            this(v, holder, IntFormat.Hexadecimal)
-        { }
-        public ID(int v, object holder, IntFormat sf) :
-            this(v, holder.GetType(), sf)
-        { }
-        public ID(int v, Type holder, IntFormat sf)
+        public ID(int v, IntFormat sf)
         {
-            HolderType = holder;
             Value = v;
             Format = sf;
-            Active = true;
+            Active = false;
         }
 
-        public string Decimal
-        {
-            get
-            {
-                Format = IntFormat.Decimal;
-                return this;
-            }
-        }
-        public string Binary
-        {
-            get
-            {
-                Format = IntFormat.Binary;
-                return this;
-            }
-        }
-        public string Hexadecimal
-        {
-            get
-            {
-                Format = IntFormat.Hexadecimal;
-                return this;
-            }
-        }
-        public string Hexavigesimal
-        {
-            get
-            {
-                Format = IntFormat.Hexavigesimal;
-                return this;
-            }
-        }
-        public string Octal
-        {
-            get
-            {
-                Format = IntFormat.Octal;
-                return this;
-            }
-        }
-        public string Sexagesimal
-        {
-            get
-            {
-                Format = IntFormat.Sexagesimal;
-                return this;
-            }
-        }
+        public string Decimal => ToString(IntFormat.Decimal);
+        public string Binary => ToString(IntFormat.Binary);
+        public string Hexadecimal => ToString(IntFormat.Hexadecimal);
+        public string Hexavigesimal => ToString(IntFormat.Hexavigesimal);
+        public string Octal => ToString(IntFormat.Octal);
+        public string Sexagesimal => ToString(IntFormat.Sexagesimal);
     }
 }

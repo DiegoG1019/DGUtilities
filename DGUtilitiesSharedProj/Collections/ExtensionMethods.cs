@@ -5,6 +5,16 @@ namespace DiegoG.Utilities.Collections
 {
     public static class ExtensionMethods
     {
+
+        public static bool TryDequeue<T>(this Queue<T> queue, out T item)
+        {
+            var test = queue.Count > 0;
+            item = default;
+            if (test)
+                item = queue.Dequeue();
+            return test;
+        }
+
         ///<summary>Finds the index of the first item matching an expression in an enumerable.</summary>
         ///<param name="items">The enumerable to search.</param>
         ///<param name="predicate">The expression to test the items against.</param>

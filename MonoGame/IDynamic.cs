@@ -10,6 +10,5 @@ namespace DiegoG.MonoGame
     {
         ID ID { get; set; }
         void Destroy();
-        event Action<object> IDChanged;
     }
 }

@@ -9,9 +9,10 @@ namespace DiegoG.MonoGame
 {
     public static partial class Assets
     {
+        public static Game Game { get; set; }
         private abstract class Manager<T, TMA> where T : ControlledAsset<TMA>, IDynamic where TMA : class
         {
-            public Loaded.LoadedList<ControlledAsset<TMA>> LoadedAssets = new Loaded.LoadedList<ControlledAsset<TMA>>("LoadedAssets");
+            public LoadedLists.LoadedList<ControlledAsset<TMA>> LoadedAssets = new LoadedLists.LoadedList<ControlledAsset<TMA>>("LoadedAssets");
             Dictionary<string, ID> IDs = new Dictionary<string, ID>();
 
             protected abstract ControlledAsset<TMA> CreateManagedAsset(string filename);
@@ -19,20 +20,16 @@ namespace DiegoG.MonoGame
 
             public void Update(GameTime gt)
             {
-                foreach (ID id in LoadedAssets)
-                {
-                    LoadedAssets[id].Update(gt);
-                }
+                foreach (var id in LoadedAssets)
+                    id.Value.Update(gt);
             }
 
             public TMA Get(string filename)
             {
                 if (IDs.ContainsKey(filename))
-                {
                     goto ReturnAsset;
-                }
                 ControlledAsset<TMA> newmanagedasset = CreateManagedAsset(Path.Combine(BaseDirectory, filename)); //new ManagedAsset<T>(Program.Game.Content.Load<T>(filename), filename);
-                newmanagedasset.SetID(LoadedAssets.Add(newmanagedasset));
+                LoadedAssets.Add(newmanagedasset);
                 IDs.Add(filename, newmanagedasset.ID);
 
                 ReturnAsset:;
@@ -52,65 +49,33 @@ namespace DiegoG.MonoGame
         private class Texture2DManager : Manager<ControlledTexture2D, Texture2D>
         {
             const string _basedir = "Textures";
-            public override string BaseDirectory
-            {
-                get
-                {
-                    return _basedir;
-                }
-            }
+            public override string BaseDirectory => _basedir;
             protected override ControlledAsset<Texture2D> CreateManagedAsset(string filename)
-            {
-                return new ControlledTexture2D(Program.GameObject.Content.Load<Texture2D>(filename), filename);
-            }
+                => new ControlledTexture2D(Game.Content.Load<Texture2D>(filename), filename);
         }
 
         private class SpriteFontManager : Manager<ControlledSpriteFont, SpriteFont>
         {
             const string _basedir = "Fonts";
-            public override string BaseDirectory
-            {
-                get
-                {
-                    return _basedir;
-                }
-            }
+            public override string BaseDirectory => _basedir;
             protected override ControlledAsset<SpriteFont> CreateManagedAsset(string filename)
-            {
-                return new ControlledSpriteFont(Program.GameObject.Content.Load<SpriteFont>(filename), filename);
-            }
+                => new ControlledSpriteFont(Game.Content.Load<SpriteFont>(filename), filename);
         }
 
         private class SongManager : Manager<ControlledSong, Song>
         {
             const string _basedir = "Songs";
-            public override string BaseDirectory
-            {
-                get
-                {
-                    return _basedir;
-                }
-            }
+            public override string BaseDirectory => _basedir;
             protected override ControlledAsset<Song> CreateManagedAsset(string filename)
-            {
-                return new ControlledSong(Program.GameObject.Content.Load<Song>(filename), filename);
-            }
+                => new ControlledSong(Game.Content.Load<Song>(filename), filename);
         }
 
         private class SoundEffectManager : Manager<ControlledSoundEffect, SoundEffect>
         {
             const string _basedir = "SoundEffects";
-            public override string BaseDirectory
-            {
-                get
-                {
-                    return _basedir;
-                }
-            }
+            public override string BaseDirectory => _basedir;
             protected override ControlledAsset<SoundEffect> CreateManagedAsset(string filename)
-            {
-                return new ControlledSoundEffect(Program.GameObject.Content.Load<SoundEffect>(filename), filename);
-            }
+                => new ControlledSoundEffect(Game.Content.Load<SoundEffect>(filename), filename);
         }
 
     }

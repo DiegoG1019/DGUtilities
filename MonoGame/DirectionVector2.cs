@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DiegoG.Utilities.Enumerations;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Serilog;
 using System;
@@ -8,31 +9,24 @@ namespace DiegoG.MonoGame
 {
     public static class DirectionVector2
     {
+
+        private static Dictionary<string, Vector2> DirectionDict = new Dictionary<string, Vector2>()
+        {
+            { "up", Up },
+            { "down", Down },
+            { "left", Left },
+            { "right", Right },
+            { "upright", UpRight },
+            { "upleft", UpLeft },
+            { "downright", DownRight },
+            { "downleft", DownLeft }
+        };
+
         public static Vector2 GetDirection(string i)
         {
-
-            switch (i.ToLower())
-            {
-                case "up":
-                    return Up;
-                case "down":
-                    return Down;
-                case "left":
-                    return Left;
-                case "right":
-                    return Right;
-                case "upright":
-                    return UpRight;
-                case "upleft":
-                    return UpLeft;
-                case "downright":
-                    return DownRight;
-                case "downleft":
-                    return DownLeft;
-            }
-
+            if (DirectionDict.ContainsKey(i))
+                return DirectionDict[i];
             throw new InvalidOperationException("Invalid Direction");
-
         }
 
         public static readonly Dictionary<Keys, Vector2> StandardControls = new Dictionary<Keys, Vector2>()
@@ -45,7 +39,17 @@ namespace DiegoG.MonoGame
 
         public static readonly Dictionary<Vector2, Directions> ByVector2 = new Dictionary<Vector2, Directions>();
 
-        public static readonly Dictionary<Directions, Vector2> ByDirections;
+        public static readonly Dictionary<Directions, Vector2> ByDirections = new Dictionary<Directions, Vector2>()
+        {
+            {  Directions.Up, Up },
+            {  Directions.Down, Down },
+            {  Directions.Left, Left },
+            {  Directions.Right, Right },
+            {  Directions.UpRight, UpRight },
+            {  Directions.UpLeft, UpLeft },
+            {  Directions.DownRight, DownRight },
+            {  Directions.DownLeft, DownLeft }
+        };
 
         public static readonly Vector2 Up;
         public static readonly Vector2 Down;
@@ -71,24 +75,11 @@ namespace DiegoG.MonoGame
             DownRight = Down + Right;
             DownLeft = Down + Left;
 
-            ByDirections = new Dictionary<Directions, Vector2>()
-            {
-                {  Directions.Up, Up },
-                {  Directions.Down, Down },
-                {  Directions.Left, Left },
-                {  Directions.Right, Right },
-                {  Directions.UpRight, UpRight },
-                {  Directions.UpLeft, UpLeft },
-                {  Directions.DownRight, DownRight },
-                {  Directions.DownLeft, DownLeft }
-            };
-
             foreach (KeyValuePair<Directions, Vector2> kv in ByDirections)
             {
                 Log.Verbose($"Key: {kv.Value}, Value: {kv.Key}");
                 ByVector2.Add(kv.Value, kv.Key);
             }
         }
-
     }
 }

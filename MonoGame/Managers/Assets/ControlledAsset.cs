@@ -9,51 +9,22 @@ namespace DiegoG.MonoGame
 {
     public static partial class Assets
     {
-
         public struct ManagedTexture2D
         {
             public string Filename { get; private set; }
 
-            public Texture2D Texture2D
-            {
-                get
-                {
-                    return Assets.Texture2D.Get(Filename);
-                }
-            }
+            public Texture2D Texture2D => Assets.Texture2D.Get(Filename);
 
-            public static implicit operator Texture2D(ManagedTexture2D v)
-            {
-                return v.Texture2D;
-            }
-
-            public ManagedTexture2D(string filename)
-            {
-                Filename = filename;
-            }
+            public static implicit operator Texture2D(ManagedTexture2D v) => v.Texture2D;
+            public ManagedTexture2D(string filename) => Filename = filename;
         }
 
         public struct ManagedSpriteFont
         {
             public string Filename { get; private set; }
-            public SpriteFont SpriteFont
-            {
-                get
-                {
-                    return Assets.SpriteFont.Get(Filename);
-                }
-            }
-
-            public static implicit operator SpriteFont(ManagedSpriteFont v)
-            {
-                return v.SpriteFont;
-            }
-
-            public ManagedSpriteFont(string filename)
-            {
-                Filename = filename;
-            }
-
+            public SpriteFont SpriteFont => Assets.SpriteFont.Get(Filename);
+            public static implicit operator SpriteFont(ManagedSpriteFont v) => v.SpriteFont;
+            public ManagedSpriteFont(string filename) => Filename = filename;
         }
 
         public struct ManagedSoundEffect
@@ -68,10 +39,7 @@ namespace DiegoG.MonoGame
                     return _fxinstance;
                 }
             }
-            public static implicit operator SoundEffectInstance(ManagedSoundEffect v)
-            {
-                return v.Instance;
-            }
+            public static implicit operator SoundEffectInstance(ManagedSoundEffect v) => v.Instance;
             public ManagedSoundEffect(string filename)
             {
                 Filename = filename;
@@ -82,24 +50,10 @@ namespace DiegoG.MonoGame
         public struct ManagedSong
         {
             public string Filename { get; private set; }
-            public Song Song
-            {
-                get
-                {
-                    return Assets.Song.Get(Filename);
-                }
-            }
+            public Song Song => Assets.Song.Get(Filename);
 
-            public static implicit operator Song(ManagedSong v)
-            {
-                return v.Song;
-            }
-
-            public ManagedSong(string filename)
-            {
-                Filename = filename;
-            }
-
+            public static implicit operator Song(ManagedSong v) => v.Song;
+            public ManagedSong(string filename) => Filename = filename;
         }
 
         private abstract class ControlledAsset<T> : IDynamic
@@ -113,10 +67,7 @@ namespace DiegoG.MonoGame
                     UnusedTime = TimeSpan.Zero;
                     return _asset;
                 }
-                set
-                {
-                    _asset = value;
-                }
+                set => _asset = value;
             }
             public string FileName { get; set; }
             public TimeSpan UnusedTime { get; set; }
@@ -128,14 +79,10 @@ namespace DiegoG.MonoGame
             {
                 UnusedTime += gt.ElapsedGameTime;
                 if (UnusedTime >= LifeSpan)
-                {
                     Destroy();
-                }
             }
 
             public abstract void Destroy();
-
-            public abstract void SetID(ID id);
 
             public ControlledAsset(T asset, string filename)
             {
@@ -153,12 +100,6 @@ namespace DiegoG.MonoGame
             {
                 Texture2D.Unload(FileName);
             }
-
-            public override void SetID(ID id)
-            {
-                ID = new ID(id, this, Texture2D.LoadedAssets);
-            }
-
             public ControlledTexture2D(Texture2D asset, string filename) :
                 base(asset, filename)
             { }
@@ -170,12 +111,6 @@ namespace DiegoG.MonoGame
             {
                 SpriteFont.Unload(FileName);
             }
-
-            public override void SetID(ID id)
-            {
-                ID = new ID(id, this, SpriteFont.LoadedAssets);
-            }
-
             public ControlledSpriteFont(SpriteFont asset, string filename) :
                 base(asset, filename)
             { }
@@ -187,11 +122,6 @@ namespace DiegoG.MonoGame
             {
                 SoundEffect.Unload(FileName);
             }
-            public override void SetID(ID id)
-            {
-                ID = new ID(id, this, SoundEffect.LoadedAssets);
-            }
-
             public ControlledSoundEffect(SoundEffect asset, string filename) :
                 base(asset, filename)
             { }
@@ -203,12 +133,6 @@ namespace DiegoG.MonoGame
             {
                 Song.Unload(FileName);
             }
-
-            public override void SetID(ID id)
-            {
-                ID = new ID(id, this, Song.LoadedAssets);
-            }
-
             public ControlledSong(Song asset, string filename) :
                 base(asset, filename)
             { }

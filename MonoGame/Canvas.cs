@@ -1,39 +1,45 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DiegoG.Utilities;
+using DiegoG.Utilities.Enumerations;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace MagicGame
+namespace DiegoG.MonoGame
 {
-    using static Program;
-    public class Canvas : IDisposable
+    public class Canvas : IDisposable, IGameObjectDependant
     {
+        public static Verbosity Verbosity { get; set; }
 
         public RenderTarget2D RenderTarget { get; set; }
         public SpriteBatch SpriteBatch { get; set; }
         public Rectangle Dimensions { get; set; }
+        public Game Game { get; set; }
+        public GraphicsDeviceManager GraphicsManager { get; set; }
 
         private int DebugPrint_lines = 0;
 
-        public Canvas(int width, int height)
+        public Canvas(int width, int height, Game game, GraphicsDeviceManager graphicsDeviceManager)
         {
-            RenderTarget = new RenderTarget2D(GameObject.GraphicsDevice, width, height);
+            GraphicsManager = graphicsDeviceManager;
+            Game = game;
+            RenderTarget = new RenderTarget2D(game.GraphicsDevice, width, height);
             Dimensions = new Rectangle(0, 0, width, height);
         }
 
         private void _header()
         {
-            GameObject.GraphicsDevice.SetRenderTarget(RenderTarget);
+            Game.GraphicsDevice.SetRenderTarget(RenderTarget);
             SpriteBatch.Begin();
         }
         private void _footer()
         {
             SpriteBatch.End();
-            GameObject.GraphicsDevice.SetRenderTarget(null);
+            Game.GraphicsDevice.SetRenderTarget(null);
         }
 
         public void Clear()
         {
-            GameObject.GraphicsDevice.Clear(Color.Transparent);
+            Game.GraphicsDevice.Clear(Color.Transparent);
             DebugPrint_lines = 0;
         }
 
@@ -52,10 +58,7 @@ namespace MagicGame
             //
 
             if (clear)
-            {
                 Clear();
-            }
-
             if (c.DestinationRectangle != null)
             {
                 Rectangle desrec = (Rectangle)c.DestinationRectangle;
@@ -69,12 +72,12 @@ namespace MagicGame
 
             enddraw:;
 
-            if (Configurations.System.Debug && (debug != null || debug != ""))
+            if (Verbosity == (Verbosity.Debug | Verbosity.Verbose) && (debug != null || debug != ""))
             {
                 SpriteBatch.DrawString(Assets.GetSpriteFont("Default"), debug, new Vector2(5, 15 * DebugPrint_lines + 5), Color.Black);
                 DebugPrint_lines++;
             }
-            if (Configurations.System.Verbose && (verbose != null || verbose != ""))
+            if (Verbosity == Verbosity.Verbose && (verbose != null || verbose != ""))
             {
                 SpriteBatch.DrawString(Assets.GetSpriteFont("Default"), verbose, new Vector2(5, 15 * DebugPrint_lines + 5), Color.Red);
                 DebugPrint_lines++;
@@ -90,10 +93,7 @@ namespace MagicGame
             RenderTarget.Dispose();
         }
 
-        public static implicit operator RenderTarget2D(Canvas c)
-        {
-            return c.RenderTarget;
-        }
+        public static implicit operator RenderTarget2D(Canvas c) => c.RenderTarget;
 
     }
 }

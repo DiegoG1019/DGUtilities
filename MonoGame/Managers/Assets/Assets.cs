@@ -13,26 +13,14 @@ namespace DiegoG.MonoGame
         private static readonly SoundEffectManager SoundEffect;
         private static readonly SongManager Song;
 
-        public static Texture2D GetTexture2D(string filename)
-        {
-            return Texture2D.Get(filename);
-        }
         public static string DirectoryTexture2D => Texture2D.BaseDirectory;
-        public static SpriteFont GetSpriteFont(string filename)
-        {
-            return SpriteFont.Get(filename);
-        }
         public static string DirectorySpriteFont => SpriteFont.BaseDirectory;
-        public static SoundEffect GetSoundEffect(string filename)
-        {
-            return SoundEffect.Get(filename);
-        }
         public static string DirectorySoundEffect => SoundEffect.BaseDirectory;
-        public static Song GetSong(string filename)
-        {
-            return Song.Get(filename);
-        }
         public static string DirectorySong => Song.BaseDirectory;
+        public static Texture2D GetTexture2D(string filename) => Texture2D.Get(filename);
+        public static SpriteFont GetSpriteFont(string filename) => SpriteFont.Get(filename);
+        public static SoundEffect GetSoundEffect(string filename) => SoundEffect.Get(filename);
+        public static Song GetSong(string filename) => Song.Get(filename);
 
         public static void Update(GameTime gt)
         {
