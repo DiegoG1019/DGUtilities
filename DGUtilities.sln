@@ -5,22 +5,26 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Common", "DGUtilitiesSharedProj\Common.shproj", "{E7813EE5-9C23-4B9C-9C93-38A04843F197}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DGUtilitiesLibrary", "DGUtilitiesLibrary\DGUtilitiesLibrary.csproj", "{C0280483-3812-4A61-AE54-467556642C8F}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SQLite", "SQLite\SQLite.shproj", "{8936620C-E989-4BD1-9755-AC826D968632}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Security", "Security\Security.shproj", "{273C9191-591D-4EC2-9AA6-8F5FA2387F48}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MonoGame", "MonoGame\MonoGame.shproj", "{0FA075E6-256E-4343-84FD-7AD313E84D35}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "CLI", "CLI\CLI.shproj", "{45A44C72-8FC7-4443-8492-8F38A0DFDC68}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WPF", "WPF\WPF.shproj", "{B341D789-0D1A-412F-AD2E-3D33620A71C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiegoG.Utilities.Common", "DiegoG.Utilities.Common\DiegoG.Utilities.Common.csproj", "{2E771D26-17A9-48FA-9CC5-0DFB31FACD7A}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		MonoGame\MonoGame.projitems*{0fa075e6-256e-4343-84fd-7ad313e84d35}*SharedItemsImports = 13
 		Security\Security.projitems*{273c9191-591d-4ec2-9aa6-8f5fa2387f48}*SharedItemsImports = 13
+		DGUtilitiesSharedProj\DGUtilitiesSharedProj.projitems*{2e771d26-17a9-48fa-9cc5-0dfb31facd7a}*SharedItemsImports = 5
+		CLI\CLI.projitems*{45a44c72-8fc7-4443-8492-8f38a0dfdc68}*SharedItemsImports = 13
 		SQLite\SQLite.projitems*{8936620c-e989-4bd1-9755-ac826d968632}*SharedItemsImports = 13
-		DGUtilitiesSharedProj\DGUtilitiesSharedProj.projitems*{c0280483-3812-4a61-ae54-467556642c8f}*SharedItemsImports = 5
-		Security\Security.projitems*{c0280483-3812-4a61-ae54-467556642c8f}*SharedItemsImports = 5
-		SQLite\SQLite.projitems*{c0280483-3812-4a61-ae54-467556642c8f}*SharedItemsImports = 5
+		WPF\WPF.projitems*{b341d789-0d1a-412f-ad2e-3d33620a71c3}*SharedItemsImports = 13
 		DGUtilitiesSharedProj\DGUtilitiesSharedProj.projitems*{e7813ee5-9c23-4b9c-9c93-38a04843f197}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,10 +32,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C0280483-3812-4A61-AE54-467556642C8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C0280483-3812-4A61-AE54-467556642C8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C0280483-3812-4A61-AE54-467556642C8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C0280483-3812-4A61-AE54-467556642C8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E771D26-17A9-48FA-9CC5-0DFB31FACD7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E771D26-17A9-48FA-9CC5-0DFB31FACD7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E771D26-17A9-48FA-9CC5-0DFB31FACD7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E771D26-17A9-48FA-9CC5-0DFB31FACD7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

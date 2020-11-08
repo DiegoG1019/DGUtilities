@@ -12,12 +12,7 @@ namespace DiegoG.MonoGame
 {
 	public static class LoadedLists
 	{
-		public interface ILoadedList<T> : IEnumerablePair<ID, T> where T : IDynamic
-		{
-			T this[ID index] { get; }
-			string ListName { get; }
-        }
-		public interface ILoadedList : ILoadedList<IDynamic> { }
+		public interface ILoadedList { }
 		
 		public static IEnumerable<IDynamic> AllItems
         {
@@ -33,7 +28,7 @@ namespace DiegoG.MonoGame
 
 		private static WeakList<IEnumerable> AllLists { get; set; } = new WeakList<IEnumerable>();
 
-		public class LoadedList<T> : ILoadedList<T> where T : IDynamic
+		public class LoadedList<T> : ILoadedList, IEnumerable where T : IDynamic
 		{
 			public string ListName { get; private set; }
 			private Queue<ID> FreeIDs { get; } = new Queue<ID>();
@@ -54,14 +49,14 @@ namespace DiegoG.MonoGame
 				if (FreeIDs.Count > 0)
 				{
 					newid = FreeIDs.Dequeue();
-					newid.Activate(holder, (ILoadedList)this);
+					newid.Activate(holder, this);
 					holder.ID = newid;
 					Log.Verbose($"Granted the ID: \"{newid}\" to holder of Type: \"{typeofT}\"");
 					return newid;
 				}
 				Log.Verbose($"No free IDs available in {typeofT} Loaded List, creating a new one.");
 				newid = new ID(Items.Count);
-				newid.Activate(holder, (ILoadedList)this);
+				newid.Activate(holder, this);
 				holder.ID = newid;
 				Log.Verbose($"Granted the ID: \"{newid}\" to holder of Type: \"{typeofT}\"");
 				return newid;

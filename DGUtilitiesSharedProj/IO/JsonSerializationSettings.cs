@@ -16,6 +16,7 @@ namespace DiegoG.Utilities.IO
             Log.Debug("Initializing JsonSerializationSettings");
             Log.Verbose("Adding a new instance of Converter factory DictionaryTKeyEnumTValueConverter");
             JsonSerializerOptions.Converters.Add(new DictionaryTKeyEnumTValueConverter());
+            JsonSerializerOptions.WriteIndented = true;
         }
 
         public static JsonSerializerOptions JsonSerializerOptions { get; } = new JsonSerializerOptions();

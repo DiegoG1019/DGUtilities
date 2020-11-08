@@ -23,9 +23,11 @@ namespace DiegoG.Utilities
         public static LengthMeasureProperty<int> SquareUnitDefinition { get; set; } = new LengthMeasureProperty<int>(Units.Meter, 1);
         public static LengthMeasureProperty<decimal> UserUnitDefinition { get; set; } = new LengthMeasureProperty<decimal>(Units.Meter, 1);
         public static LengthMeasureProperty<int> PixelUnitDefinition { get; set; } = new LengthMeasureProperty<int>(Units.Meter, 1);
+
+        [XmlType(TypeName = "LengthUnits")]
         public enum Units { Meter, Foot, Inch, Square, UserUnit, Pixel }
 
-        private static Dictionary<Units, Func<Length, decimal>> Getters = new Dictionary<Units, Func<Length, decimal>>()
+        private static readonly Dictionary<Units, Func<Length, decimal>> Getters = new Dictionary<Units, Func<Length, decimal>>()
         {
             { Units.Meter, (m) => m.Meter },
             { Units.Foot, (m) => m.Foot },
@@ -34,7 +36,7 @@ namespace DiegoG.Utilities
             { Units.UserUnit, (m) => m.UserUnit },
             { Units.Pixel, (m) => m.Pixel }
         };
-        private static Dictionary<Units, Action<Length, decimal>> Setters = new Dictionary<Units, Action<Length, decimal>>()
+        private static readonly Dictionary<Units, Action<Length, decimal>> Setters = new Dictionary<Units, Action<Length, decimal>>()
         {
             { Units.Meter, (m,v) => m.Meter = v },
             { Units.Foot, (m,v) => m.Foot = v },
@@ -107,7 +109,9 @@ namespace DiegoG.Utilities
         public Length(decimal V, Units i) : this() => this[i] = V;
 
         public override string ToString() => ToString(Units.Meter);
+        public string ToString(string format) => ToString(Units.Meter, format);
         public string ToString(Units unit) => $"{this[unit]}{ShortUnits[unit]}";
+        public string ToString(Units unit, string format) => $"{this[unit].ToString(format)}{ShortUnits[unit]}";
         public static bool operator >(Length A, Length B) => A.Meter > B.Meter;
         public static bool operator <(Length A, Length B) => A.Meter < B.Meter;
         public static bool operator >=(Length A, Length B) => A.Meter >= B.Meter;

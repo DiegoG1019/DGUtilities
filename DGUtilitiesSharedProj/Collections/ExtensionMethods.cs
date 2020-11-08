@@ -1,10 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DiegoG.Utilities.Collections
 {
     public static class ExtensionMethods
     {
+        /// <summary>
+        /// Takes all values until item index <= specified index
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> UpToIndex<T>(this IEnumerable<T> enumerable, int index)
+            => enumerable.Select((v, i) => new { v, i }).Where(p => p.i <= index).Select(p => p.v);
+        /// <summary>
+        /// Takes all values until item index > specified index
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> StartingAtIndex<T>(this IEnumerable<T> enumerable, int index)
+            => enumerable.Select((v, i) => new { v, i }).Where(p => p.i > index).Select(p => p.v);
+
+        /// <summary>
+        /// BeforeIndex contains all values of index <= specified index; while AfterIndex contains all values of index > specified index
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public static (IEnumerable<T> BeforeIndex, IEnumerable<T> AfterIndex) SplitAtIndex<T>(this IEnumerable<T> enumerable, int index)
+            => (enumerable.UpToIndex(index), enumerable.StartingAtIndex(index));
 
         public static bool TryDequeue<T>(this Queue<T> queue, out T item)
         {
@@ -16,18 +45,18 @@ namespace DiegoG.Utilities.Collections
         }
 
         ///<summary>Finds the index of the first item matching an expression in an enumerable.</summary>
-        ///<param name="items">The enumerable to search.</param>
+        ///<param name="enumerable">The enumerable to search.</param>
         ///<param name="predicate">The expression to test the items against.</param>
         ///<returns>The index of the first matching item, or -1 if no items match.</returns>
-        public static int FindIndex<T>(this IEnumerable<T> items, Func<T, bool> predicate)
+        public static int FindIndex<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
         {
-            if (items == null) 
-                throw new ArgumentNullException("items");
+            if (enumerable == null) 
+                throw new ArgumentNullException("enumerable");
             if (predicate == null) 
                 throw new ArgumentNullException("predicate");
 
             int retVal = 0;
-            foreach (var item in items)
+            foreach (var item in enumerable)
             {
                 if (predicate(item)) return retVal;
                 retVal++;
@@ -35,9 +64,9 @@ namespace DiegoG.Utilities.Collections
             return -1;
         }
         ///<summary>Finds the index of the first occurrence of an item in an enumerable.</summary>
-        ///<param name="items">The enumerable to search.</param>
+        ///<param name="enumerable">The enumerable to search.</param>
         ///<param name="item">The item to find.</param>
         ///<returns>The index of the first matching item, or -1 if the item was not found.</returns>
-        public static int IndexOf<T>(this IEnumerable<T> items, T item) => items.FindIndex(i => EqualityComparer<T>.Default.Equals(item, i));
+        public static int IndexOf<T>(this IEnumerable<T> enumerable, T item) => enumerable.FindIndex(i => EqualityComparer<T>.Default.Equals(item, i));
     }
 }

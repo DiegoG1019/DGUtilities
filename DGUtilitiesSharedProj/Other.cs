@@ -14,16 +14,11 @@ namespace DiegoG.Utilities
         [Obsolete]
         public static SecureString ToSecureString(this string plainString)
         {
-            if (plainString == null)
-            {
+            if (plainString is null)
                 return null;
-            }
-
             SecureString secureString = new SecureString();
             foreach (char c in plainString.ToCharArray())
-            {
                 secureString.AppendChar(c);
-            }
             return secureString;
         }
         public static string GetColorName(Color c)
@@ -34,13 +29,9 @@ namespace DiegoG.Utilities
             return str;
         }
         public static Color GetOppositeColor(Color c)
-        {
-            return Color.FromArgb(ColorHLSToRGB((int)((c.GetHue() + 180) % 360), (int)c.GetBrightness(), (int)c.GetSaturation()));
-        }
+            => Color.FromArgb(ColorHLSToRGB((int)((c.GetHue() + 180) % 360), (int)c.GetBrightness(), (int)c.GetSaturation()));
         public static Color GetInverseColor(Color c)
-        {
-            return Color.FromArgb(int.MaxValue - c.ToArgb());
-        }
+            => Color.FromArgb(int.MaxValue - c.ToArgb());
         public static T CapNumber<T>(T number, T min, T max)
             where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T>
         {

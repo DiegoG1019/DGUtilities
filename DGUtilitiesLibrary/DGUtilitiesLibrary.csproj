@@ -10,4 +10,6 @@
 
   <Import Project="..\SQLite\SQLite.projitems" Label="Shared" />
 
+  <Import Project="..\CLI\CLI.projitems" Label="Shared" />
+
 </Project>

@@ -9,6 +9,7 @@ using System.Linq;
 using Serilog;
 using System.Runtime.Serialization;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace DiegoG.Utilities.IO
 {
@@ -36,11 +37,40 @@ namespace DiegoG.Utilities.IO
             JsonSerializationSettings.Init();
         }
 
-        public static object CopyByBinarySerialization(object obj) => Deserialize<object>.Binary(Serialize.Binary(obj));
+        public static object CopyByBinarySerialization(this object obj) => Deserialize<object>.Binary(Serialize.Binary(obj));
+        //I think that calling serialize.Binary in there would block the process, same as await Serialize.BinaryAsync, so I decided to do it this way
+        public static Task<object> CopyByBinarySerializationAsync(this object obj) => Task<object>.Run(() => Deserialize<object>.Binary(Serialize.Binary(obj)));
+
+
+
+        public static class Parse
+        {
+            public static JsonDocument Json(string path, string file)
+            {
+                string fullpath = Path.Combine(path, file + JsonExtension);
+                using (StreamReader InFile = new StreamReader(new FileStream(fullpath, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                {
+                    string jsonstring = InFile.ReadToEnd();
+                    return JsonDocument.Parse(jsonstring);
+                }
+            }
+            public static Task<JsonDocument> JsonAsync(string path, string file) => Task<JsonDocument>.Run(() => Json(path, file));
+
+            public static XmlDocument Xml(string path, string file)
+            {
+                string fullpath = Path.Combine(path, file + JsonExtension);
+                using (StreamReader InFile = new StreamReader(new FileStream(fullpath, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                {
+                    var xml = new XmlDocument();
+                    xml.LoadXml(InFile.ReadToEnd());
+                    return xml;
+                }
+            }
+            public static Task<XmlDocument> XmlAsync(string path, string file) => Task<XmlDocument>.Run(() => Xml(path, file));
+        }
 
         public static class Deserialize<T>
         {
-
             private static Dictionary<SerializationFormat, Func<string, string, T>> DeserializationsDict { get; } = new Dictionary<SerializationFormat, Func<string, string, T>>()
             {
                 { SerializationFormat.Binary, (p,f)=>Binary(p,f) },

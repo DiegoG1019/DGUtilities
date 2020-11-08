@@ -68,10 +68,6 @@ namespace DiegoG.MonoGame
 
             InputEvents.InputChanged.KeyboardStateChanged += KeyboardInput;
             Primitive = new Primitive(Game.GraphicsDevice, SpriteBatch);
-
-            //TEST CODE
-            SetInputReaction();
-
         }
 
         public void Move(float X, float Y) => Move(new Vector2(X, Y));
@@ -218,10 +214,10 @@ namespace DiegoG.MonoGame
         public void DrawShape(Rectangle rect, Color color)
         {
             var nrect = new Rectangle(
-                (int)(rect.X + current.Position.X),
-                (int)(rect.Y + current.Position.Y),
-                rect.Width,
-                rect.Height
+                    (int)(rect.X + current.Position.X),
+                    (int)(rect.Y + current.Position.Y),
+                    rect.Width,
+                    rect.Height
                 );
             Primitive.Rectangle(nrect, color);
         }
@@ -237,17 +233,14 @@ namespace DiegoG.MonoGame
             => Primitive.SineWave(start + current.Position, end + current.Position, frequency, amplitude, color);
 
         //TEST-CODE
-        Dictionary<Keys, Vector2> InputReaction;
-        private void SetInputReaction()
+        private readonly static Dictionary<Keys, Vector2> InputReaction = new Dictionary<Keys, Vector2>
         {
-            InputReaction = new Dictionary<Keys, Vector2>
-            {
-                { Keys.Up, DirectionVector2.Up*30 },
-                { Keys.Down, DirectionVector2.Down*30 },
-                { Keys.Left, DirectionVector2.Left*30 },
-                { Keys.Right, DirectionVector2.Right*30 }
-            };
-        }
+            //{ Keys.Up, DirectionVector2.Up*30 },
+            //{ Keys.Down, DirectionVector2.Down*30 },
+            //{ Keys.Left, DirectionVector2.Left*30 },
+            //{ Keys.Right, DirectionVector2.Right*30 }
+        };
+
         private void KeyboardInput(KeyboardState ksprev, KeyboardState ksnow)
         {
             if (ksnow.IsKeyDown(Keys.LeftControl))

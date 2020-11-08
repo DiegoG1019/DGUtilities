@@ -22,22 +22,23 @@ namespace DiegoG.Utilities
 
         public static MassMeasureProperty<float> UserUnitDefinition { get; set; } = new MassMeasureProperty<float>(Units.Kilogram, 1);
 
-        private static Dictionary<Units, Func<Mass, decimal>> Getters = new Dictionary<Units, Func<Mass, decimal>>()
+        private static readonly Dictionary<Units, Func<Mass, decimal>> Getters = new Dictionary<Units, Func<Mass, decimal>>()
         {
             { Units.Kilogram, (m) => m.Kilogram },
             { Units.Pound, (m) => m.Pound },
+            { Units.Gram, (m) => m.Gram },
             { Units.UserUnits, (m) => (decimal)m.UserUnit }
         };
-        private static Dictionary<Units, Action<Mass, decimal>> Setters = new Dictionary<Units, Action<Mass, decimal>>()
+        private static readonly Dictionary<Units, Action<Mass, decimal>> Setters = new Dictionary<Units, Action<Mass, decimal>>()
         {
             { Units.Kilogram, (m,v) => m.Kilogram = v },
             { Units.Pound, (m,v) => m.Pound = v },
+            { Units.Gram, (m,v) => m.Gram = v },
             { Units.UserUnits, (m,v) => m.UserUnit = (float)v }
         };
-        private float mass;
-        private Units kilogram;
-
-        public enum Units { Kilogram, Pound, UserUnits }
+        
+        [XmlType(TypeName = "MassUnits")]
+        public enum Units { Kilogram, Pound, Gram, UserUnits }
         public static ImmutableDictionary<Units, string> ShortUnits { get; }
         static Mass()
         {
@@ -48,6 +49,8 @@ namespace DiegoG.Utilities
         }
         public const decimal KgLb = 2.20462M;
         public const decimal LbKg = 0.453592M;
+        public const decimal KgG = 1000;
+        public const decimal GKg = 0.001M;
         public decimal Kilogram { get; set; }
 
         [IgnoreDataMember, JsonIgnore, XmlIgnore]
@@ -63,6 +66,13 @@ namespace DiegoG.Utilities
             get => (float)this[UserUnitDefinition.BaseUnit] * UserUnitDefinition.ConversionValue;
             set => this[UserUnitDefinition.BaseUnit] = (decimal)(value / UserUnitDefinition.ConversionValue);
         }
+
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public decimal Gram
+        {
+            get => Kilogram * KgG;
+            set => Kilogram = GKg * value;
+        }
         [JsonIgnore, IgnoreDataMember, XmlIgnore]
         public decimal this[Units index]
         {
@@ -71,7 +81,10 @@ namespace DiegoG.Utilities
         }
         public Mass() => Kilogram = 0;
         public Mass(decimal V, Units i) : this() => this[i] = V;
+        public override string ToString() => ToString(Units.Kilogram);
+        public string ToString(string format) => ToString(Units.Kilogram, format);
         public string ToString(Units unit) => $"{this[unit]}{ShortUnits[unit]}";
+        public string ToString(Units unit, string format) => $"{this[unit].ToString(format)}{ShortUnits[unit]}";
         public static bool operator >(Mass A, Mass B) => A.Kilogram > B.Kilogram;
         public static bool operator <(Mass A, Mass B) => !(A > B);
         public static bool operator >=(Mass A, Mass B) => A.Kilogram >= B.Kilogram;
