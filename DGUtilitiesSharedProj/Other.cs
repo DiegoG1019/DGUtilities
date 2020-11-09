@@ -21,7 +21,12 @@ namespace DiegoG.Utilities
                 secureString.AppendChar(c);
             return secureString;
         }
-        public static string GetColorName(Color c)
+
+        public static System.Windows.Media.Color FromArgbInt32(int value)
+        {
+            throw new NotImplementedException();
+        }
+        public static string GetColorName(this Color c)
         {
             var str = (from KnownColor color in Enum.GetValues(typeof(KnownColor)) where c == Color.FromKnownColor(color) select Convert.ToString(color)).FirstOrDefault();
             if (String.IsNullOrEmpty(str))

@@ -108,6 +108,18 @@ namespace DiegoG.Utilities
         public Length() => Meter = 0;
         public Length(decimal V, Units i) : this() => this[i] = V;
 
+        /// <summary>
+        /// Keep in mind, when setting this, that object will always be null when using parameterless CustomToString
+        /// </summary>
+        public static Func<object, Length, string> CustomToStringBehaviour { get; set; }
+        public string CustomToString(object stuff)
+        {
+            if (CustomToStringBehaviour is null)
+                throw new InvalidOperationException("Cannot use this method if Length.CustomToStringBehaviour static property is not defined");
+            return CustomToStringBehaviour(stuff, this);
+        }
+        public string CustomToString() => CustomToString(null);
+
         public override string ToString() => ToString(Units.Meter);
         public string ToString(string format) => ToString(Units.Meter, format);
         public string ToString(Units unit) => $"{this[unit]}{ShortUnits[unit]}";

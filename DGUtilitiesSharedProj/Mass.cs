@@ -79,6 +79,19 @@ namespace DiegoG.Utilities
             get => Getters[index](this);
             set => Setters[index](this, value);
         }
+
+        /// <summary>
+        /// Keep in mind, when setting this, that object will always be null when using parameterless CustomToString
+        /// </summary>
+        public static Func<object, Mass, string> CustomToStringBehaviour { get; set; }
+        public string CustomToString(object stuff)
+        {
+            if (CustomToStringBehaviour is null)
+                throw new InvalidOperationException("Cannot use this method if Mass.CustomToStringBehaviour static property is not defined");
+            return CustomToStringBehaviour(stuff, this);
+        }
+        public string CustomToString() => CustomToString(null);
+
         public Mass() => Kilogram = 0;
         public Mass(decimal V, Units i) : this() => this[i] = V;
         public override string ToString() => ToString(Units.Kilogram);

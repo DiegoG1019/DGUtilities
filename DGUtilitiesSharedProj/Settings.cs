@@ -12,13 +12,18 @@ using static DiegoG.Utilities.IO.Serialization;
 using DiegoG.Utilities.Collections;
 using Serilog;
 using System.Text.Json;
+using DiegoG.Utilities.IO;
 
 namespace DiegoG.Utilities.Settings
 {
-    public interface ISettings { }
+    public interface ISettings
+    {
+        public ulong Version { get; }
+    }
     [Serializable]
     public abstract class ApplicationSettings : ISettings
     {
+        public abstract ulong Version { get; }
         public bool VerbosityIsVerbose => Verbosity == Verbosity.Verbose;
         public bool VerbosityIsDebug => VerbosityIsVerbose || Verbosity == Verbosity.Debug;
 
@@ -72,6 +77,10 @@ namespace DiegoG.Utilities.Settings
             Directory = directory;
             Current = await tsk;
         }
+
+        public static bool CheckVersion(string directory, string filename)
+            => Default.Version == Parse.Json(directory, filename).RootElement.GetProperty("Version").GetUInt64();
+
         public static void RestoreToDefault() => Current = Default;
         public static void Initialize(string directory, string fileName)
         {
@@ -80,7 +89,14 @@ namespace DiegoG.Utilities.Settings
             Log.Debug($"Checking for existence of {fileName} settings in {directory}");
             if (SettingsFileExist)
             {
-                Log.Debug($"Existence of {fileName} settings in {directory} verified, loading");
+                Log.Debug($"Existence of {fileName} settings in {directory} verified, verifying version");
+                
+                if(!CheckVersion(directory, fileName))
+                {
+                    Log.Debug($"Version verified, unequal, restoring to default and creating a new file asynchronously.");
+                    File.Move(Path.Combine(directory, fileName), Path.Combine(directory, fileName + "_old"), true);
+                    goto RestoreToDefault;
+                }
 #if DEBUG
                 try
                 {
@@ -97,6 +113,7 @@ namespace DiegoG.Utilities.Settings
 #endif
             }
             Log.Debug($"{fileName} in {directory} could not be found, restoring to default and creating a new file asynchronously.");
+            RestoreToDefault:;
             RestoreToDefault();
 #if !DEBUG
                 _ = SaveSettingsAsync();
