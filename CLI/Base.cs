@@ -15,7 +15,7 @@ namespace DiegoG.CLI
         public InvalidCommandException(string message) : base(message) { }
     }
 
-    public interface Cmd
+    public interface ICommand
     {
         string Action(string[] args);
         string HelpExplanation { get; }
@@ -23,14 +23,14 @@ namespace DiegoG.CLI
         string Trigger { get; }
     }
 
-    public sealed class CommandList : IEnumerable<Cmd>
+    public sealed class CommandList : IEnumerable<ICommand>
     {
-        private Dictionary<string, Cmd> dict = new Dictionary<string, Cmd>();
-        public Cmd this[string commandName] => dict[commandName];
-        public void Add(Cmd cmd) => dict.Add(cmd.Trigger, cmd);
+        private readonly Dictionary<string, ICommand> dict = new Dictionary<string, ICommand>();
+        public ICommand this[string commandName] => dict[commandName];
+        public void Add(ICommand cmd) => dict.Add(cmd.Trigger, cmd);
         public bool HasCommand(string cmd) => dict.ContainsKey(cmd);
 
-        public IEnumerator<Cmd> GetEnumerator()
+        public IEnumerator<ICommand> GetEnumerator()
         {
             foreach (var cmd in dict.Values)
                 yield return cmd;

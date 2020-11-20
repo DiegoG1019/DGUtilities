@@ -49,6 +49,23 @@ namespace DiegoG.Utilities.Enumerations
         Verbose
     }
 
+    [Serializable, JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum NumberTypes
+    {
+        Byte,
+        SByte,
+        Int16,
+        UInt16,
+        Int32,
+        UInt32,
+        Int64,
+        UInt64,
+        Half,
+        Single,
+        Double,
+        Decimal
+    }
+
     public static class MemberCount
     {
         public static readonly int Directions = Enum.GetNames(typeof(Directions)).Length;

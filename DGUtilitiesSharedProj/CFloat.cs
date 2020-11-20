@@ -9,7 +9,7 @@ namespace DiegoG.Utilities
 
         public float UpperLimit { get; private set; }
         public float LowerLimit { get; private set; }
-        private float value
+        private float Value
         {
             get => __float;
             set => __float = value > LowerLimit ? (value > UpperLimit ? UpperLimit : __float) : LowerLimit;
@@ -22,60 +22,20 @@ namespace DiegoG.Utilities
         public CFloat(float v, float upper, float lower) :
             this()
         {
-            value = v;
+            Value = v;
             UpperLimit = upper;
             LowerLimit = lower;
         }
 
-        public static implicit operator float(CFloat d)
-        {
-            return d.value;
-        }
-
-        public static bool operator <(CFloat a, CFloat b)
-        {
-            return a.value < b.value;
-        }
-
-        public static bool operator >(CFloat a, CFloat b)
-        {
-            return a.value > b.value;
-        }
-
-        public static bool operator ==(CFloat a, CFloat b)
-        {
-            return a.value == b.value;
-        }
-
-        public static bool operator !=(CFloat a, CFloat b)
-        {
-            return a.value != b.value;
-        }
-
-        public static bool operator <=(CFloat a, CFloat b)
-        {
-            return a.value <= b.value;
-        }
-
-        public static bool operator >=(CFloat a, CFloat b)
-        {
-            return a.value >= b.value;
-        }
-
-        public override bool Equals(object a)
-        {
-            return a is CFloat @float && this == @float;
-        }
-
-        public override int GetHashCode()
-        {
-            return value.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return value.ToString();
-        }
-
+        public static implicit operator float(CFloat d) => d.Value;
+        public static bool operator <(CFloat a, CFloat b) => a.Value < b.Value;
+        public static bool operator >(CFloat a, CFloat b) => a.Value > b.Value;
+        public static bool operator ==(CFloat a, CFloat b) => a.Value == b.Value;
+        public static bool operator !=(CFloat a, CFloat b) => a.Value != b.Value;
+        public static bool operator <=(CFloat a, CFloat b) => a.Value <= b.Value;
+        public static bool operator >=(CFloat a, CFloat b) => a.Value >= b.Value;
+        public override bool Equals(object a) => a is CFloat @float && this == @float;
+        public override int GetHashCode() => Value.GetHashCode();
+        public override string ToString() => Value.ToString();
     }
 }

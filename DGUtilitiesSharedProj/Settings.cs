@@ -20,11 +20,18 @@ namespace DiegoG.Utilities.Settings
     {
         public ulong Version { get; }
     }
+    /// <summary>
+    /// You're not actually supposed to use this one, inherit this in your own class and use that
+    /// </summary>
     [Serializable]
     public abstract class ApplicationSettings : ISettings
     {
-        public abstract ulong Version { get; }
+        public virtual ulong Version { get; }
+
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public bool VerbosityIsVerbose => Verbosity == Verbosity.Verbose;
+
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public bool VerbosityIsDebug => VerbosityIsVerbose || Verbosity == Verbosity.Debug;
 
         public bool Console { get; set; } = false;
@@ -38,6 +45,13 @@ namespace DiegoG.Utilities.Settings
         }
 #endif
     }
+    /// <summary>
+    /// The default is represented by what the properties are initialized to. It's not required to instatiate anything, Settings will do that for you.
+    /// For example: "Settings`ApplicationSettings`.Current" will work after Settings`ApplicationSettings`.Initialize() is called.
+    /// A separate "Settings" will be created by each type you call, for example, Settings`ApplicationSettings` is different from Settings`YourSettings`.
+    /// By virtue of C# creating a new static type with its own state for every generic type used with it
+    /// </summary>
+    /// <typeparam name="T">The class that represents the settings</typeparam>
     public static class Settings<T> where T : ISettings, new()
     {
         /// <summary>
@@ -56,7 +70,7 @@ namespace DiegoG.Utilities.Settings
         public static bool SettingsFileExist => File.Exists(FullPath + JsonExtension);
 
         //It would normally be better to place these in the class, but then we woulnd't have access to T and we'd have to override it
-        private static TypeInfo typeinfo = (TypeInfo)typeof(T);
+        private static readonly TypeInfo typeinfo = (TypeInfo)typeof(T);
         public static IEnumerable<Pair<string, object>> CurrentProperties
             => from item in typeinfo.GetProperties() select new Pair<string, object>(item.Name, item.GetValue(Current));
         public static IEnumerable<Pair<string, object>> DefaultProperties
@@ -78,8 +92,12 @@ namespace DiegoG.Utilities.Settings
             Current = await tsk;
         }
 
-        public static bool CheckVersion(string directory, string filename)
-            => Default.Version == Parse.Json(directory, filename).RootElement.GetProperty("Version").GetUInt64();
+        public static bool CheckVersion(string directory, string filename, out ulong version)
+        {
+            var v = Parse.Json(directory, filename).RootElement.GetProperty("Version").GetUInt64();
+            version = v;
+            return Default.Version == v;
+        }
 
         public static void RestoreToDefault() => Current = Default;
         public static void Initialize(string directory, string fileName)
@@ -91,28 +109,29 @@ namespace DiegoG.Utilities.Settings
             {
                 Log.Debug($"Existence of {fileName} settings in {directory} verified, verifying version");
                 
-                if(!CheckVersion(directory, fileName))
+                if(!CheckVersion(directory, fileName, out ulong version))
                 {
                     Log.Debug($"Version verified, unequal, restoring to default and creating a new file asynchronously.");
-                    File.Move(Path.Combine(directory, fileName), Path.Combine(directory, fileName + "_old"), true);
+                    File.Move(Path.Combine(directory, fileName + JsonExtension), Path.Combine(directory, fileName + $"_{version}_old" + JsonExtension), true);
                     goto RestoreToDefault;
                 }
 #if DEBUG
                 try
                 {
+                    Log.Debug($"Version verified, equal, loading {fileName}");
                     LoadSettings(directory, fileName);
                     return;
                 }catch(JsonException e)
                 {
-                    Log.Debug($"Exception caught: {e.Message}");
-                    Log.Debug($"{fileName} in {directory} is invalid, restoring to default and creating a new file asynchronously.");
+                    Log.Error($"Exception caught: {e}");
+                    Log.Debug($"{fileName} in {directory} is invalid, restoring to default and creating a new file asynchronously");
                 }
 #else
                 LoadSettings(directory, fileName);
                 return;
 #endif
             }
-            Log.Debug($"{fileName} in {directory} could not be found, restoring to default and creating a new file asynchronously.");
+            Log.Debug($"{fileName} in {directory} could not be found, restoring to default and creating a new file asynchronously");
             RestoreToDefault:;
             RestoreToDefault();
 #if !DEBUG

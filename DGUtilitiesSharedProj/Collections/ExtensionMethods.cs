@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace DiegoG.Utilities.Collections
 {
     public static class ExtensionMethods
     {
+        public static ObservableCollection<T> ToObservable<T>(this IEnumerable<T> enumerable)
+            => new ObservableCollection<T>(enumerable);
         /// <summary>
         /// Takes all values until item index <= specified index
         /// </summary>

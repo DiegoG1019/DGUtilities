@@ -1,6 +1,6 @@
 ﻿namespace DiegoG.CLI
 {
-    public class HelloWorld : Cmd
+    public class HelloWorld : ICommand
     {
         public string Trigger => "helloworld";
         public string HelpExplanation => "Salute the World!";

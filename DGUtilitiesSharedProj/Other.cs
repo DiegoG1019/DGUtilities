@@ -1,17 +1,17 @@
-﻿using System;
-using System.Drawing;
+﻿using DiegoG.Utilities.Enumerations;
+using System;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Windows.Media;
 
 namespace DiegoG.Utilities
 {
     public static class Other
     {
-        [DllImport("shlwapi.dll")]
-        public static extern int ColorHLSToRGB(int H, int L, int S);
-
-        [Obsolete]
+        [Obsolete("SecureString itself is obsolete")]
         public static SecureString ToSecureString(this string plainString)
         {
             if (plainString is null)
@@ -22,21 +22,42 @@ namespace DiegoG.Utilities
             return secureString;
         }
 
-        public static System.Windows.Media.Color FromArgbInt32(int value)
+        public static object AutoCast(object number, NumberTypes type)
         {
-            throw new NotImplementedException();
+            return type switch
+            {
+                NumberTypes.Byte => Convert.ToByte(number),
+                NumberTypes.SByte => Convert.ToSByte(number),
+                NumberTypes.Int16 => Convert.ToInt16(number),
+                NumberTypes.UInt16 => Convert.ToUInt16(number),
+                NumberTypes.Int32 => Convert.ToInt32(number),
+                NumberTypes.UInt32 => Convert.ToUInt32(number),
+                NumberTypes.Int64 => Convert.ToInt64(number),
+                NumberTypes.UInt64 => Convert.ToUInt64(number),
+                NumberTypes.Half => throw new NotSupportedException(),
+                NumberTypes.Single => Convert.ToSingle(number),
+                NumberTypes.Double => Convert.ToDouble(number),
+                NumberTypes.Decimal => Convert.ToDecimal(number),
+                _ => throw new NotImplementedException(),
+            };
         }
-        public static string GetColorName(this Color c)
+        public static bool GenericTryParse<T>(string input, out T result)
+            where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T>
         {
-            var str = (from KnownColor color in Enum.GetValues(typeof(KnownColor)) where c == Color.FromKnownColor(color) select Convert.ToString(color)).FirstOrDefault();
-            if (String.IsNullOrEmpty(str))
-                return DiegoGMath.FormatInt(c.ToArgb(), DiegoGMath.IntFormat.Hexadecimal);
-            return str;
+            result = default;
+            var converter = TypeDescriptor.GetConverter(typeof(T));
+            if (converter == null)
+                return false;
+            try
+            {
+                result = (T)converter.ConvertFromString(input);
+                return true;
+            }
+            catch (NotSupportedException)
+            {
+                return false;
+            }
         }
-        public static Color GetOppositeColor(Color c)
-            => Color.FromArgb(ColorHLSToRGB((int)((c.GetHue() + 180) % 360), (int)c.GetBrightness(), (int)c.GetSaturation()));
-        public static Color GetInverseColor(Color c)
-            => Color.FromArgb(int.MaxValue - c.ToArgb());
         public static T CapNumber<T>(T number, T min, T max)
             where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T>
         {

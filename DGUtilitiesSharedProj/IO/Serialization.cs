@@ -39,7 +39,7 @@ namespace DiegoG.Utilities.IO
 
         public static object CopyByBinarySerialization(this object obj) => Deserialize<object>.Binary(Serialize.Binary(obj));
         //I think that calling serialize.Binary in there would block the process, same as await Serialize.BinaryAsync, so I decided to do it this way
-        public static Task<object> CopyByBinarySerializationAsync(this object obj) => Task<object>.Run(() => Deserialize<object>.Binary(Serialize.Binary(obj)));
+        public static Task<object> CopyByBinarySerializationAsync(this object obj) => Task.Run(() => Deserialize<object>.Binary(Serialize.Binary(obj)));
 
 
 
@@ -54,7 +54,7 @@ namespace DiegoG.Utilities.IO
                     return JsonDocument.Parse(jsonstring);
                 }
             }
-            public static Task<JsonDocument> JsonAsync(string path, string file) => Task<JsonDocument>.Run(() => Json(path, file));
+            public static Task<JsonDocument> JsonAsync(string path, string file) => Task.Run(() => Json(path, file));
 
             public static XmlDocument Xml(string path, string file)
             {
@@ -66,7 +66,7 @@ namespace DiegoG.Utilities.IO
                     return xml;
                 }
             }
-            public static Task<XmlDocument> XmlAsync(string path, string file) => Task<XmlDocument>.Run(() => Xml(path, file));
+            public static Task<XmlDocument> XmlAsync(string path, string file) => Task.Run(() => Xml(path, file));
         }
 
         public static class Deserialize<T>
@@ -95,6 +95,8 @@ namespace DiegoG.Utilities.IO
             public static T Binary(string path, string file) => Binary(File.OpenRead(Path.Combine(path, file)));
             public static async Task<T> BinaryAsync(Stream stm) => await Task<T>.Run(() => Binary(stm));
             public static async Task<T> BinaryAsync(string path, string file) => await Task<T>.Run(() => Binary(path, file));
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "C# language version retrocompatibility")]
             public static T Xml(string xmlString)
             {
                 var t = typeof(T);
@@ -104,6 +106,8 @@ namespace DiegoG.Utilities.IO
                     return (T)serializer.Deserialize(sr);
                 }
             }
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "C# language version retrocompatibility")]
             public static T Xml(string path, string file)
             {
                 string fullpath = Path.Combine(path, file + XmlExtension);
@@ -118,6 +122,8 @@ namespace DiegoG.Utilities.IO
             public static async Task<T> XmlAsync(string path, string file) => await Task<T>.Run(() => Xml(path, file));
 
             public static T Json(string jsonString) => JsonSerializer.Deserialize<T>(jsonString, JsonSerializationSettings.JsonSerializerOptions);
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "C# language version retrocompatibility")]
             public static T Json(string path, string file)
             {
                 string fullpath = Path.Combine(path, file + JsonExtension);
@@ -167,10 +173,12 @@ namespace DiegoG.Utilities.IO
                 return stm;
             }
 
-            public static async Task<Stream> BinaryAsync(object obj) => await Task<Stream>.Run(() => Binary(obj));
-            public static async Task<Stream> BinaryAsync(object obj, string path, string file) => await Task<Stream>.Run(() => Binary(obj, path, file));
-            public static async Task<string> XmlAsync(object obj) => await Task<string>.Run(() => Xml(obj));
-            public static async Task<string> XmlAsync(object obj, string path, string file) => await Task<string>.Run(() => Xml(obj, path, file));
+            public static async Task<Stream> BinaryAsync(object obj) => await Task.Run(() => Binary(obj));
+            public static async Task<Stream> BinaryAsync(object obj, string path, string file) => await Task.Run(() => Binary(obj, path, file));
+            public static async Task<string> XmlAsync(object obj) => await Task.Run(() => Xml(obj));
+            public static async Task<string> XmlAsync(object obj, string path, string file) => await Task.Run(() => Xml(obj, path, file));
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "C# language version retrocompatibility")]
             public static string Xml(object obj)
             {
                 var t = obj.GetType();

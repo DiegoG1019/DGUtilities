@@ -80,8 +80,8 @@ namespace DiegoG.Utilities.IO
             private class DictionaryEnumConverterInner<TKey, TValue> : JsonConverter<IDictionary<TKey, TValue>> where TKey : struct, Enum
             {
                 private readonly JsonConverter<TValue> _valueConverter;
-                private Type _keyType;
-                private Type _valueType;
+                private readonly Type _keyType;
+                private readonly Type _valueType;
 
                 public DictionaryEnumConverterInner(JsonSerializerOptions options)
                 {

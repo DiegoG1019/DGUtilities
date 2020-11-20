@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DiegoG.CLI
 {
-    public class Help : Cmd
+    public class Help : ICommand
     {
         public string Trigger => "help";
         public string HelpExplanation => "Returns a string explaining the uses of a specific command.";

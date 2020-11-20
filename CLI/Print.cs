@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DiegoG.CLI
 {
-    class Print : Cmd
+    class Print : ICommand
     {
         public string Trigger => "print";
         public string HelpExplanation => "Prints all of the arguments";
