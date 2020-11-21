@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>DiegoG.Utilities.Security</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <COMReference Include="JAVAWEBSTARTLib.dll">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>5852f5e0-8bf4-11d4-a245-0080c6f74284</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiegoG.Utilities.Common\DiegoG.Utilities.Common.csproj" />
+  </ItemGroup>
+
+  <Import Project="..\Security\Security.projitems" Label="Shared" />
+
+</Project>

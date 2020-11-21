@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>DiegoG.Utilities.CLI</AssemblyName>
+  </PropertyGroup>
+
+  <Import Project="..\CLI\CLI.projitems" Label="Shared" />
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiegoG.Utilities.Common\DiegoG.Utilities.Common.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.IO;
-using System.Data.Linq;
 using System.Data.SQLite;
 
-namespace DiegoG.Utilities.SQLiteDatabase
+namespace DiegoG.SQLiteDatabase
 {
     public class SQLiteDatabase
     {
@@ -12,23 +11,22 @@ namespace DiegoG.Utilities.SQLiteDatabase
         public string Directory { get; private set; }
         public string Address => Path.Combine(Directory, Name + FileExtension);
         public SQLiteConnection Connection { get; private set; }
-        public DataContext Context { get; private set; }
 
         public const string FileExtension = ".db";
 
-        private void chkpswrd() { if (HasPassword) return; throw new InvalidOperationException("This Database does not use a Password"); }
+        private void CheckPassword() { if (HasPassword) return; throw new InvalidOperationException("This Database does not use a Password"); }
         public bool HasPassword { get; private set; }
         private string _pswrd;
         public string Password
         {
             get
             {
-                chkpswrd();
+                CheckPassword();
                 return _pswrd;
             }
             set
             {
-                chkpswrd();
+                CheckPassword();
                 _pswrd = value;
             }
         }
@@ -44,7 +42,6 @@ namespace DiegoG.Utilities.SQLiteDatabase
             HasPassword = true;
             Password = pass;
             Connection = new SQLiteConnection($@"Data Source={Address}");
-            Context = new DataContext(Connection);
         }
         /// <summary>
         /// returns true if database was created

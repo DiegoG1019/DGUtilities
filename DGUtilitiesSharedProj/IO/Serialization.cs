@@ -48,23 +48,19 @@ namespace DiegoG.Utilities.IO
             public static JsonDocument Json(string path, string file)
             {
                 string fullpath = Path.Combine(path, file + JsonExtension);
-                using (StreamReader InFile = new StreamReader(new FileStream(fullpath, FileMode.Open, FileAccess.Read, FileShare.Read)))
-                {
-                    string jsonstring = InFile.ReadToEnd();
-                    return JsonDocument.Parse(jsonstring);
-                }
+                using StreamReader InFile = new StreamReader(new FileStream(fullpath, FileMode.Open, FileAccess.Read, FileShare.Read));
+                string jsonstring = InFile.ReadToEnd();
+                return JsonDocument.Parse(jsonstring);
             }
             public static Task<JsonDocument> JsonAsync(string path, string file) => Task.Run(() => Json(path, file));
 
             public static XmlDocument Xml(string path, string file)
             {
                 string fullpath = Path.Combine(path, file + JsonExtension);
-                using (StreamReader InFile = new StreamReader(new FileStream(fullpath, FileMode.Open, FileAccess.Read, FileShare.Read)))
-                {
-                    var xml = new XmlDocument();
-                    xml.LoadXml(InFile.ReadToEnd());
-                    return xml;
-                }
+                using StreamReader InFile = new StreamReader(new FileStream(fullpath, FileMode.Open, FileAccess.Read, FileShare.Read));
+                var xml = new XmlDocument();
+                xml.LoadXml(InFile.ReadToEnd());
+                return xml;
             }
             public static Task<XmlDocument> XmlAsync(string path, string file) => Task.Run(() => Xml(path, file));
         }

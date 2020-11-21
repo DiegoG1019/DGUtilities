@@ -9,6 +9,7 @@
     <Import_RootNamespace>DiegoG.WPF</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ColorExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NumericBox.cs" />
   </ItemGroup>

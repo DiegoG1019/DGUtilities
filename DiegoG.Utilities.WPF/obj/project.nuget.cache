@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "WSVp2qTjIko4ZTxKjCTJE0GcDz/qkuriUvPXJEYM4CSq8Kd5amPNJGn6DTpwzmnQgNYQi1Qc7W3Q3tyfwxbQUA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Barbara Patricia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.WPF\\DiegoG.Utilities.WPF.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Barbara Patricia\\.nuget\\packages\\serilog\\2.10.0\\serilog.2.10.0.nupkg.sha512"
+  ],
+  "logs": []
+}

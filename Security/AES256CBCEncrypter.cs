@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DiegoG.Utilities.IO;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web.Script.Serialization;
 
 namespace DiegoG.Utilities.Security
 {
@@ -40,9 +40,7 @@ namespace DiegoG.Utilities.Security
 					{ "mac", mac },
 				};
 
-				JavaScriptSerializer serializer = new JavaScriptSerializer();
-
-				return Convert.ToBase64String(encoding.GetBytes(serializer.Serialize(keyValues)));
+				return Convert.ToBase64String(encoding.GetBytes(Serialization.Serialize.Json(keyValues)));
 			}
 			catch (Exception e)
 			{
@@ -54,20 +52,21 @@ namespace DiegoG.Utilities.Security
 		{
 			try
 			{
-				RijndaelManaged aes = new RijndaelManaged();
-				aes.KeySize = 256;
-				aes.BlockSize = 128;
-				aes.Padding = PaddingMode.PKCS7;
-				aes.Mode = CipherMode.CBC;
-				aes.Key = encoding.GetBytes(key);
+                RijndaelManaged aes = new()
+                {
+                    KeySize = 256,
+                    BlockSize = 128,
+                    Padding = PaddingMode.PKCS7,
+                    Mode = CipherMode.CBC,
+                    Key = encoding.GetBytes(key)
+                };
 
-				// Base 64 decode
-				byte[] base64Decoded = Convert.FromBase64String(plainText);
+                // Base 64 decode
+                byte[] base64Decoded = Convert.FromBase64String(plainText);
 				string base64DecodedStr = encoding.GetString(base64Decoded);
 
 				// JSON Decode base64Str
-				JavaScriptSerializer ser = new JavaScriptSerializer();
-				var payload = ser.Deserialize<Dictionary<string, string>>(base64DecodedStr);
+				var payload = Serialization.Deserialize<Dictionary<string,string>>.Json(base64DecodedStr);
 
 				aes.IV = Convert.FromBase64String(payload["iv"]);
 
@@ -84,10 +83,8 @@ namespace DiegoG.Utilities.Security
 
 		static byte[] HmacSHA256(String data, String key)
 		{
-			using (HMACSHA256 hmac = new HMACSHA256(encoding.GetBytes(key)))
-			{
-				return hmac.ComputeHash(encoding.GetBytes(data));
-			}
-		}
+            using HMACSHA256 hmac = new HMACSHA256(encoding.GetBytes(key));
+            return hmac.ComputeHash(encoding.GetBytes(data));
+        }
 	}
 }

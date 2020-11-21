@@ -9,12 +9,12 @@ namespace DiegoG.Utilities
         /// <summary>
         /// Represents the smallest possible value of <see cref="UDecimal"/> (0).
         /// </summary>
-        public static UDecimal MinValue = 0M;
+        public readonly static UDecimal MinValue = 0M;
 
         /// <summary>
         /// Represents the largest possible value of <see cref="UDecimal"/> (equivalent to <see cref="decimal.MaxValue"/>).
         /// </summary>
-        public static UDecimal MaxValue = decimal.MaxValue;
+        public readonly static UDecimal MaxValue = decimal.MaxValue;
         decimal Value { get; set; }
 
         public UDecimal(decimal Value)

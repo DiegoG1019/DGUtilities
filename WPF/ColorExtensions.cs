@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Media;
 
-namespace DiegoG.Utilities
+namespace DiegoG.WPF
 {
     public static class ColorExtensions
     {

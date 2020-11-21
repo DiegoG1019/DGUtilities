@@ -51,12 +51,12 @@ namespace DiegoG.Utilities.Collections
         ///<param name="enumerable">The enumerable to search.</param>
         ///<param name="predicate">The expression to test the items against.</param>
         ///<returns>The index of the first matching item, or -1 if no items match.</returns>
-        public static int FindIndex<T>(this IEnumerable<T> enumerable, Func<T, bool> predicate)
+        public static int FindIndex<T>(this IEnumerable<T> enumerable, Predicate<T> predicate)
         {
             if (enumerable == null) 
-                throw new ArgumentNullException("enumerable");
+                throw new ArgumentNullException(nameof(enumerable));
             if (predicate == null) 
-                throw new ArgumentNullException("predicate");
+                throw new ArgumentNullException(nameof(predicate));
 
             int retVal = 0;
             foreach (var item in enumerable)
