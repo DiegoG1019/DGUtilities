@@ -1,4 +1,5 @@
 ﻿using System.Drawing;
+using System;
 
 namespace DiegoG.Geometry.Shapes
 {
@@ -38,6 +39,12 @@ namespace DiegoG.Geometry.Shapes
                 return this == point;
             return false;
         }
+        public static double Distance(Point A, Point B)
+            => Math.Sqrt(Math.Pow(B.X - A.X, 2) + Math.Pow(B.Y - A.Y, 2));
+        public double Distance(Point B)
+            => Distance(this, B);
+        public double Longitude
+            => Distance(new Point(0, 0));
 
         public static implicit operator PointF(Point point)
             => new PointF(point.X, point.Y);

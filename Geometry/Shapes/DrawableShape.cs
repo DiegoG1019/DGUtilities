@@ -12,6 +12,8 @@ namespace DiegoG.Geometry.Shapes
         public string Label { get; set; } = "";
         public int DrawID { get; set; }
         public abstract void Draw(MainForm canvas, Color color);
+        public DrawableShape(string label)
+            => Label = label;
     }
 
     public class DrawingList : IEnumerable<DrawableShape>

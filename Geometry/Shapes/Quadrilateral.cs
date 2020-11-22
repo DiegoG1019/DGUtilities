@@ -14,12 +14,12 @@ namespace DiegoG.Geometry.Shapes
         public Point C { get; set; }
         public Point D { get; set; }
 
-        public Segment AB => new Segment(A, B);
-        public Segment BC => new Segment(B, C);
-        public Segment CD => new Segment(C, D);
-        public Segment DA => new Segment(D, A);
-        public Segment AC => new Segment(A, C);
-        public Segment BD => new Segment(B, D);
+        public Segment AB => new Segment($"{Label}:AB", A, B);
+        public Segment BC => new Segment($"{Label}:BC", B, C);
+        public Segment CD => new Segment($"{Label}:CD", C, D);
+        public Segment DA => new Segment($"{Label}:DA", D, A);
+        public Segment AC => new Segment($"{Label}:AC", A, C);
+        public Segment BD => new Segment($"{Label}:BD", B, D);
 
         public Segment[] AllSegments => new Segment[] { AB, BC, CD, DA, AC, BD };
         public double[] AllAngles => new double[] { DAB, ABC, BCD, CDA };
@@ -31,7 +31,7 @@ namespace DiegoG.Geometry.Shapes
 
         public Segment LargestSegment => AllSegments.Where(s => s.Length == AllSegments.Max(se => se.Length)).FirstOrDefault();
 
-        public double Area => new Triangle(A, B, C).Area + new Triangle(A, D, C).Area;
+        public double Area => new Triangle("nil", A, B, C).AreaHeron + new Triangle("nil", A, D, C).AreaHeron;
 
         public QuadType Clasification => Clasify();
         public QuadType Clasify()
@@ -79,13 +79,25 @@ namespace DiegoG.Geometry.Shapes
             return QuadType.Undefined;
         }
 
-        public Quadrilateral(string name, Point a, Point b, Point c, Point d)
+        public Quadrilateral(string label, Point a, Point b, Point c, Point d) : base(label)
         {
-            Label = name;
             A = a;
             B = b;
             C = c;
             D = d;
+        }
+
+        public string Solve()
+        {
+            var s = $"Internal Angles: DAB = {DAB}, ABC = {ABC}, BCD = {BCD}, CDA = {CDA}\n" +
+            $"Area: {Area}\n" +
+            $"Inclination Angles: ";
+            foreach (Segment side in AllSegments)
+                s += $"{side.Label} = {side.InclinationDeg}, ";
+            s.Remove(s.Length - 2, 2);
+            s += $"\nClasification: {Clasification}\n" +
+            $"Area: {Area}";
+            return s;
         }
 
         public override void Draw(MainForm canvas, Color color)

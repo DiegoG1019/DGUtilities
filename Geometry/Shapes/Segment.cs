@@ -9,21 +9,22 @@ namespace DiegoG.Geometry.Shapes
         public Point Start { get; private set; }
         public Point End { get; private set; }
         public Point Mid => (Start + End) / 2;
-        public string WrittenEquation => $"y={Slope}x+{"pene"}";
+        public string WrittenEquation => $"y={Slope}x+{(Slope * -Start.X) + Start.Y}";
         public double Slope { get; private set; }
-        public double Length => Vector.Length();
+        public double Length
+            => Math.Sqrt(Math.Pow(End.X - Start.X, 2) + Math.Pow(End.Y - Start.Y, 2));
         public double InclinationDeg => Utilities.RadToDeg(Math.Atan(Slope));
         public double B => 1;
         public double A => -Slope;
         public double C => Start.Y - (Slope * Start.X);
         public Vector2 Vector => new Vector2(End.X - Start.X, End.Y - Start.Y);
-        public Segment(Point a, Point b)
+        public Segment(string label, Point a, Point b) : base(label)
         {
             Start = a;
             End = b;
             Slope = (End.Y - Start.Y) / (double)(End.X - Start.X);
         }
-        public Segment(double slope, Point a)
+        public Segment(string label, double slope, Point a) : base(label)
         {
             Start = a;
             End = new Point(0, 0);
