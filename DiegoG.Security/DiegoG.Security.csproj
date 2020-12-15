@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="AES256CBCEncrypter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <COMReference Include="JAVAWEBSTARTLib.dll">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>0</VersionMinor>
@@ -19,7 +23,5 @@
   <ItemGroup>
     <ProjectReference Include="..\DiegoG.Utilities.Common\DiegoG.Utilities.Common.csproj" />
   </ItemGroup>
-
-  <Import Project="..\Security\Security.projitems" Label="Shared" />
 
 </Project>

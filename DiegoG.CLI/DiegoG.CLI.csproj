@@ -5,7 +5,12 @@
     <AssemblyName>DiegoG.Utilities.CLI</AssemblyName>
   </PropertyGroup>
 
-  <Import Project="..\CLI\CLI.projitems" Label="Shared" />
+  <ItemGroup>
+    <Compile Include="Base.cs" />
+    <Compile Include="CommandHelloWorldcs.cs" />
+    <Compile Include="Help.cs" />
+    <Compile Include="Print.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DiegoG.Utilities.Common\DiegoG.Utilities.Common.csproj" />

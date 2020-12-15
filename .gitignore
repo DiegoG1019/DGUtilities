@@ -4,3 +4,10 @@ DiegoG.Utilities.Common/obj/
 DiegoG.Utilities.Common/bin/
 Geometry/bin/
 Geometry/obj/
+DiegoG.Utilities.SQLite/obj/
+DiegoG.Utilities.WPF/obj/
+WinFormsClickThrough/obj/
+DiegoG.Security/obj/
+DiegoG.CLI/obj/
+DiegoG.CLI/bin/
+.vs/

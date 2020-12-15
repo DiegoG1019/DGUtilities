@@ -20,6 +20,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Collections\NoRepeatsList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\Pair.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\ReadOnlyIndexedProperty.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Density.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Volume.cs" />
+    <Compile Include="..\..\DGUtilities\DGUtilitiesSharedProj\Collections\ReflectionCollectionMethods.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\SafeIndexList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\WeakList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\WriteOnlyIndexedProperty.cs" />

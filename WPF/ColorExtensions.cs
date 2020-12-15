@@ -19,6 +19,7 @@ namespace DiegoG.WPF
             var ColorArray = BitConverter.GetBytes(value);
             return Color.FromArgb(ColorArray[3], ColorArray[2], ColorArray[1], ColorArray[0]);
         }
+        public static Color ToColor(this uint value) => FromArgbUInt32(value);
         public static uint ToArgb(this Color c)
             => BitConverter.ToUInt32(new byte[] { c.B, c.G, c.R, c.A });
         public static string GetName(this Color c)

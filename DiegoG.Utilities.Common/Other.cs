@@ -1,5 +1,6 @@
 ﻿using DiegoG.Utilities.Enumerations;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -42,7 +43,7 @@ namespace DiegoG.Utilities
                 NumberTypes.Single => Convert.ToSingle(number),
                 NumberTypes.Double => Convert.ToDouble(number),
                 NumberTypes.Decimal => Convert.ToDecimal(number),
-                _ => throw new NotImplementedException(),
+                _ => throw new NotSupportedException(),
             };
         }
         public static bool GenericTryParse<T>(string input, out T result)
@@ -80,5 +81,42 @@ namespace DiegoG.Utilities
             return number;
         }
         public static void Cap<T>(ref this T number, T min, T max) where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T> => number = CapNumber(number, min, max);
+
+        /// <summary>
+        /// Checks if all of the values within bool[] b are true
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static bool AllTrue(this bool[] b) => b.All(a => a);
+        /// <summary>
+        /// Checks if any of the values within bool[] b are true
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static bool AnyTrue(this bool[] b) => b.Any(a => a);
+
+        /// <summary>
+        /// For bool Fields
+        /// </summary>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public static bool Toggle(ref this bool b) { b = !b; return b; }
+        /// <summary>
+        /// For bool Properties
+        /// </summary>
+        /// <param name="b"></param>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        public static bool Toggle(this bool b, Action<bool> action) { action(!b); return !b; }
+
+        public static bool TryDispose(this IDisposable disposable)
+        {
+            if (disposable is not null)
+                disposable.Dispose();
+            else
+                return false;
+            return true;
+        }
+
     }
 }

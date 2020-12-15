@@ -5,8 +5,6 @@
     <RootNamespace>DiegoG.Utilities</RootNamespace>
   </PropertyGroup>
 
-  <Import Project="..\DGUtilitiesSharedProj\DGUtilitiesSharedProj.projitems" Label="Shared" />
-
   <ItemGroup>
     <PackageReference Include="Serilog" Version="2.10.0" />
   </ItemGroup>
