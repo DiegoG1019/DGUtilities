@@ -10,7 +10,43 @@ namespace DiegoG.Utilities
 {
     public class TimedSequence<T>
     {
-        private Timer TimerField;
+        public bool Reverse { get; set; }
+        public int PrevIndex { get; private set; }
+        public int Index { get; private set; }
+        public int NextIndex { get; private set; }
+        public bool IsReversing { get; private set; }
+        public ReadOnlyCollection<T> Items { get; private set; }
+
+        private double Buffer { get; set; }
+        
+        public T CurrentElement => TArray[Index];
+        public double IntervalsPerSecond => 1d / Interval;
+
+        /// <summary>
+        /// Expressed in milliseconds
+        /// </summary>
+        public double Interval
+        {
+            get => IntervalField;
+            set
+            {
+                IntervalField = value;
+                TrySetTimer();
+            }
+        }
+        private double IntervalField;
+
+        private T[] TArray
+        {
+            get => TArrayField;
+            set
+            {
+                TArrayField = value;
+                SetItems(value);
+            }
+        }
+        private T[] TArrayField;
+
         public Timer Timer
         {
             get => TimerField;
@@ -21,8 +57,8 @@ namespace DiegoG.Utilities
                     Timer.Elapsed += (s, e) => Step();
             }
         }
+        private Timer TimerField;
 
-        private bool AutonomousField = true;
         public bool Autonomous
         {
             get => AutonomousField;
@@ -34,20 +70,11 @@ namespace DiegoG.Utilities
                 ResetTimer();
             }
         }
+        private bool AutonomousField = true;
 
-        public int PrevIndex { get; private set; }
-        public int Index { get; private set; }
-        public int NextIndex
-        {
-            get
-            {
-                var nst = NextStep();
-                return nst < 0 ? 1 - nst : nst;
-            }
-        }
-
-        public TimedSequence(TimeSpan interval, bool autonomous = false) : this(interval.TotalMilliseconds, autonomous) { }
-        public TimedSequence(double interval, bool autonomous = false)
+        public TimedSequence(int intervalsPerSecond, bool autonomous = true) : this(1d / (intervalsPerSecond * 1000), autonomous) { }
+        public TimedSequence(TimeSpan interval, bool autonomous = true) : this(interval.TotalMilliseconds, autonomous) { }
+        public TimedSequence(double interval, bool autonomous = true)
         {
             Autonomous = autonomous;
             Interval = interval;
@@ -62,81 +89,45 @@ namespace DiegoG.Utilities
                 Timer = null;
         }
 
-        public bool Reverse { get; set; }
-        public bool IsReversing { get; private set; }
-
-        private (int index, bool reverse, bool stopreverse) NextStep()
+        private (int index, bool reverse) NextStep()
         {
-            if (Index == TArray.Length)
-                if (Reverse)
-                    return (Index - 1, true, false);
+            if (!IsReversing)
+                if (Index == TArray.Length - 1)
+                    return (Index + 1, false);
+                else if (Reverse)
+                    return (Index, true);
                 else
-                    return (0, false, true);
-            if (IsReversing && !(Index == 0))
-                return (Index - 1, false, false);
-            return ;
+                    return (0, false);
+            if (Index > 0 && IsReversing)
+                return (Index - 1, true);
+            return (Index + 1, false);
         }
         public void Step()
         {
-            PrevIndex = Index;
-            var nst = NextStep();
-            if (nst < 0)
-            {
-                Index = 1 - nst;
-                IsReversing = true;
-            }
-            Index = nst;
+            var (ind, reverse) = NextStep();
+            Index = ind; IsReversing = reverse;
+            NextIndex = NextStep().index;
         }
 
-        private double StepMs { get; set; }
         public void Update(double Ms)
         {
-            StepMs += Ms;
-            if (StepMs >= Interval)
+            Buffer += Ms;
+            if (Buffer >= Interval)
             {
-                StepMs = 0;
+                Buffer = 0;
                 Step();
             }
         }
-
         private void TrySetTimer()
         {
             if (Autonomous)
                 Timer.Interval = Interval;
         }
-
-        private double IntervalField;
-
-        /// <summary>
-        /// Expressed in milliseconds
-        /// </summary>
-        public double Interval
-        {
-            get => IntervalField;
-            set
-            {
-                IntervalField = value;
-                TrySetTimer();
-            }
-        }
-
-        public T CurrentElement => TArray[Index];
-
-        public ReadOnlyCollection<T> Items { get; private set; }
         public void SetItems(IEnumerable<T> items)
         {
             Items = new(items.ToList());
             Index = PrevIndex = 0;
-        }
-        private T[] TArrayField;
-        private T[] TArray
-        {
-            get => TArrayField;
-            set
-            {
-                TArrayField = value;
-                SetItems(value);
-            }
+            Buffer = 0;
         }
     }
 }
