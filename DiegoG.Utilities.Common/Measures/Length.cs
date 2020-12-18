@@ -41,9 +41,9 @@ namespace DiegoG.Utilities.Measures
         public const decimal MFt = 3.28084M; //Meter to Foot
         public const decimal MIn = 39.37008M; //Meter to Inch
         //
-        public const decimal CmM = 0.01M; //Centimeter to Meter
-        public const decimal FtM = 0.3048M; //Foot to Meter
-        public const decimal InM = 0.0254M; //Inch to Meter
+        public const decimal CmM = 1 / MCm; //Centimeter to Meter
+        public const decimal FtM = 1 / MFt; //Foot to Meter
+        public const decimal InM = 1 / MIn; //Inch to Meter
 
         [UnitProperty(nameof(Units.Meter))]
         public decimal Meter

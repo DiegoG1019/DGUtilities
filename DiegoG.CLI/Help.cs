@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace DiegoG.CLI
 {
+    [CLICommand]
     public class Help : ICommand
     {
         public string Trigger => "help";

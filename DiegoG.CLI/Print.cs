@@ -4,6 +4,7 @@ using System.Text;
 
 namespace DiegoG.CLI
 {
+    [CLICommand]
     class Print : ICommand
     {
         public string Trigger => "print";

@@ -27,7 +27,7 @@ namespace DiegoG.Utilities.Settings
     [Serializable]
     public abstract class ApplicationSettings : ISettings
     {
-        public virtual ulong Version { get; }
+        public virtual ulong Version => 0;
 
         [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public bool VerbosityIsVerbose => Verbosity == Verbosity.Verbose;

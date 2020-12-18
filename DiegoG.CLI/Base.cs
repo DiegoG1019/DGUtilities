@@ -7,6 +7,7 @@ using DiegoG.Utilities.Collections;
 using System.Collections.Concurrent;
 using DiegoG.Utilities;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace DiegoG.CLI
 {
@@ -23,6 +24,10 @@ namespace DiegoG.CLI
         string Trigger { get; }
     }
 
+    [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+    public sealed class CLICommandAttribute : Attribute
+    { }
+
     public sealed class CommandList : IEnumerable<ICommand>
     {
         private readonly Dictionary<string, ICommand> dict = new Dictionary<string, ICommand>();
@@ -36,24 +41,53 @@ namespace DiegoG.CLI
                 yield return cmd;
         }
 
+        internal CommandList() { }
+
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
     }
 
     public static class Commands
     {
+        [DllImport("shell32.dll", SetLastError = true)]
+        static extern IntPtr CommandLineToArgvW([MarshalAs(UnmanagedType.LPWStr)] string lpCmdLine, out int pNumArgs);
+
+        public static string[] CommandLineToArgs(string commandLine)
+        {
+            var argv = CommandLineToArgvW(commandLine, out int argc);
+            if (argv == IntPtr.Zero)
+                throw new System.ComponentModel.Win32Exception();
+            try
+            {
+                var args = new string[argc];
+                for (var i = 0; i < args.Length; i++)
+                {
+                    var p = Marshal.ReadIntPtr(argv, i * IntPtr.Size);
+                    args[i] = Marshal.PtrToStringUni(p);
+                }
+
+                return args;
+            }
+            finally
+            {
+                Marshal.FreeHGlobal(argv);
+            }
+        }
+
         public const string CommandSeparator = "||";
+        public static readonly string ExeName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
 
         static Commands()
         {
-            CommandList = new CommandList()
+            try
             {
-                //Pon tus comandos aqui
-                new HelloWorld(),
-                new Help(),
-                new Print()
-            };
+                foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttribute(typeof(CLICommandAttribute), false))
+                    CommandList.Add(Activator.CreateInstance(ty) as ICommand);
+            }catch(Exception e)
+            {
+                throw new TypeLoadException($"All classes attributed with CLICommandAttribute must not be generic, abstract, or static, must have a parameterless constructor, and must implement ICommand directly or indirectly. CLICommandAttribute is not inheritable. Check inner exception for more details.", e);
+            }
         }
-        public static CommandList CommandList { get; }
+        public static CommandList CommandList { get; } = new();
 
         private static readonly ConcurrentDataType<int> commandsleft = new ConcurrentDataType<int>();
         private static readonly ConcurrentQueue<string[]> commandbuffer = new ConcurrentQueue<string[]>();
@@ -77,7 +111,8 @@ namespace DiegoG.CLI
             }
         }
 
-        public static async Task<List<string>> Call(string filepath) => await Call(File.ReadAllText(filepath).Split(' '));
+        public static async Task<List<string>> CallFromFile(string filepath) => await Call(File.ReadAllText(filepath));
+        public static async Task<List<string>> Call(string args) => await Call(ExeName + CommandLineToArgs(args));
         public static async Task<List<string>> Call(string[] args)
         {
             commandresults.Clear();

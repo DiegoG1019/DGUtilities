@@ -26,7 +26,7 @@ namespace DiegoG.Utilities.Measures
     /// </summary>
     /// <typeparam name="Units"></typeparam>
     /// <typeparam name="T"></typeparam>
-    public abstract class Measure<Units, T> where Units : Enum where T : Measure<Units, T>, new()
+    public abstract class Measure<Units, T> : IComparable<T>, IEquatable<T> where Units : Enum where T : Measure<Units, T>, new()
     {
         protected static Units DefaultUnit { get; set; }
         public static Func<object, Measure<Units, T>, string> CustomToStringBehaviour { get; set; }
@@ -87,12 +87,12 @@ namespace DiegoG.Utilities.Measures
         public string ToString(Units unit) => $"{this[unit]}{ShortUnits[unit]}";
         public string ToString(Units unit, string format) => $"{this[unit].ToString(format)}{ShortUnits[unit]}";
 
-        public bool GreaterThan(Measure<Units, T> B) => DiegoGMath.TolerantCompare(DefaultValue, B.DefaultValue, Tolerance) == 1;
-        public bool LessThan(Measure<Units, T> B) => DiegoGMath.TolerantCompare(DefaultValue, B.DefaultValue, Tolerance) == -1;
-        public bool Equals(Measure<Units, T> B) => DiegoGMath.TolerantCompare(DefaultValue, B.DefaultValue, Tolerance) == 0;
-        public bool NotEquals(Measure<Units, T> B) => !Equals(B);
-        public bool GreaterOrEqualThan(Measure<Units, T> B) => GreaterThan(B) || Equals(B);
-        public bool LessOrEqualThan(Measure<Units, T> B) => LessThan(B) || Equals(B);
+        public bool GreaterThan(T B) => CompareTo(B) == 1;
+        public bool LessThan(T B) => CompareTo(B) == -1;
+        public bool Equals(T B) => CompareTo(B) == 0;
+        public bool NotEquals(T B) => !Equals(B);
+        public bool GreaterOrEqualThan(T B) => GreaterThan(B) || Equals(B);
+        public bool LessOrEqualThan(T B) => LessThan(B) || Equals(B);
         public override bool Equals(object obj)
         => (obj is Measure<Units, T> s) && Equals(s);
         public virtual T Add(Measure<Units, T> B)
@@ -117,6 +117,8 @@ namespace DiegoG.Utilities.Measures
         public static T operator /(Measure<Units, T> A, T B) => A.Div(B);
         public static T operator %(Measure<Units, T> A, T B) => A.Mod(B);
         public override int GetHashCode() => base.GetHashCode();
+
+        public int CompareTo(T other) => DiegoGMath.TolerantCompare(DefaultValue, other.DefaultValue, Tolerance);
 
         public static T Zero => NewT(0, DefaultUnit);
 

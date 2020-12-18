@@ -1,5 +1,6 @@
 ﻿namespace DiegoG.CLI
 {
+    [CLICommand]
     public class HelloWorld : ICommand
     {
         public string Trigger => "helloworld";
