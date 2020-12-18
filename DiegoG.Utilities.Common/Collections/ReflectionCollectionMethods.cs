@@ -51,6 +51,9 @@ namespace DiegoG.Utilities.Collections
         //
         public static IEnumerable<(string Name, Tout Value)> GetAllStaticMatchingTypePropertyNameValueTupleOfAllNamespaceClasses<Tout>()
             => ReflectionCollectionMethods.GetAllStaticMatchingTypePropertyNameValueTupleOfAllNamespaceClasses<Tout>(typenamespace);
+
+        public static IEnumerable<(PropertyInfo Property, IEnumerable<Attribute> Attributes)> GetAllInstancePropertiesWithAttribute(Type attribute)
+            => ReflectionCollectionMethods.GetAllInstancePropertiesWithAttribute(typeinfo, attribute);
     }
     public static class ReflectionCollectionMethods
     {
@@ -98,5 +101,8 @@ namespace DiegoG.Utilities.Collections
         //
         public static IEnumerable<(string Name, Tout Value)> GetAllStaticMatchingTypePropertyNameValueTupleOfAllNamespaceClasses<Tout>(string @namespace)
             => from item in GetAllStaticPropertiesOfAllNamespaceClasses(@namespace) where item is Tout select (item.Name, (Tout)item.GetValue(null));
+
+        public static IEnumerable<(PropertyInfo Property, IEnumerable<Attribute> Attributes)> GetAllInstancePropertiesWithAttribute(Type typeinfo, Type attribute)
+            => from prop in GetAllInstanceProperties(typeinfo) where Attribute.IsDefined(prop, attribute) select (prop, prop.GetCustomAttributes(attribute));
     }
 }

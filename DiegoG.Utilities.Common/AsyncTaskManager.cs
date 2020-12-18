@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace DiegoG.Utilities
 {
-#warning Improve this, as it is now it risks flooding the threadpool with tasks. Limit the maximum amount of parallel tasks per manager
     public class AsyncTaskManager<T> : IEnumerable<Task<T>>
     {
         private List<Task<T>> Ts { get; } = new List<Task<T>>();
         public Task<T> this[int index] => Ts[index];
         private int AddToList(Task<T> tsk)
         {
+
             Ts.Add(tsk);
             WhenAllFieldReload = true;
             return Ts.Count - 1;
@@ -23,6 +23,7 @@ namespace DiegoG.Utilities
         public bool AllTasksCompleted => WhenAll.IsCompleted;
         public bool AllTasksCompletedSuccesfully => WhenAll.IsCompletedSuccessfully;
         public bool AnyTasksFaulted => WhenAll.IsFaulted;
+        public int Count => Ts.Count;
         public IEnumerable<(int index, AggregateException Exception)> Exceptions
             => from task in this where task.IsFaulted select (Ts.IndexOf(task), task.Exception);
         public void Clear() => Ts.Clear();
@@ -51,6 +52,21 @@ namespace DiegoG.Utilities
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public static implicit operator Task<T[]>(AsyncTaskManager<T> obj) => obj.WhenAll;
     }
+    public class AsyncTaskManager<T,T1> : AsyncTaskManager<T>
+    {
+        public T1 CommonData { get; init; }
+        public AsyncTaskManager(T1 commonData, bool autoclear = true) : base() { CommonData = commonData; }
+        /// <summary>
+        /// Defines whether this should call the object's void Clear() method (If it exists)
+        /// </summary>
+        public bool AutoClear { get; set; }
+        new public void Clear()
+        {
+            base.Clear();
+            if (AutoClear && CommonData.HasMethod("Clear", typeof(void), Type.EmptyTypes))
+                CommonData.GetMethod("Clear", Type.EmptyTypes).Invoke(CommonData, null);
+        }
+    }
     public class AsyncTaskManager : IEnumerable<Task>
     {
         private List<Task> Ts { get; } = new List<Task>();
@@ -65,6 +81,7 @@ namespace DiegoG.Utilities
         public bool AllTasksCompleted => WhenAll.IsCompleted;
         public bool AllTasksCompletedSuccesfully => WhenAll.IsCompletedSuccessfully;
         public bool AnyTasksFaulted => WhenAll.IsFaulted;
+        public int Count => Ts.Count;
         public IEnumerable<(int index, AggregateException Exception)> Exceptions
             => from task in this where task.IsFaulted select (Ts.IndexOf(task), task.Exception);
         public void Clear() => Ts.Clear();

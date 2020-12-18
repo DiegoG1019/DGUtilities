@@ -4,10 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using System.Collections.Concurrent;
+using Serilog;
 
 namespace DiegoG.Utilities.IO
 {
-    public static class DirectoryMethods
+    public static partial class DirectoryMethods
     {
         private static string TC(byte b) => new string(Convert.ToChar(b), 1);
 
@@ -67,5 +70,18 @@ namespace DiegoG.Utilities.IO
             return false;
         }
 
+        public static bool CheckAccess(string directory)
+        {
+            try
+            {
+                Log.Verbose(dirstr + $"Checking access for directory {directory}");
+                Directory.GetFiles(directory);
+                return true;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return false;
+            }
+        }
     }
 }
