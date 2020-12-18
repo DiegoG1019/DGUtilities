@@ -118,5 +118,40 @@ namespace DiegoG.Utilities
             return true;
         }
 
+        public static MethodInfo GetMethod(this object objectToCheck, string methodName, Type[] parameters)
+        {
+            var type = objectToCheck.GetType();
+            return type.GetMethod(methodName, BindingFlags.Public | BindingFlags.Instance, null, parameters, null);
+        }
+        /// <summary>
+        /// Only works for public instance methods.
+        /// </summary>
+        /// <param name="objectToCheck"></param>
+        /// <param name="methodName"></param>
+        /// <returns></returns>
+        public static bool HasMethod(this object objectToCheck, string methodName)
+            => objectToCheck.HasMethod(methodName, Type.EmptyTypes);
+        /// <summary>
+        /// Only works for public instance methods.
+        /// </summary>
+        /// <param name="objectToCheck"></param>
+        /// <param name="methodName"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static bool HasMethod(this object objectToCheck, string methodName, params Type[] parameters)
+            => objectToCheck.GetMethod(methodName, parameters) is not null;
+        /// <summary>
+        /// Only works for public instance methods.
+        /// </summary>
+        /// <param name="objectToCheck"></param>
+        /// <param name="methodName"></param>
+        /// <param name="returnType"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public static bool HasMethod(this object objectToCheck, string methodName, Type returnType, params Type[] parameters)
+        {
+            var mi = objectToCheck.GetMethod(methodName, parameters);
+            return mi is not null && mi.ReturnType == returnType;
+        }
     }
 }

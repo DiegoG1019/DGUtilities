@@ -59,5 +59,57 @@ namespace DiegoG.Utilities
         {
             Decimal, Octal, Hexadecimal, Binary, Hexavigesimal, Sexagesimal
         }
+
+        /// <summary>
+        /// == 0; > 1; < -1
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="tolerance"></param>
+        /// <returns></returns>
+        public static int TolerantCompare(float a, float b, float tolerance)
+        {
+            var r = Math.Abs(a - b);
+            var diff = Math.Abs(a * tolerance);
+            if (r <= diff)
+                return 0;
+            if (a > b)
+                return 1;
+            return -1;
+        }
+        /// <summary>
+        /// == 0; > 1; < -1
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="tolerance"></param>
+        /// <returns></returns>
+        public static int TolerantCompare(double a, double b, double tolerance)
+        {
+            var r = Math.Abs(a - b);
+            var diff = Math.Abs(a * tolerance);
+            if (r <= diff)
+                return 0;
+            if (a > b)
+                return 1;
+            return -1;
+        }
+        /// <summary>
+        /// == 0; > 1; < -1
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <param name="tolerance"></param>
+        /// <returns></returns>
+        public static int TolerantCompare(decimal a, decimal b, decimal tolerance)
+        {
+            var r = Math.Abs(a - b);
+            var diff = Math.Abs(a * tolerance);
+            if (r <= diff)
+                return 0;
+            if (a > b)
+                return 1;
+            return -1;
+        }
     }
 }

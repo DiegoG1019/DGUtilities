@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
-namespace DiegoG.Utilities
+namespace DiegoG.Utilities.Measures
 {
     public class Density
     {
@@ -36,6 +36,7 @@ namespace DiegoG.Utilities
                 MassLocal = new(value, Mass.Units.Kilogram);
             }
         }
+        public Density(Density density) : this(density.KgOverCubicMeter) { }
         public Density(decimal density, Mass.Units munit, Volume.Units vunit)
             => this[munit, vunit] = density;
         /// <summary>
