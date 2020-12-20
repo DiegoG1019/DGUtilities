@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DiegoG.Utilities.Collections
 {
-   public class NoRepeatsList<T> : IList<T>
+    public class NoRepeatsList<T> : IList<T>
     {
         protected bool IsStruct { get; private set; }
         private List<T> Internal { get; set; }
@@ -19,7 +18,7 @@ namespace DiegoG.Utilities.Collections
                 if (Contains(value) && index == IndexOf(value))
                     goto Set;
                 ThrowIfRepeat(value);
-                Set:;
+            Set:;
                 Internal[index] = value;
             }
         }
@@ -27,7 +26,7 @@ namespace DiegoG.Utilities.Collections
         public int Count => Internal.Count;
         public bool IsReadOnly => false;
 
-        protected void ThrowIfRepeat(T item) { if (Contains(item)){ throw new InvalidOperationException("This list already contains this item"); }}
+        protected void ThrowIfRepeat(T item) { if (Contains(item)) { throw new InvalidOperationException("This list already contains this item"); } }
 
         public void Add(T item)
         {

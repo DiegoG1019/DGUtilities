@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace DiegoG.Utilities
@@ -18,7 +16,7 @@ namespace DiegoG.Utilities
         public ReadOnlyCollection<T> Items { get; private set; }
 
         private double Buffer { get; set; }
-        
+
         public T CurrentElement => TArray[Index];
         public double IntervalsPerSecond => 1d / Interval;
 

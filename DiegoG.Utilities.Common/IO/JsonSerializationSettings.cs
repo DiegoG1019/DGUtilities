@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Serilog;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Collections.Generic;
-using System.Reflection;
-using Serilog;
 
 namespace DiegoG.Utilities.IO
 {
@@ -20,6 +20,7 @@ namespace DiegoG.Utilities.IO
         }
 
         public static JsonSerializerOptions JsonSerializerOptions { get; } = new JsonSerializerOptions();
+
         public class CallbacksJsonConverter<T> : JsonConverter<T>
         {
             public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -132,7 +133,7 @@ namespace DiegoG.Utilities.IO
                     throw new JsonException();
                 }
 
-                public override void Write( Utf8JsonWriter writer, IDictionary<TKey, TValue> dictionary, JsonSerializerOptions options)
+                public override void Write(Utf8JsonWriter writer, IDictionary<TKey, TValue> dictionary, JsonSerializerOptions options)
                 {
                     writer.WriteStartObject();
 

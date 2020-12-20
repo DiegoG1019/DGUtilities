@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Collections;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using DiegoG.Utilities;
 using DiegoG.Utilities.Collections;
+using System;
+using System.Collections;
 using System.Collections.Concurrent;
-using DiegoG.Utilities;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace DiegoG.CLI
 {
@@ -82,7 +82,8 @@ namespace DiegoG.CLI
             {
                 foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttribute(typeof(CLICommandAttribute), false))
                     CommandList.Add(Activator.CreateInstance(ty) as ICommand);
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 throw new TypeLoadException($"All classes attributed with CLICommandAttribute must not be generic, abstract, or static, must have a parameterless constructor, and must implement ICommand directly or indirectly. CLICommandAttribute is not inheritable. Check inner exception for more details.", e);
             }
@@ -97,7 +98,7 @@ namespace DiegoG.CLI
         {
             while (true)
             {
-                if(commandbuffer.TryDequeue(out string[] args))
+                if (commandbuffer.TryDequeue(out string[] args))
                 {
                     if (CommandList.HasCommand(args[0]))
                         commandresults.Add(CommandList[args[0]].Action(args));
@@ -122,8 +123,8 @@ namespace DiegoG.CLI
 
             var cmdbuffer = Task.Run(ClearCommandBuffer);
 
-            RestartFor:;
-            for (int i = 0; i < args.Length; i++) 
+        RestartFor:;
+            for (int i = 0; i < args.Length; i++)
             {
                 args[i] = args[i].ToLower();
                 if (args[i] == CommandSeparator)

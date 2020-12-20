@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
 using System.Linq;
+using System.Reflection;
 
 namespace DiegoG.Utilities.Collections
 {
@@ -87,12 +86,14 @@ namespace DiegoG.Utilities.Collections
         public static IEnumerable<(string Name, Tout Value)> GetAllMatchingTypeInstancePropertyNameValueTuple<Tout>(Type typeinfo, object instance)
             => from item in GetAllInstanceProperties(typeinfo) where item.PropertyType == typeof(Tout) select (item.Name, (Tout)item.GetValue(instance));
         //
-        public static IEnumerable<PropertyInfo> GetAllStaticPropertiesOfAllNamespaceClasses(string @namespace) 
+        public static IEnumerable<PropertyInfo> GetAllStaticPropertiesOfAllNamespaceClasses(string @namespace)
             => Assembly.GetExecutingAssembly().GetTypes().Where(w => w.IsClass && w.Namespace == @namespace).SelectMany(d => GetAllStaticProperties(d));
         //
         public static IEnumerable<object> GetAllStaticPropertyValuesOfAllNamespaceClasses(string @namespace)
             => Assembly.GetExecutingAssembly().GetTypes().Where(w => w.IsClass && w.Namespace == @namespace).SelectMany(d => GetAllStaticPropertyValues(d));
+
         //
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0038:Use pattern matching", Justification = "Scope problems")]
         public static IEnumerable<Tout> GetAllMatchingTypeStaticPropertyValuesOfAllNamespaceClasses<Tout>(string @namespace)
             => from item in GetAllStaticPropertyValuesOfAllNamespaceClasses(@namespace) where item is Tout select (Tout)item;
         //
@@ -107,6 +108,15 @@ namespace DiegoG.Utilities.Collections
 
         public static IEnumerable<Type> GetAllTypesWithAttribute(Type attribute, bool inherit)
             => GetAllTypesWithAttributeInAssemblies(attribute, inherit, AppDomain.CurrentDomain.GetAssemblies());
+
+        public static IEnumerable<(Type Type, Attribute[] Attributes)> GetAllTypesAndAttributeInstanceTuple(Type attribute, bool inherit)
+            => GetAllTypesAndAttributeInstanceTupleFromAssembly(attribute, inherit, AppDomain.CurrentDomain.GetAssemblies());
+        public static IEnumerable<(Type Type, Attribute[] Attributes)> GetAllTypesAndAttributeInstanceTupleFromAssembly(Type attribute, bool inherit, Assembly[] asm)
+            => from a in asm
+               from t in a.GetTypes()
+               let attributes = t.GetCustomAttributes(attribute, inherit)
+               where attributes != null && attributes.Length > 0
+               select (t, attributes as Attribute[]);
 
         public static IEnumerable<Type> GetAllTypesWithAttributeInAssemblies(Type attribute, bool inherit, params Assembly[] asm)
             => from a in asm

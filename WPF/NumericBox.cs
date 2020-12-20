@@ -1,13 +1,9 @@
 ﻿using DiegoG.Utilities;
 using DiegoG.Utilities.Enumerations;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace DiegoG.WPF 
+namespace DiegoG.WPF
 {
     public class NumericBox : TextBox
     {
@@ -33,7 +29,7 @@ namespace DiegoG.WPF
         private string TryParse<T>(string input)
             where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T>
         {
-            if(Other.GenericTryParse(input, out T result))
+            if (Other.GenericTryParse(input, out T result))
             {
                 TextChangedSuccess = true;
                 return result.ToString();

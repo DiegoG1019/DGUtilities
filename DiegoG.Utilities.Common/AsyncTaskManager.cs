@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace DiegoG.Utilities
@@ -10,6 +10,7 @@ namespace DiegoG.Utilities
     public class AsyncTaskManager<T> : IEnumerable<Task<T>>
     {
         private List<Task<T>> Ts { get; } = new List<Task<T>>();
+        public TaskAwaiter<T[]> GetAwaiter() => WhenAll.GetAwaiter();
         public Task<T> this[int index] => Ts[index];
         private int AddToList(Task<T> tsk)
         {
@@ -52,7 +53,7 @@ namespace DiegoG.Utilities
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         public static implicit operator Task<T[]>(AsyncTaskManager<T> obj) => obj.WhenAll;
     }
-    public class AsyncTaskManager<T,T1> : AsyncTaskManager<T>
+    public class AsyncTaskManager<T, T1> : AsyncTaskManager<T>
     {
         public T1 CommonData { get; init; }
         public AsyncTaskManager(T1 commonData, bool autoclear = true) : base() { CommonData = commonData; }
@@ -70,6 +71,8 @@ namespace DiegoG.Utilities
     public class AsyncTaskManager : IEnumerable<Task>
     {
         private List<Task> Ts { get; } = new List<Task>();
+
+        public TaskAwaiter GetAwaiter() => WhenAll.GetAwaiter();
         public Task this[int index] => Ts[index];
         private int AddToList(Task tsk)
         {

@@ -1,18 +1,14 @@
-﻿using System;
+﻿using DiegoG.Utilities.Collections;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Numerics;
-using DiegoG.Utilities.Collections;
 using System.Collections.Immutable;
-using System.Text.Json.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace DiegoG.Utilities.Measures
 {
-
     [System.AttributeUsage(AttributeTargets.Property, Inherited = true, AllowMultiple = false)]
     sealed class UnitProperty : Attribute
     {
@@ -22,7 +18,7 @@ namespace DiegoG.Utilities.Measures
     }
 
     /// <summary>
-    /// Set the DefaultUnit's property counterpart to wrap DefaultValue, and define DefaultUnit in the same place as ShortUnits: in a static constructor. All Units should be labeled with an appropriate UnitProperty attribute
+    /// The base class for all Measures. This class cannot be instantiated. Set the DefaultUnit's property counterpart to wrap DefaultValue, and define DefaultUnit in the same place as ShortUnits: in a static constructor. All Units should be labeled with an appropriate UnitProperty attribute
     /// </summary>
     /// <typeparam name="Units"></typeparam>
     /// <typeparam name="T"></typeparam>
@@ -33,12 +29,13 @@ namespace DiegoG.Utilities.Measures
         public static ImmutableDictionary<Units, string> ShortUnits { get; protected set; }
 
         /// <summary>
-        /// Change with caution. Set to 0 for No Tolerance.
+        /// Change with caution, Not recommended if already made comparisons. Set to 0 for exact comparisons
         /// </summary>
         public static decimal Tolerance { get; set; } = .00001M;
 
         protected decimal DefaultValue { get; set; }
 
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public bool NotZero => DiegoGMath.TolerantCompare(DefaultValue, 0M, Tolerance) != 0;
 
         [JsonIgnore, IgnoreDataMember, XmlIgnore]
@@ -68,7 +65,6 @@ namespace DiegoG.Utilities.Measures
                             (t, m) => prop.SetValue(t, m)
                        );
             }
-                
         }
 
         public Measure() => DefaultValue = 0;
@@ -104,8 +100,8 @@ namespace DiegoG.Utilities.Measures
         public virtual T Div(Measure<Units, T> B)
             => NewT(DefaultValue / B.DefaultValue, DefaultUnit);
         public virtual T Mod(Measure<Units, T> B)
-            => NewT(DefaultValue % B.DefaultValue, DefaultUnit); 
-        public static bool operator >(Measure<Units,T> A, T B) => A.GreaterThan(B);
+            => NewT(DefaultValue % B.DefaultValue, DefaultUnit);
+        public static bool operator >(Measure<Units, T> A, T B) => A.GreaterThan(B);
         public static bool operator <(Measure<Units, T> A, T B) => A.LessThan(B);
         public static bool operator >=(Measure<Units, T> A, T B) => A.GreaterOrEqualThan(B);
         public static bool operator <=(Measure<Units, T> A, T B) => A.LessOrEqualThan(B);

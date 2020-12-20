@@ -231,7 +231,7 @@ namespace DiegoG.Utilities
         {
             if (obj is null)
                 throw new ArgumentNullException(nameof(obj));
-            if(obj is not BigDecimal)
+            if (obj is not BigDecimal)
                 throw new ArgumentException($"{nameof(obj)} is not a BigDecimal");
             return CompareTo((BigDecimal)obj);
         }

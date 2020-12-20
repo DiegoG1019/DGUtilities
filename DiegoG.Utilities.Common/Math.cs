@@ -61,7 +61,7 @@ namespace DiegoG.Utilities
         }
 
         /// <summary>
-        /// == 0; > 1; < -1
+        /// 0 for a Equals b, 1 for a is Greater Than b, -1 for a is Less Than b
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -77,8 +77,9 @@ namespace DiegoG.Utilities
                 return 1;
             return -1;
         }
+
         /// <summary>
-        /// == 0; > 1; < -1
+        /// 0 for a Equals b, 1 for a is Greater Than b, -1 for a is Less Than b
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
@@ -94,8 +95,9 @@ namespace DiegoG.Utilities
                 return 1;
             return -1;
         }
+
         /// <summary>
-        /// == 0; > 1; < -1
+        /// 0 for a Equals b, 1 for a is Greater Than b, -1 for a is Less Than b
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DiegoG.Utilities.Collections
 {
@@ -84,7 +83,7 @@ namespace DiegoG.Utilities.Collections
                 }
             }
             return false;
-            Found:;
+        Found:;
             for (int i = indexfoundat; i < Capacity - 1; i++)
                 this[i] = this[i + 1];
             Count--;

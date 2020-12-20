@@ -53,9 +53,9 @@ namespace DiegoG.Utilities.Collections
         ///<returns>The index of the first matching item, or -1 if no items match.</returns>
         public static int FindIndex<T>(this IEnumerable<T> enumerable, Predicate<T> predicate)
         {
-            if (enumerable == null) 
+            if (enumerable == null)
                 throw new ArgumentNullException(nameof(enumerable));
-            if (predicate == null) 
+            if (predicate == null)
                 throw new ArgumentNullException(nameof(predicate));
 
             int retVal = 0;

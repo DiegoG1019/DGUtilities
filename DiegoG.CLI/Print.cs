@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DiegoG.CLI
 {
@@ -14,7 +12,7 @@ namespace DiegoG.CLI
         public string Action(string[] args)
         {
             string result = String.Empty;
-            for(int i = 0; i < args.Length; i++)
+            for (int i = 0; i < args.Length; i++)
                 result += $" [{args[i]}]";
             Console.WriteLine(result);
             return result;

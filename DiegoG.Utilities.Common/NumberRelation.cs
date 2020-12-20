@@ -8,6 +8,7 @@ namespace DiegoG.Utilities
     [Serializable]
     public sealed class NumberRelation
     {
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public ulong GCD { get; private set; }
 
         private UDecimal valuea;
@@ -15,6 +16,7 @@ namespace DiegoG.Utilities
         /// <summary>
         /// The minimum expression of BaseA in BaseA/BaseB
         /// </summary>
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public UDecimal ValueA
         {
             get => valuea;
@@ -27,6 +29,7 @@ namespace DiegoG.Utilities
         /// <summary>
         /// The minimum expression of BaseB in BaseA/BaseB
         /// </summary>
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public UDecimal ValueB
         {
             get => valueb;
@@ -67,6 +70,7 @@ namespace DiegoG.Utilities
         /// <summary>
         /// Another name for BaseA for the sake of readability
         /// </summary>
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public UDecimal Current
         {
             get => BaseA;
@@ -76,6 +80,7 @@ namespace DiegoG.Utilities
         /// <summary>
         /// Another name for BaseB for the sake of readability
         /// </summary>
+        [IgnoreDataMember, JsonIgnore, XmlIgnore]
         public UDecimal Limit
         {
             get => BaseB;

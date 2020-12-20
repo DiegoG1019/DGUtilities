@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
@@ -57,7 +55,7 @@ namespace DiegoG.Utilities.Measures
         public const decimal LGal = 1 / 3.785411768M;
         public const decimal LPt = 1 / 0.473176473M;
         public const decimal OzL = 1 / 0.0284131M;
-        
+
         [UnitProperty(nameof(Units.Liter))]
         public decimal Liter
         {

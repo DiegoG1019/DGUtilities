@@ -1,5 +1,4 @@
 ﻿using System;
-using DiegoG.Utilities.Delegates;
 
 namespace DiegoG.Utilities
 {
@@ -12,7 +11,7 @@ namespace DiegoG.Utilities
         /// <summary>
         /// Locks the object and performs a function on it
         /// </summary>
-        public T Operate(Func<T,T> action)
+        public T Operate(Func<T, T> action)
         {
             lock (Key)
             {

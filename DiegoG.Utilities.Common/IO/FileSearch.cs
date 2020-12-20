@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DiegoG.Utilities.IO
@@ -23,7 +22,7 @@ namespace DiegoG.Utilities.IO
         /// <returns>An enumeration containing all the results that were found</returns>
         public async static Task<IEnumerable<string>> FindFile(string searchkey, bool findDirectory = false, int results = 1, ConcurrentDataType<ObservableCollection<string>> resultList = null, params string[] rootdirpath) => await FindFile(searchkey, findDirectory, results, Path.Combine(rootdirpath), resultList);
 
-        
+
         private const int ConcurrentTasks = 300;
         private const string dirstr = "DirectoryMethods.FindFile: ";
 
@@ -44,7 +43,7 @@ namespace DiegoG.Utilities.IO
             //Check if the directory exists before instantiating anything
             if (!Directory.Exists(rootdir))
                 throw new ArgumentException($"{nameof(rootdir)} \"{rootdir}\" does not exist.");
-            
+
             ConcurrentDataType<int> resultCount = 0;
             if (resultList is null)
                 resultList = new();
@@ -60,7 +59,7 @@ namespace DiegoG.Utilities.IO
             for (; ; )
             {
                 //Check if any task has yielded results
-                foreach(var s in taskman.AllResults.Where(t => t.found).Select(d => d.path))
+                foreach (var s in taskman.AllResults.Where(t => t.found).Select(d => d.path))
                 {
                     if (results != 0)
                     {

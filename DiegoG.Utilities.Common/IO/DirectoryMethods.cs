@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Serilog;
+using System;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Collections.Concurrent;
-using Serilog;
+using System.Linq;
 
 namespace DiegoG.Utilities.IO
 {
@@ -61,11 +57,11 @@ namespace DiegoG.Utilities.IO
                 goto Failure;
             }
 
-            Success:
+        Success:
             newfilename = filename;
             return true;
 
-            Failure:
+        Failure:
             newfilename = null;
             return false;
         }

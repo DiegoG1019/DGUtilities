@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace DiegoG.Utilities.Collections
 {
@@ -31,7 +29,7 @@ namespace DiegoG.Utilities.Collections
 
         new public T this[int index]
         {
-            get 
+            get
             {
                 if (index >= Count)
                     return default;

@@ -1,16 +1,14 @@
-﻿using System;
+﻿using DiegoG.Utilities.Collections;
+using Serilog;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
-using System.Linq;
-using Serilog;
-using System.Runtime.Serialization;
-using System.Collections.Generic;
 using System.Xml;
-using DiegoG.Utilities.Collections;
+using System.Xml.Serialization;
 
 namespace DiegoG.Utilities.IO
 {
@@ -19,6 +17,12 @@ namespace DiegoG.Utilities.IO
     /// </summary>
     public static class Serialization
     {
+        [System.AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
+        public sealed class CustomConverterAttribute : Attribute
+        {
+            public CustomConverterAttribute() { }
+        }
+
         public enum SerializationFormat { Binary, Xml, Json }
 
         public const string XmlExtension = ".xml";
@@ -38,8 +42,12 @@ namespace DiegoG.Utilities.IO
 
         public static void Init()
         {
-            Log.Verbose("Initializing DiegoG.Utilities.IO.Serialization");
+            Log.Information("Initializing DiegoG.Utilities.IO.Serialization");
+            Log.Information("Initializing Json Serialization Settings");
             JsonSerializationSettings.Init();
+            Log.Information("Registering all CustomSerializers marked with CustomSerializerAttribute");
+            foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttribute(typeof(CustomConverterAttribute), false))
+                JsonSerializationSettings.JsonSerializerOptions.Converters.Add(Activator.CreateInstance(ty) as JsonConverter);
         }
 
 #pragma warning disable CS0618 // Type or member is obsolete; this does not involve any form of user input. Any possible threats presented here already exist in the object being copied

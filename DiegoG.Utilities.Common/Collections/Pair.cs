@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DiegoG.Utilities.Collections
 {
@@ -20,7 +19,7 @@ namespace DiegoG.Utilities.Collections
         {
             var lista = new List<T1>();
             var listb = new List<T2>();
-            foreach(var i in pairs)
+            foreach (var i in pairs)
             {
                 lista.Add(i.ObjectA);
                 listb.Add(i.ObjectB);

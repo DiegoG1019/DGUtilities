@@ -1,18 +1,17 @@
-﻿using DiegoG.Utilities.Enumerations;
-using System.IO;
+﻿using DiegoG.Utilities.Collections;
+using DiegoG.Utilities.Enumerations;
+using Serilog;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using System.Reflection;
-using System.Linq;
-using System.Collections.Generic;
 using static DiegoG.Utilities.IO.Serialization;
-using DiegoG.Utilities.Collections;
-using Serilog;
-using System.Text.Json;
-using DiegoG.Utilities.IO;
 
 namespace DiegoG.Utilities.Settings
 {
@@ -109,8 +108,8 @@ namespace DiegoG.Utilities.Settings
             if (SettingsFileExist)
             {
                 Log.Debug($"Existence of {fileName} settings in {directory} verified, verifying version");
-                
-                if(!CheckVersion(directory, fileName, out ulong version))
+
+                if (!CheckVersion(directory, fileName, out ulong version))
                 {
                     Log.Debug($"Version verified, unequal, restoring to default and creating a new file asynchronously.");
                     File.Move(Path.Combine(directory, fileName + JsonExtension), Path.Combine(directory, fileName + $"_{version}_old" + JsonExtension), true);
@@ -122,7 +121,8 @@ namespace DiegoG.Utilities.Settings
                     Log.Debug($"Version verified, equal, loading {fileName}");
                     LoadSettings(directory, fileName);
                     return;
-                }catch(JsonException e)
+                }
+                catch (JsonException e)
                 {
                     Log.Error($"Exception caught: {e}");
                     Log.Debug($"{fileName} in {directory} is invalid, restoring to default and creating a new file asynchronously");
@@ -133,7 +133,7 @@ namespace DiegoG.Utilities.Settings
 #endif
             }
             Log.Debug($"{fileName} in {directory} could not be found, restoring to default and creating a new file asynchronously");
-            RestoreToDefault:;
+        RestoreToDefault:;
             RestoreToDefault();
 #if !DEBUG
                 _ = SaveSettingsAsync();

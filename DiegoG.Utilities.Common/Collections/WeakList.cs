@@ -24,7 +24,7 @@ namespace DiegoG.Utilities.Collections
             get => AutoCleanField;
             set
             {
-                if (AutoCleanField == value) 
+                if (AutoCleanField == value)
                     return;
                 AutoCleanField = value;
                 if (value)
@@ -113,7 +113,7 @@ namespace DiegoG.Utilities.Collections
         {
             T _;
             var c = from item in this where !item.TryGetTarget(out _) select item;
-            foreach(var i in c)
+            foreach (var i in c)
                 Remove(i);
         }
         );
