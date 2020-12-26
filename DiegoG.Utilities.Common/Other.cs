@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Security;
+using System.Collections.Generic;
 
 namespace DiegoG.Utilities
 {
@@ -151,5 +152,62 @@ namespace DiegoG.Utilities
             var mi = objectToCheck.GetMethod(methodName, parameters);
             return mi is not null && mi.ReturnType == returnType;
         }
+
+        public static IEnumerable<int> GetIndexOfMatches(this string[] str, string compare)
+        {
+            for (int i = 0; i < str.Length; i++)
+                if (str[i] == compare)
+                    yield return i;
+        }
+        public static int CountMatches<T>(this IEnumerable<T> e, T match) where T : IEquatable<T>
+            => CountMatches(e, match, d => d.Equals(match));
+        public static int CountMatches<T>(this IEnumerable<T> e, T match, Func<T,bool> predicate)
+        {
+            int count = 0;
+            foreach (var i in e)
+                if (predicate(i))
+                    count++;
+            return count;
+        }
+        public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> e, T match) where T : IEquatable<T>
+            => Split(e, (d) => d.Equals(match));
+        public static IEnumerable<IEnumerable<T>> Split<T>(this IEnumerable<T> e, Func<T, bool> predicate)
+        {
+            List<T> current = new();
+            List<List<T>> list = new() { current };
+            foreach(var element in e)
+            {
+                if (predicate(element))
+                {
+                    current = new();
+                    list.Add(current);
+                    continue;
+                }
+                current.Add(element);
+            }
+            return list;
+        }
+
+        public static IEnumerable<string> ToLower(this IEnumerable<string> strarr)
+        {
+            var narr = new List<string>(strarr.Count());
+            foreach (var s in strarr)
+                narr.Add(s.ToLower());
+            return narr;
+        }
+        public static string Flatten(this IEnumerable<string> strarr, string spacing = " ", bool trim = true)
+        {
+            var rs = "";
+            foreach (var s in strarr)
+                rs = rs + s + spacing;
+            return trim ? rs[0..^0].Trim() : rs[0..^0];
+        }
+
+        public static IEnumerable<(TKey, TValue)> GetKVTuple<TKey, TValue>(this Dictionary<TKey, TValue> dict)
+        {
+            foreach (var k in dict.Keys)
+                yield return (k, dict[k]);
+        } 
+
     }
 }

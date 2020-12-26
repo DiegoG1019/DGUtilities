@@ -117,6 +117,12 @@ namespace DiegoG.Utilities
             Adjust();
         }
 
+        public void Set(UDecimal BaseA_Current, UDecimal BaseB_Limit)
+        {
+            BaseA = BaseA_Current;
+            BaseB = BaseB_Limit;
+        }
+
         private void Adjust()
         {
             GCD = DiegoGMath.GreatestCommonDivisor((ulong)BaseA, (ulong)BaseB);
@@ -140,6 +146,5 @@ namespace DiegoG.Utilities
 
         public static readonly NumberRelation OneToOne = new NumberRelation(1, 1);
         public static readonly NumberRelation HundredToZero = new NumberRelation(100, 0);
-
     }
 }

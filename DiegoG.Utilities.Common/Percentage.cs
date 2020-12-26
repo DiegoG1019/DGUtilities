@@ -15,10 +15,7 @@ namespace DiegoG.Utilities
         public double Value
         {
             get => v;
-            set
-            {
-                v += value;
-            }
+            set => v = value;
         }
         [JsonIgnore, IgnoreDataMember, XmlIgnore]
         public double Percent => Value / 100d;
@@ -45,7 +42,7 @@ namespace DiegoG.Utilities
             get => v;
             set
             {
-                v += value;
+                v = value;
                 v.Cap(0, 100);
             }
         }

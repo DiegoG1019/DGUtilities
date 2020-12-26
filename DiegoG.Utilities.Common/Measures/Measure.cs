@@ -22,7 +22,7 @@ namespace DiegoG.Utilities.Measures
     /// </summary>
     /// <typeparam name="Units"></typeparam>
     /// <typeparam name="T"></typeparam>
-    public abstract class Measure<Units, T> : IComparable<T>, IEquatable<T> where Units : Enum where T : Measure<Units, T>, new()
+    public abstract record Measure<Units, T> : IComparable<T>, IEquatable<T> where Units : Enum where T : Measure<Units, T>, new()
     {
         protected static Units DefaultUnit { get; set; }
         public static Func<object, Measure<Units, T>, string> CustomToStringBehaviour { get; set; }
@@ -42,7 +42,7 @@ namespace DiegoG.Utilities.Measures
         public virtual decimal this[Units index]
         {
             get => Getters[index](this);
-            set => Setters[index](this, value);
+            protected set => Setters[index](this, value);
         }
 
         protected static readonly Dictionary<Units, Func<Measure<Units, T>, decimal>> Getters = new();
@@ -89,8 +89,6 @@ namespace DiegoG.Utilities.Measures
         public bool NotEquals(T B) => !Equals(B);
         public bool GreaterOrEqualThan(T B) => GreaterThan(B) || Equals(B);
         public bool LessOrEqualThan(T B) => LessThan(B) || Equals(B);
-        public override bool Equals(object obj)
-        => (obj is Measure<Units, T> s) && Equals(s);
         public virtual T Add(Measure<Units, T> B)
             => NewT(DefaultValue + B.DefaultValue, DefaultUnit);
         public virtual T Sub(Measure<Units, T> B)

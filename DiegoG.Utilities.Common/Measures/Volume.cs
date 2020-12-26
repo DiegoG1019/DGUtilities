@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 namespace DiegoG.Utilities.Measures
 {
     [Serializable]
-    public class Volume : Measure<Volume.Units, Volume>
+    public record Volume : Measure<Volume.Units, Volume>
     {
         public class VolumeMeasureProperty<T> where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T>
         {
@@ -60,49 +60,49 @@ namespace DiegoG.Utilities.Measures
         public decimal Liter
         {
             get => DefaultValue;
-            set => DefaultValue = value;
+            init => DefaultValue = value;
         }
 
         [UnitProperty(nameof(Units.Cubicmeter)), IgnoreDataMember, JsonIgnore, XmlIgnore]
         public decimal Cubicmeter
         {
             get => Liter * LcM3;
-            set => Liter = value * cM3L;
+            init => Liter = value * cM3L;
         }
 
         [UnitProperty(nameof(Units.Milliliter)), IgnoreDataMember, JsonIgnore, XmlIgnore]
         public decimal Milliliter
         {
             get => Liter * LmL;
-            set => Liter = value * mLL;
+            init => Liter = value * mLL;
         }
 
         [UnitProperty(nameof(Units.Gallon)), IgnoreDataMember, JsonIgnore, XmlIgnore]
         public decimal Gallon
         {
             get => Liter * LGal;
-            set => Liter = value * GalL;
+            init => Liter = value * GalL;
         }
 
         [UnitProperty(nameof(Units.Pint)), IgnoreDataMember, JsonIgnore, XmlIgnore]
         public decimal Pint
         {
             get => Liter * LPt;
-            set => Liter = value * PtL;
+            init => Liter = value * PtL;
         }
 
         [UnitProperty(nameof(Units.Ounce)), IgnoreDataMember, JsonIgnore, XmlIgnore]
         public decimal Ounce
         {
             get => Liter * LOz;
-            set => Liter = value * OzL;
+            init => Liter = value * OzL;
         }
 
         public Volume() => Liter = 0;
         public Volume(decimal V, Units i) : this() => this[i] = V;
         public Volume(Length l1, Length l2, Length l3) : this()
             => Cubicmeter = (l1.Meter * l2.Meter * l3.Meter) / 3;
-        public Volume(Volume volume) => Cubicmeter = volume.Cubicmeter;
+        public Volume(Volume volume) : base(volume) { }
 
         public static Volume OneCubicmeter => new Volume(1, Units.Cubicmeter);
         public static Volume OneGallon => new Volume(1, Units.Gallon);

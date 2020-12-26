@@ -4,7 +4,7 @@ namespace DiegoG.Utilities.Collections
 {
     /// <summary>
     /// Usable only in very specific and controlled scenarios, due to the possibility of false positives and hard to diagnose bugs.
-    /// Both the set and get accesors are safe to use with any index >= 0
+    /// Both the set and get accesors are safe to use with any index >= 0, they are all initialized to their default values, but not stored. For reference types, default is null
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class SafeIndexList<T> : List<T>, IList<T>, IEnumerable<T>

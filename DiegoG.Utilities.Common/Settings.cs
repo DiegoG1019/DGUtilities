@@ -12,6 +12,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using static DiegoG.Utilities.IO.Serialization;
+using Serilog.Events;
 
 namespace DiegoG.Utilities.Settings
 {
@@ -26,22 +27,16 @@ namespace DiegoG.Utilities.Settings
     [Serializable]
     public abstract class ApplicationSettings : ISettings
     {
-        public virtual ulong Version => 0;
-
-        [IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public bool VerbosityIsVerbose => Verbosity == Verbosity.Verbose;
-
-        [IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public bool VerbosityIsDebug => VerbosityIsVerbose || Verbosity == Verbosity.Debug;
+        public virtual ulong Version => 1;
 
         public bool Console { get; set; } = false;
-        public Verbosity Verbosity { get; set; } = Verbosity.Normal;
+        public LogEventLevel Verbosity { get; set; } = LogEventLevel.Information;
         public bool PauseOnWindowUnfocus { get; set; } = false;
 #if DEBUG
         public ApplicationSettings()
         {
             Console = true;
-            Verbosity = Verbosity.Verbose;
+            Verbosity = LogEventLevel.Verbose;
         }
 #endif
     }
@@ -54,11 +49,31 @@ namespace DiegoG.Utilities.Settings
     /// <typeparam name="T">The class that represents the settings</typeparam>
     public static class Settings<T> where T : ISettings, new()
     {
-        /// <summary>
-        /// This shouldn't be used constantly, as it produces a new object each time
-        /// </summary>
-        public static T Default { get; set; } = new T();
-        public static T Current { get; set; }
+        public static T Default { get; private set; } = new T();
+        public static T Current
+        {
+            get
+            {
+                //I don't want it to lock and hold up threads when it's not setting
+                if (CurrentSettingsLocked)
+                    lock (CurrentSettingsKey)
+                        return CurrentField;
+                return CurrentField;
+            }
+            private set //I'm really worried about concurrency here
+            {
+                CurrentSettingsLocked = true; // I think it's better if I set it before locking the object, so that a return doesn't happen right as itssetting the field
+                lock (CurrentSettingsKey)
+                {
+                    CurrentSettingsLocked = true; //If another thread comes through and sets it to false, then the next one hops in and it's already set to false despite waiting for this to be unlocked, so the "get" will flow through freely.
+                    CurrentField = value;
+                    CurrentSettingsLocked = false;
+                }
+            }
+        }
+        private static T CurrentField;
+        private static bool CurrentSettingsLocked = false;
+        private static readonly object CurrentSettingsKey = new();
 
         public static string Directory { get; private set; }
         public static string FileName { get; private set; }
@@ -74,7 +89,7 @@ namespace DiegoG.Utilities.Settings
         public static IEnumerable<Pair<string, object>> CurrentProperties
             => from item in typeinfo.GetProperties() select new Pair<string, object>(item.Name, item.GetValue(Current));
         public static IEnumerable<Pair<string, object>> DefaultProperties
-            => from item in typeinfo.GetProperties() select new Pair<string, object>(item.Name, item.GetValue(Default));
+        { get; } = from item in typeinfo.GetProperties() select new Pair<string, object>(item.Name, item.GetValue(Default));
 
         public static void SaveSettings() => Serialize.Json(Current, Directory, FileName);
         public static async Task SaveSettingsAsync() => await Serialize.JsonAsync(Current, Directory, FileName);
@@ -92,6 +107,14 @@ namespace DiegoG.Utilities.Settings
             Current = await tsk;
         }
 
+#warning This doesn't do any checks as to whether it's the same type of file
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="filename"></param>
+        /// <param name="version"></param>
+        /// <returns>Whether the current version matches the version of the file</returns>
         public static bool CheckVersion(string directory, string filename, out ulong version)
         {
             var v = Parse.Json(directory, filename).RootElement.GetProperty("Version").GetUInt64();
@@ -99,7 +122,7 @@ namespace DiegoG.Utilities.Settings
             return Default.Version == v;
         }
 
-        public static void RestoreToDefault() => Current = Default;
+        public static void RestoreToDefault() => Current = new();
         public static void Initialize(string directory, string fileName)
         {
             FileName = fileName;

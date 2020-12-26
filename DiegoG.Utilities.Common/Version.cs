@@ -8,7 +8,7 @@ namespace DiegoG.Utilities
     [Serializable]
     public struct Version
     {
-        public static Version Assembly { get; } = new Version("", 0, 1, 0, 0);
+        public static Version Assembly { get; } = new Version("DiegoG.Utilities.Common", 0, 1, 0, 0);
         public Version(string preppendix, byte major, byte build, byte minor, byte addition)
         {
             Major = major;

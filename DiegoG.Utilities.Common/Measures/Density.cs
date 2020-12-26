@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace DiegoG.Utilities.Measures
 {
-    public class Density
+    public record Density
     {
         private Volume VolumeLocal { get; set; }
         private Mass MassLocal { get; set; }
@@ -14,7 +14,7 @@ namespace DiegoG.Utilities.Measures
         public decimal this[Mass.Units munit, Volume.Units vunit]
         {
             get => MassLocal[munit] / VolumeLocal[vunit];
-            set
+            init
             {
                 //If we set Volume to 1, then we simply need to calculate Mass by multiplying density times 1, which is just density.
                 //This way, even if Mass is 0, then it won't throw DivideByZeroException
@@ -26,7 +26,7 @@ namespace DiegoG.Utilities.Measures
         public decimal KgOverCubicMeter
         {
             get => this[Mass.Units.Kilogram, Volume.Units.Cubicmeter];
-            set
+            init
             {
                 //If we set Volume to 1, then we simply need to calculate Mass by multiplying density times 1, which is just density.
                 //This way, even if Mass is 0, then it won't throw DivideByZeroException
@@ -34,7 +34,7 @@ namespace DiegoG.Utilities.Measures
                 MassLocal = new(value, Mass.Units.Kilogram);
             }
         }
-        public Density(Density density) : this(density.KgOverCubicMeter) { }
+        public Density(Density density) { KgOverCubicMeter = density.KgOverCubicMeter; }
         public Density(decimal density, Mass.Units munit, Volume.Units vunit)
             => this[munit, vunit] = density;
         /// <summary>

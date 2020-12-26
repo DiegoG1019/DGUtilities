@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace DiegoG.Utilities.Measures
 {
-    public class Angle : Measure<Angle.Units, Angle>
+    public record Angle : Measure<Angle.Units, Angle>
     {
         [XmlType(TypeName = "AngleUnits")]
         public enum Units
@@ -40,21 +40,21 @@ namespace DiegoG.Utilities.Measures
         public decimal Radian
         {
             get => DefaultValue;
-            set => DefaultValue = value;
+            init => DefaultValue = value;
         }
 
         [UnitProperty(nameof(Units.Degree)), IgnoreDataMember, JsonIgnore, XmlIgnore]
         public decimal Degree
         {
             get => Radian * RD;
-            set => Radian = value * DR;
+            init => Radian = value * DR;
         }
 
         [UnitProperty(nameof(Units.Gradian)), IgnoreDataMember, JsonIgnore, XmlIgnore]
         public decimal Gradian
         {
             get => Radian * RG;
-            set => Radian = value * GR;
+            init => Radian = value * GR;
         }
 
         public Angle() : base() { }

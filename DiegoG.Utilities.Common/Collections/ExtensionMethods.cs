@@ -35,7 +35,7 @@ namespace DiegoG.Utilities.Collections
         /// <param name="enumerable"></param>
         /// <param name="index"></param>
         /// <returns></returns>
-        public static (IEnumerable<T> BeforeIndex, IEnumerable<T> AfterIndex) SplitAtIndex<T>(this IEnumerable<T> enumerable, int index)
+        public static (IEnumerable<T> BeforeIndex, IEnumerable<T> AtAndAfterIndex) SplitAtIndex<T>(this IEnumerable<T> enumerable, int index)
             => (enumerable.UpToIndex(index), enumerable.StartingAtIndex(index));
 
         public static bool TryDequeue<T>(this Queue<T> queue, out T item)

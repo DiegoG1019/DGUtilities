@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace DiegoG.Utilities.Measures
 {
-    public class Mass : Measure<Mass.Units, Mass>
+    public record Mass : Measure<Mass.Units, Mass>
     {
         public class MassMeasureProperty<T> where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T>
         {
@@ -40,32 +40,32 @@ namespace DiegoG.Utilities.Measures
         public decimal Kilogram
         {
             get => DefaultValue;
-            set => DefaultValue = value;
+            init => DefaultValue = value;
         }
 
         [UnitProperty(nameof(Units.Pound)), IgnoreDataMember, JsonIgnore, XmlIgnore]
         public decimal Pound
         {
             get => Kilogram * KgLb;
-            set => Kilogram = value * LbKg;
+            init => Kilogram = value * LbKg;
         }
 
         [UnitProperty(nameof(Units.UserUnits)), IgnoreDataMember, JsonIgnore, XmlIgnore]
         public float UserUnit
         {
             get => (float)this[UserUnitDefinition.BaseUnit] * UserUnitDefinition.ConversionValue;
-            set => this[UserUnitDefinition.BaseUnit] = (decimal)(value / UserUnitDefinition.ConversionValue);
+            init => this[UserUnitDefinition.BaseUnit] = (decimal)(value / UserUnitDefinition.ConversionValue);
         }
 
         [UnitProperty(nameof(Units.Gram)), JsonIgnore, IgnoreDataMember, XmlIgnore]
         public decimal Gram
         {
             get => Kilogram * KgG;
-            set => Kilogram = GKg * value;
+            init => Kilogram = GKg * value;
         }
         public Mass() => Kilogram = 0;
         public Mass(decimal V, Units i) : this() => this[i] = V;
-        public Mass(Mass mass) => Kilogram = mass.Kilogram;
+        public Mass(Mass mass) : base(mass) { }
 
         public static Mass OneKilogram => new Mass(1, Mass.Units.Kilogram);
         public static Mass OnePound => new Mass(1, Mass.Units.Pound);
