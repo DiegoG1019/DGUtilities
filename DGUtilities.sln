@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MonoGame", "MonoGame\MonoGame.shproj", "{0FA075E6-256E-4343-84FD-7AD313E84D35}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "WPF", "WPF\WPF.shproj", "{B341D789-0D1A-412F-AD2E-3D33620A71C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geometrynet", "Geometry\Geometrynet.csproj", "{FF8C64AA-B352-4D53-9B9D-A3C4D5C91DA3}"
@@ -19,9 +17,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.SQLite", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.WPF", "DiegoG.Utilities.WPF\DiegoG.Utilities.WPF.csproj", "{22A581D9-B2B8-41EB-8B36-BE15D7322818}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiegoG.MonoGame", "DiegoG.MonoGame\DiegoG.MonoGame.csproj", "{0774E26E-813F-4FF2-A3AE-8B4B5CA2772E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		MonoGame\MonoGame.projitems*{0fa075e6-256e-4343-84fd-7ad313e84d35}*SharedItemsImports = 13
 		WPF\WPF.projitems*{22a581d9-b2b8-41eb-8b36-be15d7322818}*SharedItemsImports = 5
 		WPF\WPF.projitems*{b341d789-0d1a-412f-ad2e-3d33620a71c3}*SharedItemsImports = 13
 	EndGlobalSection
@@ -54,6 +53,10 @@ Global
 		{22A581D9-B2B8-41EB-8B36-BE15D7322818}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22A581D9-B2B8-41EB-8B36-BE15D7322818}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22A581D9-B2B8-41EB-8B36-BE15D7322818}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0774E26E-813F-4FF2-A3AE-8B4B5CA2772E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0774E26E-813F-4FF2-A3AE-8B4B5CA2772E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0774E26E-813F-4FF2-A3AE-8B4B5CA2772E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0774E26E-813F-4FF2-A3AE-8B4B5CA2772E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

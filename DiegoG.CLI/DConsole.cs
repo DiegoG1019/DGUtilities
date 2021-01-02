@@ -73,10 +73,8 @@ namespace DiegoG.CLI
         public static void ClearAndSetCursor((int x, int y) pos) => ClearAndSetCursor(pos.x, pos.y);
         public static void ClearLine(int y)
         {
-            var prevpos = GetCursorPosition();
             SetCursorPosition(0, y);
             Write(ClearLineString);
-            SetCursorPosition(prevpos);
         }
         public static void ClearUntil(int y)
         {

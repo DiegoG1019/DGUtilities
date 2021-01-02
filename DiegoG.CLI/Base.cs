@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 
 namespace DiegoG.CLI
 {
+    public sealed record CommandProcessorSettings(bool EnableHelpCmd, bool EnablePrintCmd, bool EnableHelloWorldCmd, bool EnableChainTestCmd)
+    { }
     public interface ICommand
     {
         /// <summary>
@@ -39,6 +41,10 @@ namespace DiegoG.CLI
         /// An alternate, usually shortened way to call the command. Set to null to ignore, can not be duplicate with any of the aliases or triggers
         /// </summary>
         string Alias { get; }
+        /// <summary>
+        /// Used to clear any data that might be stored in the command, be it instance or static
+        /// </summary>
+        protected void ClearData();
     }
 
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
@@ -81,7 +87,7 @@ namespace DiegoG.CLI
 
     public static class Commands
     {
-        public static Version Version { get; } = new("DiegoG.CLI", 0,0,0,0);
+        public static Version Version { get; } = new("DiegoG.CLI", 0, 0, 0, 1);
 
         [DllImport("shell32.dll", SetLastError = true)]
         static extern IntPtr CommandLineToArgvW([MarshalAs(UnmanagedType.LPWStr)] string lpCmdLine, out int pNumArgs);
@@ -127,18 +133,6 @@ namespace DiegoG.CLI
 
         public static event EventHandler<CommandCallEventArgs> CommandCalled;
 
-        static Commands()
-        {
-            try
-            {
-                foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttribute(typeof(CLICommandAttribute), false))
-                    CommandList.Add(Activator.CreateInstance(ty) as ICommand);
-            }
-            catch (Exception e)
-            {
-                throw new TypeLoadException($"All classes attributed with CLICommandAttribute must not be generic, abstract, or static, must have a parameterless constructor, and must implement ICommand directly or indirectly. CLICommandAttribute is not inheritable. Check inner exception for more details.", e);
-            }
-        }
         public static CommandList CommandList { get; } = new();
 
         /// <summary>
@@ -205,6 +199,36 @@ namespace DiegoG.CLI
                     return r;
                 }
             );
+        }
+
+        public static void Initialize(CommandProcessorSettings settings)
+        {
+            Log.Verbose("DiegoG.CLI Sweeping through current assembly in a quest for commands");
+            LoadCommands();
+
+            Log.Verbose($"DiegoG.CLI Enabling default commands: Help {settings.EnableHelpCmd} | Print {settings.EnablePrintCmd} | HelloWorld {settings.EnableHelloWorldCmd} | ChainTest {settings.EnableChainTestCmd}");
+            var (help, print, hw, chain) = settings;
+            if (help) CommandList.Add(new CLICommands.Help());
+            if (print) CommandList.Add(new CLICommands.Print());
+            if (hw) CommandList.Add(new CLICommands.HelloWorld());
+            if (chain)
+            {
+                CommandList.Add(new CLICommands.ChainLinkACommand());
+                CommandList.Add(new CLICommands.ChainLinkBCommand());
+                CommandList.Add(new CLICommands.ChainLinkCCommand());
+            }
+        }
+        private static void LoadCommands()
+        {
+            try
+            {
+                foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttribute(typeof(CLICommandAttribute), false))
+                    CommandList.Add(Activator.CreateInstance(ty) as ICommand);
+            }
+            catch (Exception e)
+            {
+                throw new TypeLoadException($"All classes attributed with CLICommandAttribute must not be generic, abstract, or static, must have a parameterless constructor, and must implement ICommand directly or indirectly. CLICommandAttribute is not inheritable. Check inner exception for more details.", e);
+            }
         }
 
         /// <summary>

@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 
 namespace DiegoG.CLI.CLICommands
 {
+    /// <summary>
+    /// The base class for ChainTestCommand A, B and C
+    /// Explanation: "Entirely for test purposes. Call them in order of A >> B >> C, along with the arguments, verbatim."
+    /// Usage: "ChainA A B C >> ChainB >> ChainC C"
+    /// </summary>
     public abstract class ChainTestCommand : ICommand
     {
         public abstract byte Link { get; }
         public string HelpExplanation => "Entirely for test purposes. Call them in order of A >> B >> C, along with the arguments, verbatim.";
-        public string HelpUsage => "A [\"A\"] [\"B\"] [\"C\"] >> B >> C [\"C\"]";
+        public string HelpUsage => "ChainA [\"A\"] [\"B\"] [\"C\"] >> ChainB >> ChainC [\"C\"]";
         public abstract string Trigger { get; }
         public string Alias => null;
+        void ICommand.ClearData() { return; }
         public abstract Task<string> Action(string[] args);
         protected Task<string> Action(string[] args, int expectedLinkInd)
         {
@@ -32,7 +38,11 @@ namespace DiegoG.CLI.CLICommands
         }
     }
 
-    [CLICommand]
+    /// <summary>
+    /// A Command to Test Command Concatenation
+    /// Explanation: "Entirely for test purposes. Call them in order of A >> B >> C, along with the arguments, verbatim."
+    /// Usage: "ChainA A B C >> ChainB >> ChainC C"
+    /// </summary>
     public class ChainLinkACommand : ChainTestCommand
     {
         public override byte Link => 0;
@@ -47,7 +57,11 @@ namespace DiegoG.CLI.CLICommands
         }
     }
 
-    [CLICommand]
+    /// <summary>
+    /// A Command to Test Command Concatenation
+    /// Explanation: "Entirely for test purposes. Call them in order of A >> B >> C, along with the arguments, verbatim."
+    /// Usage: "ChainA A B C >> ChainB >> ChainC C"
+    /// </summary>
     public class ChainLinkBCommand : ChainTestCommand
     {
         public override byte Link => 1;
@@ -62,7 +76,12 @@ namespace DiegoG.CLI.CLICommands
         }
     }
 
-    [CLICommand]
+    /// <summary>
+    /// A Command to Test Command Concatenation
+    /// Explanation: "Entirely for test purposes. Call them in order of A >> B >> C, along with the arguments, verbatim."
+    /// Usage: "ChainA A B C >> ChainB >> ChainC C"
+    /// Trigger ChainC
+    /// </summary>
     public class ChainLinkCCommand : ChainTestCommand
     {
         public override byte Link => 2;

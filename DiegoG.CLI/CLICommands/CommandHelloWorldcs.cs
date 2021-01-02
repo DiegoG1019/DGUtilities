@@ -2,7 +2,6 @@
 
 namespace DiegoG.CLI.CLICommands
 {
-    [CLICommand]
     public class HelloWorld : ICommand
     {
         public string Alias => null;
@@ -10,5 +9,6 @@ namespace DiegoG.CLI.CLICommands
         public string HelpExplanation => "Salute the World!";
         public string HelpUsage => "";
         public Task<string> Action(string[] args) => Task.FromResult("Hello, World!");
+        void ICommand.ClearData() { return; }
     }
 }

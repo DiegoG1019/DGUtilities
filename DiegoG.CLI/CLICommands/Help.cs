@@ -5,13 +5,13 @@ using DiegoG.Utilities;
 
 namespace DiegoG.CLI.CLICommands
 {
-    [CLICommand]
     public class Help : ICommand
     {
         public string Trigger => "help";
         public string Alias => "h";
         public string HelpExplanation => "Returns a string explaining the uses of a specific command.";
         public string HelpUsage => "[Command]";
+        void ICommand.ClearData() { return; }
 
         private static string GetAlias(ICommand cmd) => cmd.Alias is not null ? $"({cmd.Alias})" : "";
 

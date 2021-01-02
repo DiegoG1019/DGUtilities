@@ -3,13 +3,13 @@ using System.Threading.Tasks;
 
 namespace DiegoG.CLI.CLICommands
 {
-    [CLICommand]
     class Print : ICommand
     {
         public string Trigger => "print";
         public string Alias => "p";
         public string HelpExplanation => "Prints all of the arguments";
         public string HelpUsage => "print [everything else]";
+        void ICommand.ClearData() { return; }
 
         public async Task<string> Action(string[] args)
         {

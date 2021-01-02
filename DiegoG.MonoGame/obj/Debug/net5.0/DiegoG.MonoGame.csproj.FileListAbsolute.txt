@@ -1,0 +1,5 @@
+C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.csprojAssemblyReference.cache
+C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.AssemblyInfoInputs.cache
+C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.AssemblyInfo.cs
+C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.csproj.CoreCompileInputs.cache

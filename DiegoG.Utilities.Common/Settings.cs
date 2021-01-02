@@ -49,6 +49,7 @@ namespace DiegoG.Utilities.Settings
     /// <typeparam name="T">The class that represents the settings</typeparam>
     public static class Settings<T> where T : ISettings, new()
     {
+        private readonly static Type TType = typeof(T);
         public static T Default { get; private set; } = new T();
         public static T Current
         {
@@ -74,6 +75,32 @@ namespace DiegoG.Utilities.Settings
         private static T CurrentField;
         private static bool CurrentSettingsLocked = false;
         private static readonly object CurrentSettingsKey = new();
+
+        /// <summary>
+        /// Finds the value specified in ordinary C# object resolution format (Object.Property)
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public static string CurrentGetString(string address) => CurrentGetString(address.Split('.'));
+        /// <summary>
+        /// Finds the value specified in ordinary C# object resolution format (Object.Property), each item being a dot division
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public static string CurrentGetString(params string[] address)
+        {
+            object instance = Current;
+            var thistype = TType;
+            foreach (string s in address)
+            {
+                var prop = thistype.GetProperty(s);
+                if (prop is null)
+                    throw new ArgumentOutOfRangeException($"{thistype.Name} does not contain a property named {s}");
+                thistype = prop.PropertyType;
+                instance = prop.GetValue(instance);
+            }
+            return instance as string;
+        }
 
         public static string Directory { get; private set; }
         public static string FileName { get; private set; }

@@ -62,5 +62,6 @@ namespace DiegoG.Utilities
         public static bool operator <=(Version a, Version b) => a == b || a < b;
         public override bool Equals(object obj) => base.Equals(obj);
         public override int GetHashCode() => base.GetHashCode();
+        public override string ToString() => Full;
     }
 }
