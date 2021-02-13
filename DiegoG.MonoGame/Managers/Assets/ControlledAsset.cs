@@ -1,14 +1,20 @@
-﻿using Microsoft.Xna.Framework;
+﻿using DiegoG.Utilities;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Media;
 using Serilog;
 using System;
+using System.Timers;
 
 namespace DiegoG.MonoGame
 {
     public static partial class Assets
     {
+        /// <summary>
+        /// Given in milliseconds, defaults to 5m (5 * 60 000)
+        /// </summary>
+        public static double DefaultLifeSpan { get; set; } = 5 * 60000;
+
         public struct ManagedTexture2D
         {
             public string Filename { get; private set; }
@@ -16,6 +22,7 @@ namespace DiegoG.MonoGame
             public Texture2D Texture2D => Assets.Texture2D.Get(Filename);
 
             public static implicit operator Texture2D(ManagedTexture2D v) => v.Texture2D;
+
             public ManagedTexture2D(string filename) => Filename = filename;
         }
 
@@ -24,6 +31,7 @@ namespace DiegoG.MonoGame
             public string Filename { get; private set; }
             public SpriteFont SpriteFont => Assets.SpriteFont.Get(Filename);
             public static implicit operator SpriteFont(ManagedSpriteFont v) => v.SpriteFont;
+
             public ManagedSpriteFont(string filename) => Filename = filename;
         }
 
@@ -40,6 +48,7 @@ namespace DiegoG.MonoGame
                 }
             }
             public static implicit operator SoundEffectInstance(ManagedSoundEffect v) => v.Instance;
+
             public ManagedSoundEffect(string filename)
             {
                 Filename = filename;
@@ -53,10 +62,11 @@ namespace DiegoG.MonoGame
             public Song Song => Assets.Song.Get(Filename);
 
             public static implicit operator Song(ManagedSong v) => v.Song;
+
             public ManagedSong(string filename) => Filename = filename;
         }
 
-        private abstract class ControlledAsset<T> : IDynamic
+        public abstract class ControlledAsset<T> : IDynamic
             where T : class
         {
             protected T _asset { get; set; }
@@ -64,76 +74,91 @@ namespace DiegoG.MonoGame
             {
                 get
                 {
-                    UnusedTime = TimeSpan.Zero;
+                    Life.Reset();
                     return _asset;
                 }
-                set => _asset = value;
+                protected internal set => _asset = value;
             }
-            public string FileName { get; set; }
-            public TimeSpan UnusedTime { get; set; }
-            public ID ID { get; set; }
-
-            static readonly TimeSpan LifeSpan = new TimeSpan(0, 1, 0);
-
-            public void Update(GameTime gt)
+            public string FileName { get; protected internal set; }
+            public ID ID
             {
-                UnusedTime += gt.ElapsedGameTime;
-                if (UnusedTime >= LifeSpan)
-                    Destroy();
+                get => IDField;
+                set { IDField = value; IDChanged?.Invoke(this, new GenericEventArgs<ID>(value)); }
+            }
+            ID IDField;
+
+            private Timer Life { get; init; }
+            static Timer LifeSpan => new(DefaultLifeSpan);
+
+            public event EventHandler<EventArgs> IDChanged;
+
+            public virtual void Destroy()
+            {
+                Life.Elapsed -= Life_Elapsed;
+                Life.Dispose();
             }
 
-            public abstract void Destroy();
-
-            public ControlledAsset(T asset, string filename)
+            protected internal ControlledAsset(T asset, string filename)
             {
+                Life = LifeSpan;
+                Life.Elapsed += Life_Elapsed;
                 FileName = filename;
                 Asset = asset;
-                UnusedTime = TimeSpan.Zero;
                 Log.Verbose($"Creating new Managed Asset instance, holding asset of type {typeof(T).Name}");
+                Life.Start();
             }
 
+            private void Life_Elapsed(object sender, ElapsedEventArgs e) => Destroy();
+
+            public void Initialize() => throw new NotSupportedException();
         }
 
-        private class ControlledTexture2D : ControlledAsset<Texture2D>
+        public class ControlledTexture2D : ControlledAsset<Texture2D>
         {
             public override void Destroy()
             {
                 Texture2D.Unload(FileName);
+                base.Destroy();
             }
-            public ControlledTexture2D(Texture2D asset, string filename) :
+
+            protected internal ControlledTexture2D(Texture2D asset, string filename) :
                 base(asset, filename)
             { }
         }
 
-        private class ControlledSpriteFont : ControlledAsset<SpriteFont>
+        public class ControlledSpriteFont : ControlledAsset<SpriteFont>
         {
             public override void Destroy()
             {
                 SpriteFont.Unload(FileName);
+                base.Destroy();
             }
-            public ControlledSpriteFont(SpriteFont asset, string filename) :
+
+            protected internal ControlledSpriteFont(SpriteFont asset, string filename) :
                 base(asset, filename)
             { }
         }
 
-        private class ControlledSoundEffect : ControlledAsset<SoundEffect>
+        public class ControlledSoundEffect : ControlledAsset<SoundEffect>
         {
             public override void Destroy()
             {
                 SoundEffect.Unload(FileName);
+                base.Destroy();
             }
-            public ControlledSoundEffect(SoundEffect asset, string filename) :
+            protected internal ControlledSoundEffect(SoundEffect asset, string filename) :
                 base(asset, filename)
             { }
         }
 
-        private class ControlledSong : ControlledAsset<Song>
+        public class ControlledSong : ControlledAsset<Song>
         {
             public override void Destroy()
             {
                 Song.Unload(FileName);
+                base.Destroy();
             }
-            public ControlledSong(Song asset, string filename) :
+            protected internal ControlledSong(Song asset, string filename) :
                 base(asset, filename)
             { }
         }

@@ -1,61 +1,62 @@
-﻿using System;
-using System.Linq;
+﻿using Microsoft.Xna.Framework;
+using System;
 using static DiegoG.MonoGame.LoadedLists;
 using static DiegoG.Utilities.DiegoGMath;
 
 namespace DiegoG.MonoGame
 {
-    public interface IDynamic
+    public interface IDynamic : IGameComponent
     {
         public ID ID { get; set; }
         public void Destroy();
+        public event EventHandler<EventArgs> IDChanged;
     }
-    public class ID
+    public sealed record ID : IEquatable<ID>
     {
         public bool Active { get; private set; }
-        public object Holder { get; private set; }
+        public object Holder => HolderList.GetItem(this);
         public Type HolderType => Holder.GetType();
-        public ILoadedList HolderList { get; private set; }
-        public int Value { get; set; }
         public IntFormat Format { get; set; }
+
+        public ILoadedList HolderList { get; init; }
+        public int Value { get; init; }
 
         public static implicit operator string(ID i) => $"{i.HolderType.Name}_{FormatInt(i.Value, i.Format)}";
 
         public static implicit operator int(ID a) => a.Value;
-        public static bool operator ==(ID a, ID b) => a.Value == b.Value && a.HolderType.FullName == b.HolderType.FullName;
-        public static bool operator !=(ID a, ID b) => !(a == b);
-        public override int GetHashCode() => base.GetHashCode();
-        public override bool Equals(object obj) => base.Equals(obj);
+
+        private readonly int HashCode;
+        public override int GetHashCode() => HashCode;
+
+        public bool Equals(ID obj) => HolderList == obj.HolderList && Value == obj.Value;
+
         public override string ToString() => this;
+
         public string ToString(IntFormat format) => $"{HolderType.Name}_{FormatInt(Value, format)}";
-        public void Activate(object holder, ILoadedList list)
-        {
-            HolderList = list;
-            Holder = holder;
-            Active = true;
-        }
-        public void Deactivate()
-        {
-            HolderList = null;
-            Holder = null;
-            Active = false;
-        }
+
+        public void Activate(object holder) => Active = true;
+        public void Deactivate() => Active = false;
         public bool GetHolder<T>(out T holder) where T : class, IDynamic
         {
             if (typeof(T) != HolderType)
+            {
                 throw new ArgumentException("Cannot request a holder type different from this ID's");
+            }
+
             holder = (T)Holder;
             return Active;
         }
 
-        public ID(int v) :
-            this(v, IntFormat.Hexadecimal)
+        public ID(int v, ILoadedList holderList) :
+            this(v, holderList, IntFormat.Hexadecimal)
         { }
-        public ID(int v, IntFormat sf)
+        public ID(int v, ILoadedList holderList, IntFormat sf)
         {
             Value = v;
             Format = sf;
+            HolderList = holderList;
             Active = false;
+            HashCode = System.HashCode.Combine(Value, HolderList.GetType().FullName);
         }
 
         public string Decimal => ToString(IntFormat.Decimal);

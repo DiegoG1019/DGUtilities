@@ -25,9 +25,6 @@ namespace DiegoG.MonoGame
             return new Vector2((float)Math.Cos(theta), (float)Math.Sin(theta));
         }
 
-        public static double GetVector2Distance(Vector2 A, Vector2 B)
-        {
-            return Math.Sqrt(Math.Pow(B.X - A.X, 2f) + Math.Pow(B.Y - A.Y, 2f));
-        }
+        public static double GetVector2Distance(Vector2 A, Vector2 B) => Math.Sqrt(Math.Pow(B.X - A.X, 2f) + Math.Pow(B.Y - A.Y, 2f));
     }
 }

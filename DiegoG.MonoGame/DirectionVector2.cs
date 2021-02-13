@@ -25,7 +25,10 @@ namespace DiegoG.MonoGame
         public static Vector2 GetDirection(string i)
         {
             if (DirectionDict.ContainsKey(i))
+            {
                 return DirectionDict[i];
+            }
+
             throw new InvalidOperationException("Invalid Direction");
         }
 

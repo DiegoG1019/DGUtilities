@@ -1,5 +1,5 @@
-﻿using DiegoG.Utilities.Measures;
-using DiegoG.Utilities.Enumerations;
+﻿using DiegoG.Utilities.Enumerations;
+using DiegoG.Utilities.Measures;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -52,25 +52,28 @@ namespace DiegoG.MonoGame
             _footer();
         }
 
-        public void DrawTo(DrawData c, bool clear = false, string debug = "", string verbose = "")
+        public void Draw(DrawData c, bool clear = false, string debug = "", string verbose = "")
         {
             _header();
             //
 
             if (clear)
+            {
                 Clear();
+            }
+
             if (c.DestinationRectangle != null)
             {
                 Rectangle desrec = (Rectangle)c.DestinationRectangle;
                 desrec.Inflate(desrec.Width * c.Scale.X, desrec.Height * c.Scale.Y);
                 desrec.Location = c.Position.ToVector2(Length.Units.Pixel).ToPoint();
 
-                SpriteBatch.Draw(c.Texture, desrec, c.SourceRectangle, c.Color, c.Rotation, c.Origin, c.Fx, c.LayerDepth);
+                SpriteBatch.Draw(c.Texture, desrec, c.SourceRectangle, c.Color, c.Rotation.DegreeF, c.CurrentOrigin, c.Fx, c.LayerDepth);
                 goto enddraw;
             }
-            SpriteBatch.Draw(c.Texture, c.Position.ToVector2(Length.Units.Pixel), c.SourceRectangle, c.Color, c.Rotation, c.Origin, c.Scale, c.Fx, c.LayerDepth);
+            SpriteBatch.Draw(c.Texture, c.Position.ToVector2(Length.Units.Pixel), c.SourceRectangle, c.Color, c.Rotation.DegreeF, c.CurrentOrigin, c.Scale, c.Fx, c.LayerDepth);
 
-            enddraw:;
+        enddraw:;
 
             if (Verbosity == (Verbosity.Debug | Verbosity.Verbose) && (debug != null || debug != ""))
             {
@@ -91,9 +94,9 @@ namespace DiegoG.MonoGame
         {
             SpriteBatch.Dispose();
             RenderTarget.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public static implicit operator RenderTarget2D(Canvas c) => c.RenderTarget;
-
     }
 }

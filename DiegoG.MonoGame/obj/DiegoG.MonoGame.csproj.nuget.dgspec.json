@@ -84,14 +84,14 @@
         }
       }
     },
-    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj": {
+    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj",
-        "projectName": "DiegoG.Utilities.Common",
-        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj",
+        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj",
+        "projectName": "DiegoG.Utilities.Base",
+        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj",
         "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\obj\\",
+        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -123,12 +123,690 @@
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj",
+        "projectName": "DiegoG.Utilities.Basic",
+        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj",
+        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Fody": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.3.0, )"
+            },
+            "PropertyChanged.Fody": {
+              "target": "Package",
+              "version": "[3.3.1, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.10.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj",
+        "projectName": "DiegoG.Utilities.Collections",
+        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj",
+        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj",
+        "projectName": "DiegoG.Utilities.Common",
+        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj",
+        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.IO.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.IO.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Fody": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.3.0, )"
+            },
+            "PropertyChanged.Fody": {
+              "target": "Package",
+              "version": "[3.3.1, )"
+            },
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.10.0, )"
+            },
+            "System.Collections.Specialized": {
+              "target": "Package",
+              "version": "[4.3.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj",
+        "projectName": "DiegoG.Utilities.Measures",
+        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj",
+        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj",
+        "projectName": "DiegoG.Utilities.Other",
+        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj",
+        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.IO.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.IO.csproj",
+        "projectName": "DiegoG.Utilities.IO",
+        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.IO.csproj",
+        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
+              },
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
           "dependencies": {
             "Serilog": {
               "target": "Package",
               "version": "[2.10.0, )"
             }
           },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj",
+        "projectName": "DiegoG.Utilities.Serialization",
+        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj",
+        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {
+              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "dependencies": {
+            "Serilog": {
+              "target": "Package",
+              "version": "[2.10.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj",
+        "projectName": "DiegoG.Utilities.Base",
+        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj",
+        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Base\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj",
+        "projectName": "DiegoG.Utilities.Collections",
+        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj",
+        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Collections\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj",
+        "projectName": "DiegoG.Utilities.Other",
+        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj",
+        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DiegoG.Utilities.Other\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net5.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net5.0": {
+            "targetAlias": "net5.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net5.0": {
+          "targetAlias": "net5.0",
           "imports": [
             "net461",
             "net462",
