@@ -18,13 +18,14 @@ namespace DiegoG.CLI.CLICommands
         public string HelpUsage => "ChainA [\"A\"] [\"B\"] [\"C\"] >> ChainB >> ChainC [\"C\"]";
         public abstract string Trigger { get; }
         public string Alias => null;
+        public IEnumerable<(string, string)> HelpOptions => null;
         void ICommand.ClearData() { return; }
-        public abstract Task<string> Action(string[] args);
-        protected Task<string> Action(string[] args, int expectedLinkInd)
+        public abstract Task<string> Action(CommandArguments args);
+        protected Task<string> Action(CommandArguments args, int expectedLinkInd)
         {
-            if (byte.TryParse(args[expectedLinkInd], out byte b) && b > Link)
-                return Task.FromResult(Link.ToString());
-            throw new InvalidCommandArgumentException($"Chain call failed or out of order.");
+            return byte.TryParse(args.Original[expectedLinkInd], out byte b) && b > Link
+                ? Task.FromResult(Link.ToString())
+                : throw new InvalidCommandArgumentException($"Chain call failed or out of order.");
         }
         protected static string InvalidThrow(string[] expected, string[] received)
         {
@@ -49,10 +50,10 @@ namespace DiegoG.CLI.CLICommands
         public override string Trigger => "ChainA";
 
         private readonly string[] Expected = new string[] { "ChainA", "A", "B", "C", "1" };
-        public override Task<string> Action(string[] args)
+        public override Task<string> Action(CommandArguments args)
         {
-            if (!args.SequenceEqual(Expected))
-                InvalidThrow(Expected, args);
+            if (!args.Original.SequenceEqual(Expected))
+                InvalidThrow(Expected, args.Original);
             return Action(args, 4);
         }
     }
@@ -68,10 +69,10 @@ namespace DiegoG.CLI.CLICommands
         public override string Trigger => "ChainB";
 
         private readonly string[] Expected = new string[] { "ChainB", "2" };
-        public override Task<string> Action(string[] args)
+        public override Task<string> Action(CommandArguments args)
         {
-            if (!args.SequenceEqual(Expected))
-                InvalidThrow(Expected, args);
+            if (!args.Original.SequenceEqual(Expected))
+                InvalidThrow(Expected, args.Original);
             return Action(args, 1);
         }
     }
@@ -88,10 +89,10 @@ namespace DiegoG.CLI.CLICommands
         public override string Trigger => "ChainC";
 
         private readonly string[] Expected = new string[] { "ChainC", "C" };
-        public override Task<string> Action(string[] args)
+        public override Task<string> Action(CommandArguments args)
         {
-            if (!args.SequenceEqual(Expected))
-                InvalidThrow(Expected, args);
+            if (!args.Original.SequenceEqual(Expected))
+                InvalidThrow(Expected, args.Original);
             return Task.FromResult(Link.ToString());
         }
     }

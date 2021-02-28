@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DiegoG.CLI.CLICommands
 {
@@ -8,7 +9,8 @@ namespace DiegoG.CLI.CLICommands
         public string Trigger => "helloworld";
         public string HelpExplanation => "Salute the World!";
         public string HelpUsage => "";
-        public Task<string> Action(string[] args) => Task.FromResult("Hello, World!");
+        public IEnumerable<(string, string)> HelpOptions => null;
+        public Task<string> Action(CommandArguments args) => Task.FromResult("Hello, World!");
         void ICommand.ClearData() { return; }
     }
 }

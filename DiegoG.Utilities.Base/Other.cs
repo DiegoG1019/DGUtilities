@@ -260,5 +260,72 @@ namespace DiegoG.Utilities
             }
             return success ? task.Result : default;
         }
+        public static IEnumerable<string> Split(this string str, Func<char, bool> controller)
+        {
+            int nextPiece = 0;
+
+            for (int c = 0; c < str.Length; c++)
+            {
+                if (controller(str[c]))
+                {
+                    yield return str[nextPiece..c];
+                    nextPiece = c + 1;
+                }
+            }
+            yield return str[nextPiece..];
+        }
+        public static string TrimMatchingQuotes(this string input, char quote) 
+            => input.Length >= 2 && input[0] == quote && input[^1] == quote ? input[1..^1] : input;
+
+        /// <summary>
+        /// Outputs a substring of the input that starts at the first instance of 'start' and ends at the first instance of 'end' after 'start'
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="trimkeys">Set to true to remove both 'start' and 'end' from the beggining and end of the string respectively</param>
+        /// <returns></returns>
+        public static string MatchSubstring(this string input, char start, char end, bool trimkeys = false)
+        {
+            if (input.Length < 2)
+                throw new ArgumentException("input string must be longer than 2 characters", nameof(input));
+            if (trimkeys && input.Length < 3)
+                throw new ArgumentException("input string must be longer than 3 characters, because trimkeys is set to true", nameof(input));
+
+            int indexstart = input.IndexOf(start);
+            int indexend = input.IndexOf(end, indexstart + 1);
+            return indexstart == -1
+                ? throw new KeyNotFoundException($"Could not find '{nameof(start)}' ({start}) in the given string")
+                : indexend == -1
+                ? throw new KeyNotFoundException($"Could not find '{nameof(end)}' ({end}) in the given string")
+                : trimkeys
+                ? input[(indexstart + 1)..(indexend - 1)]
+                : input[indexstart..indexend];
+        }
+        /// <summary>
+        /// Outputs a substring of the input that starts at the first instance of 'start' and ends at the first instance of 'end' after 'start'
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="trimkeys">Set to true to remove both 'start' and 'end' from the beggining and end of the string respectively</param>
+        /// <returns></returns>
+        public static string MatchSubstring(this string input, string start, string end, bool trimkeys = false)
+        {
+            if (input.Length < 2)
+                throw new ArgumentException("input string must be longer than 2 characters", nameof(input));
+            if (trimkeys && input.Length < 3)
+                throw new ArgumentException("input string must be longer than 3 characters, because trimkeys is set to true", nameof(input));
+
+            int indexstart = input.IndexOf(start);
+            int indexend = input.IndexOf(end, indexstart + 1);
+            return indexstart == -1
+                ? throw new KeyNotFoundException($"Could not find '{nameof(start)}' ({start}) in the given string")
+                : indexend == -1
+                ? throw new KeyNotFoundException($"Could not find '{nameof(end)}' ({end}) in the given string")
+                : trimkeys
+                ? input[(indexstart + start.Length)..(indexend - end.Length)]
+                : input[indexstart..indexend];
+        }
     }
 }

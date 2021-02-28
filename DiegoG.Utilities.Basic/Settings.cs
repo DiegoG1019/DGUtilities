@@ -32,6 +32,11 @@ namespace DiegoG.Utilities.Settings
         /// </summary>
         public ulong Version { get; }
     }
+    public interface ICommentedSettings : ISettings
+    {
+        public string[] _Comments { get; }
+        public string[] _Usage { get; }
+    }
     /// <summary>
     /// You're not actually supposed to use this one, inherit this in your own class and use that
     /// </summary>
@@ -44,9 +49,9 @@ namespace DiegoG.Utilities.Settings
 
         public abstract string SettingsType { get; }
 
-        public bool Console { get; set; }
+        public virtual bool Console { get; set; }
 
-        public LogEventLevel Verbosity { get; set; }
+        public virtual LogEventLevel Verbosity { get; set; }
 #if DEBUG
         public ApplicationSettings()
         {
@@ -62,7 +67,7 @@ namespace DiegoG.Utilities.Settings
     /// By virtue of C# creating a new static type with its own state for every generic type used with it
     /// </summary>
     /// <typeparam name="T">The class that represents the settings</typeparam>
-    public static class Settings<T> where T : ISettings, new()
+    public static class Settings<T> where T : class, ISettings, new()
     {
         public static event PropertyChangedEventHandler SettingsChanged;
         private readonly static Type TType = typeof(T);
@@ -78,19 +83,22 @@ namespace DiegoG.Utilities.Settings
         public static IEnumerable<(PropertyInfo Property, object Value)> GetChanges() => from i in ChangesDict select (i.Key, i.Value);
         public static PropertyInfo GetProperty(string propertyName) => TType.GetProperty(propertyName);
 
+        /// <summary>
+        /// Returns a copy of current settings for modification, that can then be applied using Apply(T)
+        /// </summary>
+        /// <returns></returns>
+        public static T GetModifiable() => Current.CopyByBinarySerialization() as T;
+
+        public static void Apply(T current) => Current = current;
+
         public static T Current
         {
             get
             {
                 //I don't want it to lock and hold up threads when it's not setting
                 if (CurrentSettingsLocked)
-                {
                     lock (CurrentSettingsKey)
-                    {
                         return CurrentField;
-                    }
-                }
-
                 return CurrentField;
             }
             private set //I'm really worried about concurrency here
@@ -99,7 +107,10 @@ namespace DiegoG.Utilities.Settings
                 lock (CurrentSettingsKey)
                 {
                     CurrentSettingsLocked = true; //If another thread comes through and sets it to false, then the next one hops in and it's already set to false despite waiting for this to be unlocked, so the "get" will flow through freely.
+                    if(CurrentField is not null)
+                        CurrentField.PropertyChanged -= Current_PropertyChanged;
                     CurrentField = value;
+                    CurrentField.PropertyChanged += Current_PropertyChanged;
                     CurrentSettingsLocked = false;
                 }
             }
@@ -141,6 +152,12 @@ namespace DiegoG.Utilities.Settings
         public static void SaveSettings() => Serialize.Json(Current, Directory, FileName);
 
         public static async Task SaveSettingsAsync() => await Serialize.JsonAsync(Current, Directory, FileName);
+
+        public static async Task<string> SerializeSettingsAsync() => await Serialize.JsonAsync(Current);
+        public static string SerializeSettings() => Serialize.Json(Current);
+
+        public static async Task DeserializeSettingsAsync(string jsonstring) => Current = await Deserialize<T>.JsonAsync(jsonstring);
+        public static void DeserializeSettings(string jsonstring) => Current = Deserialize<T>.Json(jsonstring);
 
         public static void LoadSettings(string directory, string fileName)
         {
@@ -194,6 +211,7 @@ namespace DiegoG.Utilities.Settings
             FileName = fileName;
             Directory = directory;
             Log.Debug($"Checking for existence of {fileName} settings in {directory}");
+            System.IO.Directory.CreateDirectory(directory);
             if (SettingsFileExist)
             {
                 Log.Debug($"Existence of {fileName} settings in {directory} verified, verifying version");
@@ -246,7 +264,6 @@ namespace DiegoG.Utilities.Settings
 #else
             SaveSettings();
 #endif
-            Current.PropertyChanged += Current_PropertyChanged;
         }
 
         private static void Current_PropertyChanged(object sender, PropertyChangedEventArgs e)

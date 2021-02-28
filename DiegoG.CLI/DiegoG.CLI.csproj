@@ -14,7 +14,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DiegoG.Utilities.Common\DiegoG.Utilities.Common.csproj" />
+    <ProjectReference Include="..\DiegoG.Utilities.Base\DiegoG.Utilities.Base.csproj" />
+    <ProjectReference Include="..\DiegoG.Utilities.Basic\DiegoG.Utilities.Basic.csproj" />
+    <ProjectReference Include="..\DiegoG.Utilities.Collections\DiegoG.Utilities.Collections.csproj" />
+    <ProjectReference Include="..\DiegoG.Utilities.Other\DiegoG.Utilities.Other.csproj" />
+    <ProjectReference Include="..\DiegoG.Utilities.Serialization\DiegoG.Utilities.Serialization.csproj" />
   </ItemGroup>
 
 </Project>

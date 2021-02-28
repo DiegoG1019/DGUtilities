@@ -163,8 +163,19 @@ namespace DiegoG.Utilities.Collections
             var rs = "";
             foreach (var s in strarr)
                 rs += s + spacing;
-            return trim ? rs.Trim() : rs;
+            return trim ? rs.Trim()[0..(rs.Length - 1 - spacing.Length)] : rs;
         }
+
+        public static string Flatten(this IEnumerable<char> strarr, string spacing = " ", bool trim = true)
+        {
+            var rs = "";
+            
+            foreach (var s in strarr)
+                rs += s + spacing;
+            var rslen = rs.Length - 1 - spacing.Length;
+            return trim ? rs.Trim()[0..(rslen > 0 ? rslen : 0)] : rs;
+        }
+
 
         public static IEnumerable<(TKey, TValue)> GetKVTuple<TKey, TValue>(this Dictionary<TKey, TValue> dict)
         {

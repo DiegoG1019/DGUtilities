@@ -21,7 +21,6 @@
     <ProjectReference Include="..\DiegoG.Utilities.Collections\DiegoG.Utilities.Collections.csproj" />
     <ProjectReference Include="..\DiegoG.Utilities.Measures\DiegoG.Utilities.Measures.csproj" />
     <ProjectReference Include="..\DiegoG.Utilities.Other\DiegoG.Utilities.Other.csproj" />
-    <ProjectReference Include="..\DiegoG.Utilities.Serialization\DiegoG.Utilities.IO.csproj" />
     <ProjectReference Include="..\DiegoG.Utilities.Serialization\DiegoG.Utilities.Serialization.csproj" />
   </ItemGroup>
 

@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.Other", "D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.Serialization", "DiegoG.Utilities.Serialization\DiegoG.Utilities.Serialization.csproj", "{59A0B47A-6780-4C0C-8AC5-2BBB9FBE2CA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiegoG.RapidAPI", "DiegoG.RapidAPI\DiegoG.RapidAPI.csproj", "{B990DF87-832F-4412-97EF-0806F568B685}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		WPF\WPF.projitems*{b341d789-0d1a-412f-ad2e-3d33620a71c3}*SharedItemsImports = 13
@@ -88,6 +90,10 @@ Global
 		{59A0B47A-6780-4C0C-8AC5-2BBB9FBE2CA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59A0B47A-6780-4C0C-8AC5-2BBB9FBE2CA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59A0B47A-6780-4C0C-8AC5-2BBB9FBE2CA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B990DF87-832F-4412-97EF-0806F568B685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B990DF87-832F-4412-97EF-0806F568B685}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B990DF87-832F-4412-97EF-0806F568B685}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B990DF87-832F-4412-97EF-0806F568B685}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

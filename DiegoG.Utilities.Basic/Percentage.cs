@@ -21,6 +21,9 @@ namespace DiegoG.Utilities
         public double Percent => Value / 100d;
 
         [JsonIgnore, IgnoreDataMember, XmlIgnore]
+        public double AddPercent => Value / 100d + 1;
+
+        [JsonIgnore, IgnoreDataMember, XmlIgnore]
         public string String => $"{v}%";
         public static bool ThrowChance(double chance) => new Percentage(chance).ThrowChance();
 

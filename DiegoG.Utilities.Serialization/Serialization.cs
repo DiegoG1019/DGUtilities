@@ -1,4 +1,5 @@
 ﻿using DiegoG.Utilities.Collections;
+using MessagePack;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace DiegoG.Utilities.IO
             public CustomConverterAttribute() { }
         }
 
-        public enum SerializationFormat { Binary, Xml, Json }
+        public enum SerializationFormat { Binary, Xml, Json, MsgPk }
 
         public const string XmlExtension = ".xml";
         public const string JsonExtension = ".json";
@@ -32,7 +33,8 @@ namespace DiegoG.Utilities.IO
         {
             { SerializationFormat.Binary, "" },
             { SerializationFormat.Xml, XmlExtension },
-            { SerializationFormat.Json, JsonExtension }
+            { SerializationFormat.Json, JsonExtension },
+            { SerializationFormat.MsgPk, "" }
         };
 
         public static void Init()
@@ -40,6 +42,9 @@ namespace DiegoG.Utilities.IO
             Log.Information("Initializing DiegoG.Utilities.IO.Serialization");
             Log.Information("Initializing Json Serialization Settings");
             JsonSerializationSettings.Init();
+            Log.Information("Initializing MsgPk Serialization Settings");
+            MessagePackSerializationSettings.Init();
+            
             Log.Information("Registering all CustomSerializers marked with CustomSerializerAttribute");
             foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttribute(typeof(CustomConverterAttribute), false))
             {
@@ -77,6 +82,36 @@ namespace DiegoG.Utilities.IO
             public static Task<XmlDocument> XmlAsync(string path, string file) => Task.Run(() => Xml(path, file));
         }
 
+        public static class Deserialize
+        {
+            public static object Json(string jsonString, Type type) => JsonSerializer.Deserialize(jsonString, type, JsonSerializationSettings.JsonSerializerOptions);
+
+            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "C# language version retrocompatibility")]
+            public static object Json(string path, string file, Type type)
+            {
+                string fullpath = Path.Combine(path, file + JsonExtension);
+                using (StreamReader InFile = new StreamReader(new FileStream(fullpath, FileMode.Open, FileAccess.Read, FileShare.Read)))
+                {
+                    string jsonstring = InFile.ReadToEnd();
+                    return Json(jsonstring, type);
+                }
+            }
+
+            public static async Task<object> JsonAsync(string jsonString, Type type) => await Task.Run(() => Json(jsonString, type));
+
+            public static async Task<object> JsonAsync(string path, string file, Type type) => await Task.Run(() => Json(path, file, type));
+
+            public static object MsgPk(byte[] MsgPkByteArray, Type type) => MessagePackSerializer.Deserialize(type, MsgPkByteArray, MessagePackSerializationSettings.MessagePackSerializerOptions);
+            public static object MsgPk(string path, string file, Type type)
+            {
+                string fullpath = Path.Combine(path, file + JsonExtension);
+                using FileStream InFile = new FileStream(fullpath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                return MessagePackSerializer.Deserialize(type, InFile, MessagePackSerializationSettings.MessagePackSerializerOptions);
+            }
+            public static async Task<object> MsgPkAsync(byte[] MsgPkByteArray, Type type) => await Task.Run(() => MsgPk(MsgPkByteArray, type));
+            public static async Task<object> MsgPkAsync(string path, string file, Type type) => await Task.Run(() => MsgPk(path, file, type));
+        }
+
         public static class Deserialize<T>
         {
             private static Dictionary<SerializationFormat, Func<string, string, T>> DeserializationsDict { get; } = new Dictionary<SerializationFormat, Func<string, string, T>>()
@@ -86,6 +121,7 @@ namespace DiegoG.Utilities.IO
 #pragma warning restore CS0618 // Type or member is obsolete
                 { SerializationFormat.Json, (p,f)=>Json(p,f) },
                 { SerializationFormat.Xml, (p,f)=>Xml(p,f) },
+                { SerializationFormat.MsgPk, (p,f)=>MsgPk(p,f) },
             };
             private static Dictionary<SerializationFormat, Func<string, string, Task<T>>> AsyncDeserializationsDict { get; } = new Dictionary<SerializationFormat, Func<string, string, Task<T>>>()
             {
@@ -93,7 +129,8 @@ namespace DiegoG.Utilities.IO
                 { SerializationFormat.Binary, (p,f)=>BinaryAsync(p,f) },
 #pragma warning restore CS0618 // Type or member is obsolete
                 { SerializationFormat.Json, (p,f)=>JsonAsync(p,f) },
-                { SerializationFormat.Xml, (p,f)=>XmlAsync(p,f) }
+                { SerializationFormat.Xml, (p,f)=>XmlAsync(p,f) },
+                { SerializationFormat.MsgPk, (p,f)=>MsgPkAsync(p,f) },
             };
 
             public static T ByFormat(SerializationFormat f, string path, string file) => DeserializationsDict[f](path, file);
@@ -127,15 +164,12 @@ namespace DiegoG.Utilities.IO
                 }
             }
 
-            [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0063:Use simple 'using' statement", Justification = "C# language version retrocompatibility")]
             public static T Xml(string path, string file)
             {
                 string fullpath = Path.Combine(path, file + XmlExtension);
-                using (StreamReader InFile = new StreamReader(new FileStream(fullpath, FileMode.Open, FileAccess.Read, FileShare.Read)))
-                {
-                    string xmlstring = InFile.ReadToEnd();
-                    return Xml(xmlstring);
-                }
+                using StreamReader InFile = new StreamReader(new FileStream(fullpath, FileMode.Open, FileAccess.Read, FileShare.Read));
+                string xmlstring = InFile.ReadToEnd();
+                return Xml(xmlstring);
             }
 
             public static async Task<T> XmlAsync(string xmlString) => await Task<T>.Run(() => Xml(xmlString));
@@ -158,6 +192,16 @@ namespace DiegoG.Utilities.IO
             public static async Task<T> JsonAsync(string jsonString) => await Task<T>.Run(() => Json(jsonString));
 
             public static async Task<T> JsonAsync(string path, string file) => await Task<T>.Run(() => Json(path, file));
+
+            public static T MsgPk(byte[] MsgPkByteArray) => MessagePackSerializer.Deserialize<T>(MsgPkByteArray, MessagePackSerializationSettings.MessagePackSerializerOptions);
+            public static T MsgPk(string path, string file)
+            {
+                string fullpath = Path.Combine(path, file + JsonExtension);
+                using FileStream InFile = new FileStream(fullpath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                return MessagePackSerializer.Deserialize<T>(InFile, MessagePackSerializationSettings.MessagePackSerializerOptions);
+            }
+            public static async Task<T> MsgPkAsync(byte[] MsgPkByteArray) => await Task.Run(() => MsgPk(MsgPkByteArray));
+            public static async Task<T> MsgPkAsync(string path, string file) => await Task.Run(() => MsgPk(path, file));
         }
 
         public static class Serialize
@@ -169,6 +213,7 @@ namespace DiegoG.Utilities.IO
 #pragma warning restore CS0618 // Type or member is obsolete
                 { SerializationFormat.Json, (o,p,f)=>Json(o,p,f) },
                 { SerializationFormat.Xml, (o,p,f)=>Xml(o,p,f) },
+                { SerializationFormat.MsgPk, (o,p,f)=>MsgPk(o,p,f) },
             };
             private static Dictionary<SerializationFormat, Func<object, string, string, Task>> AsyncSerializationsDict { get; } = new Dictionary<SerializationFormat, Func<object, string, string, Task>>()
             {
@@ -176,7 +221,8 @@ namespace DiegoG.Utilities.IO
                 { SerializationFormat.Binary, (o,p,f)=>BinaryAsync(o,p,f) },
 #pragma warning restore CS0618 // Type or member is obsolete
                 { SerializationFormat.Json, (o,p,f)=>JsonAsync(o,p,f) },
-                { SerializationFormat.Xml, (o,p,f)=>XmlAsync(o,p,f) }
+                { SerializationFormat.Xml, (o,p,f)=>XmlAsync(o,p,f) },
+                { SerializationFormat.MsgPk, (o,p,f)=>MsgPkAsync(o,p,f) }
             };
 
             public static void ByFormat(SerializationFormat f, object obj, string path, string file) => SerializationsDict[f](obj, path, file);
@@ -247,13 +293,23 @@ namespace DiegoG.Utilities.IO
             {
                 string fullpath = Path.Combine(path, file + JsonExtension);
                 string jsonstring = Json(obj);
-                using (StreamWriter OutFile = new StreamWriter(new FileStream(fullpath, FileMode.Create, FileAccess.Write, FileShare.Read)))
-                {
-                    OutFile.WriteLine(jsonstring);
-                }
+                using StreamWriter OutFile = new StreamWriter(new FileStream(fullpath, FileMode.Create, FileAccess.Write, FileShare.Read));
+                OutFile.WriteLine(jsonstring);
                 return jsonstring;
             }
-        }
 
+            public static byte[] MsgPk(object obj) => MessagePackSerializer.Serialize(obj.GetType(), obj, MessagePackSerializationSettings.MessagePackSerializerOptions);
+            public static byte[] MsgPk(object obj, string path, string file)
+            {
+                string fullpath = Path.Combine(path, file);
+                byte[] bytearray = MsgPk(obj);
+                using BinaryWriter OutFile = new(new FileStream(fullpath, FileMode.Create, FileAccess.Write, FileShare.Read));
+                OutFile.Write(bytearray);
+                return bytearray;
+            }
+
+            public static Task<byte[]> MsgPkAsync(object obj) => Task.Run(() => MsgPk(obj));
+            public static Task<byte[]> MsgPkAsync(object obj, string path, string file) => Task.Run(() => MsgPk(obj, path, file));
+        }
     }
 }
