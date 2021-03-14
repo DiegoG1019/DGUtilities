@@ -38,17 +38,19 @@ namespace DiegoG.Utilities.Collections
         }
         public void Clear() => Internal.Clear();
 
+        public bool TryAdd(T item)
+        {
+            if (Contains(item))
+                return false;
+            Internal.Add(item);
+            return true;
+        }
+
         public bool Contains(T item) => Internal.Contains(item);
 
         public void CopyTo(T[] array, int arrayIndex) => Internal.CopyTo(array, arrayIndex);
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            foreach (var i in this)
-            {
-                yield return i;
-            }
-        }
+        public IEnumerator<T> GetEnumerator() => Internal.GetEnumerator();
 
         public int IndexOf(T item) => Internal.IndexOf(item);
 
@@ -62,5 +64,8 @@ namespace DiegoG.Utilities.Collections
         public void RemoveAt(int index) => Internal.RemoveAt(index);
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public NoRepeatsList() => Internal = new();
+        public NoRepeatsList(int capacity) => Internal = new(capacity);
     }
 }

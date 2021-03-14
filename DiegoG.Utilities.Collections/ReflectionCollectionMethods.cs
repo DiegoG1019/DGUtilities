@@ -99,6 +99,8 @@ namespace DiegoG.Utilities.Collections
 
         public static IEnumerable<(PropertyInfo Property, IEnumerable<Attribute> Attributes)> GetAllInstancePropertiesWithAttribute(Type typeinfo, Type attribute) => from prop in GetAllInstanceProperties(typeinfo) where Attribute.IsDefined(prop, attribute) select (prop, prop.GetCustomAttributes(attribute));
 
+        public static IEnumerable<(PropertyInfo Property, IEnumerable<Attribute> Attributes)> GetAllStaticPropertiesWithAttribute(Type typeinfo, Type attribute) => from prop in GetAllStaticProperties(typeinfo) where Attribute.IsDefined(prop, attribute) select (prop, prop.GetCustomAttributes(attribute));
+
         public static IEnumerable<Type> GetAllTypesWithAttribute(Type attribute, bool inherit) => GetAllTypesWithAttributeInAssemblies(attribute, inherit, AppDomain.CurrentDomain.GetAssemblies());
 
         public static IEnumerable<(Type Type, Attribute[] Attributes)> GetAllTypesAndAttributeInstanceTuple(Type attribute, bool inherit) => GetAllTypesAndAttributeInstanceTupleFromAssembly(attribute, inherit, AppDomain.CurrentDomain.GetAssemblies());

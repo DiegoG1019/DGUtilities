@@ -29,7 +29,7 @@ namespace DiegoG.Utilities
             set
             {
                 IntervalField = value;
-                TrySetTimer();
+                ResetTimer();
             }
         }
         private double IntervalField;
@@ -37,11 +37,7 @@ namespace DiegoG.Utilities
         private T[] TArray
         {
             get => TArrayField;
-            set
-            {
-                TArrayField = value;
-                SetItems(value);
-            }
+            set => SetItems(value);
         }
         private T[] TArrayField;
 
@@ -50,13 +46,25 @@ namespace DiegoG.Utilities
             get => TimerField;
             set
             {
-                TimerField = value;
-                if (value is null)
+                if (ReferenceEquals(TimerField, value))
+                    return;
+                if(TimerField is not null)
                 {
-                    Timer.Elapsed += (s, e) => Step();
+                    TimerField.Elapsed -= Timer_Elapsed;
+                    TimerField.Dispose();
+                }
+                TimerField = value;
+                if (value is not null)
+                {
+                    TimerField.Elapsed += Timer_Elapsed;
+                    TimerField.Interval = Interval;
+                    ResetTimer();
                 }
             }
         }
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e) { Step(); ResetTimer(); }
+
         private Timer TimerField;
 
         public bool Autonomous
@@ -64,67 +72,43 @@ namespace DiegoG.Utilities
             get => AutonomousField;
             set
             {
-                if (Autonomous == value)
-                {
+                if (AutonomousField == value)
                     return;
-                }
-
+                else Timer = value ? (new(Interval)) : (Timer)null; //If value is true, then it was previously false, as it's not equal to its previous value
                 AutonomousField = value;
-                ResetTimer();
             }
         }
-        private bool AutonomousField = true;
+        private bool AutonomousField = false;
 
-        public TimedSequence(int intervalsPerSecond, bool autonomous = true) : this(1d / (intervalsPerSecond * 1000), autonomous) { }
-        public TimedSequence(TimeSpan interval, bool autonomous = true) : this(interval.TotalMilliseconds, autonomous) { }
-        public TimedSequence(double interval, bool autonomous = true)
+        private void ResetTimer() 
         {
-            Autonomous = autonomous;
-            Interval = interval;
-        }
-
-        private void ResetTimer()
-        {
-            Timer.TryDispose();
-            if (Autonomous)
-            {
-                Timer = new(Interval);
-            }
-            else
-            {
-                Timer = null;
-            }
+            if (Timer is null)
+                return;
+            Timer.Stop();
+            Timer.Interval = Interval; 
+            Timer.Start(); 
         }
 
         private (int index, bool reverse) NextStep()
         {
             if (!IsReversing)
-            {
-                if (Index == TArray.Length - 1)
-                {
+                if (Index != TArray.Length - 1)
                     return (Index + 1, false);
-                }
                 else if (Reverse)
-                {
                     return (Index, true);
-                }
                 else
-                {
                     return (0, false);
-                }
-            }
-
-            if (Index > 0 && IsReversing)
-            {
+            else if (Index > 0)
                 return (Index - 1, true);
-            }
-
-            return (Index + 1, false);
+            else
+                return (Index + 1, false);
         }
+
         public void Step()
         {
             var (ind, reverse) = NextStep();
-            Index = ind; IsReversing = reverse;
+            Index = ind;
+            IsReversing = reverse;
             NextIndex = NextStep().index;
         }
 
@@ -137,18 +121,22 @@ namespace DiegoG.Utilities
                 Step();
             }
         }
-        private void TrySetTimer()
-        {
-            if (Autonomous)
-            {
-                Timer.Interval = Interval;
-            }
-        }
+
         public void SetItems(IEnumerable<T> items)
         {
-            Items = new(items.ToList());
-            Index = PrevIndex = 0;
-            Buffer = 0;
+            TArrayField = items.ToArray();
+            Items = new(TArrayField);
+            Buffer = Index = PrevIndex = 0;
         }
+
+        public TimedSequence(int intervalsPerSecond, IEnumerable<T> items, bool autonomous = true) : this(1d / (intervalsPerSecond * 1000), items, autonomous) { }
+        public TimedSequence(TimeSpan interval, IEnumerable<T> items, bool autonomous = true) : this(interval.TotalMilliseconds, items, autonomous) { }
+        public TimedSequence(double interval, IEnumerable<T> items, bool autonomous = true)
+        {
+            SetItems(items);
+            Interval = interval;
+            Autonomous = autonomous;
+        }
+
     }
 }

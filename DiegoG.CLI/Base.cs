@@ -13,7 +13,9 @@ using System.Threading;
 using Version = DiegoG.Utilities.Version;
 using System.Threading.Tasks;
 using System.Reflection;
+using DiegoG.CLI.CLICommands;
 
+#nullable enable
 namespace DiegoG.CLI
 {
     public sealed record CommandProcessorSettings
@@ -37,13 +39,13 @@ namespace DiegoG.CLI
         /// </summary>
         string HelpExplanation { get; }
         /// <summary>
-        /// Explains the usage and syntax of the command
+        /// Explains the usage and syntax of the command - CommandName [Argument] (OptionalArgument)
         /// </summary>
         string HelpUsage { get; }
         /// <summary>
         /// Provides detailed information of each option setting. Set to null to ignore
         /// </summary>
-        IEnumerable<(string Option, string Explanation)> HelpOptions { get; }
+        IEnumerable<(string Option, string Explanation)>? HelpOptions { get; }
         /// <summary>
         /// Defines the trigger of the command (Case Insensitive)
         /// </summary>
@@ -51,7 +53,7 @@ namespace DiegoG.CLI
         /// <summary>
         /// An alternate, usually shortened way to call the command. Set to null to ignore, can not be duplicate with any of the aliases or triggers
         /// </summary>
-        string Alias { get; }
+        string? Alias { get; }
         /// <summary>
         /// Used to clear any data that might be stored in the command, be it instance or static
         /// </summary>
@@ -69,21 +71,44 @@ namespace DiegoG.CLI
         public int Count { get; private set; }
         public ICommand this[string commandName] 
             => HasCommand(commandName)
-                    ? dict[commandName] ?? throw new InvalidCommandException($"Command '{commandName}' does not exist.")
-                    : throw new InvalidCommandException($"Command '{commandName}' does not exist.");
+               ? dict[commandName] ?? throw new InvalidCommandException($"Command '{commandName}' does not exist.")
+               : throw new InvalidCommandException($"Command '{commandName}' does not exist.");
+
         internal void Add(ICommand cmd)
         {
             Count++;
-            dict.Add(cmd.Trigger.ToLower(), cmd);
+            var trigger = cmd.Trigger.ToLower();
+            ThrowIfDuplicateOrInvalid(trigger);
+            dict.Add(trigger, cmd);
             if (cmd.Alias is not null)
-                dict.Add(cmd.Alias.ToLower(), cmd);
+            {
+                var alias = cmd.Alias.ToLower();
+                ThrowIfDuplicateOrInvalid(alias);
+                dict.Add(alias, cmd);
+            }
         }
+
+        public void AddAlias(string alias, string cmd, string? explanation = null, IEnumerable<(string, string)>? options = null)
+        {
+            Count++;
+            ThrowIfDuplicateOrInvalid(alias);
+            Add(new AliasedCommand(alias, Commands.FullSplit(cmd), explanation, options));
+        }
+
         public bool HasCommand(string cmd) => dict.ContainsKey(cmd);
 
         public IEnumerator<ICommand> GetEnumerator()
         {
             foreach (var cmd in dict.Values)
                 yield return cmd;
+        }
+
+        private void ThrowIfDuplicateOrInvalid(string cmd)
+        {
+            if(HasCommand(cmd))
+                throw new InvalidOperationException($"Duplicate command detected: {cmd}. Commands, Command Aliases, or General Aliases must be unique from one another and themselves");
+            if (cmd.Any(char.IsWhiteSpace))
+                throw new InvalidCommandException("Command triggers or aliases cannot contain whitespace");
         }
 
         internal CommandList() { }
@@ -134,7 +159,7 @@ namespace DiegoG.CLI
             => args.Where(s => s.StartsWith("--") && !s.StartsWith("---") && s.Length > 2).Select(s => s[2..]).ToArray();
 
         public const string CommandConcatenator = "|";
-        public static readonly string ModuleFileName = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+        public static readonly string ModuleFileName = System.Diagnostics.Process.GetCurrentProcess().MainModule!.FileName!;
 
         public class CommandCallEventArgs : EventArgs
         {
@@ -146,9 +171,10 @@ namespace DiegoG.CLI
             public CommandCallEventArgs(CommandArguments args) => Args = args;
         }
 
-        public static event EventHandler<CommandCallEventArgs> CommandCalled;
+        public static event EventHandler<CommandCallEventArgs>? CommandCalled;
 
-        public static CommandList CommandList { get; } = new();
+        static readonly CommandList _CommandList = new();
+        public static CommandList CommandList => IsInit ? _CommandList : throw new InvalidOperationException("Cannot utilize this class without calling Commands.Initialize(CommandProcessorSettings settings) first");
 
         /// <summary>
         /// Loads the file as a string, and calls the first element as a command, and all other elements as its arguments. Commands can be concatenated using ">>". If the first element equal's the program's executable name, it is omitted.This command appends the ExeName to the start, as it assumes it is not present in the file.
@@ -173,40 +199,38 @@ namespace DiegoG.CLI
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static async Task<string> Call(CommandArguments args)
-            => IsInit ? args is null ?
+        public static Task<string> Call(CommandArguments args)
+            =>  args is null ?
                 throw new ArgumentNullException(nameof(args)) :
-                await Task.Run(
+                Task.Run(
                 async () =>
                 {
                     Log.Debug($"Command.Call({args.Original.Flatten()})");
-                    return await ProcessCommand(args.Arguments.FirstOrDefault(), args);
-                }
-            ) : throw new InvalidOperationException("Cannot utilize this class without calling Commands.Initialize(CommandProcessorSettings settings) first");
+                    return await ProcessCommand(args.Arguments.First(), args);
+                });
 
         /// <summary>
         /// Calls the first element of Arguments and passes args as is, appending the return value of each command as the last element of Arguments. Ignores EnableConcatenator. It is recommended to leave Arguments empty (but not null).
         /// </summary>
         /// <param name="argslist"></param>
         /// <returns></returns>
-        public static async Task<string> Call(List<CommandArguments> argslist)
-            => IsInit ? argslist is null ?
+        public static Task<string> Call(List<CommandArguments> argslist)
+            =>  argslist is null ?
                 throw new ArgumentNullException(nameof(argslist)) :
-                await Task.Run(
+                Task.Run(
                 async () =>
                 {
-                    string tail = null;
+                    string tail = string.Empty;
                     argslist.Reverse();
                     foreach (var args in argslist)
                     {
                         if (!string.IsNullOrEmpty(tail))
                             args.Arguments.ToList().Add(tail);
                         Log.Debug($"Command.Call({args.Original.Flatten()})");
-                        tail = await ProcessCommand(args.Arguments.FirstOrDefault(), args);
+                        tail = await ProcessCommand(args.Arguments.First(), args);
                     }
                     return tail;
-                }
-            ) : throw new InvalidOperationException("Cannot utilize this class without calling Commands.Initialize(CommandProcessorSettings settings) first");
+                });
 
         /// <summary>
         /// Calls the first element as a command, and all other elements as its arguments. Commands can be concatenated using ">>". If the first element equal's the program's executable name, it is omitted. This method will, invariably queue into the Threadpool, even if the specific command doesn't. If the command, does, in fact, call Task.Run, they'll become nested Tasks
@@ -215,10 +239,10 @@ namespace DiegoG.CLI
         /// <returns></returns>
         /// <exception cref="InvalidCommandException">Throws when a given command is invalid, or an unspecified Exception is thrown.</exception>
         /// <exception cref="InvalidCommandArgumentException">Throws when the arguments to a given command are invalid</exception>
-        public static async Task<string> Call(params string[] args)
-            => IsInit ? args is null ?
+        public static Task<string> Call(params string[] args)
+            =>  args is null ?
                 throw new ArgumentNullException(nameof(args)) :
-                await Task.Run(
+                Task.Run(
                 async () =>
                 {
                     if (args[0] == ModuleFileName)
@@ -226,11 +250,11 @@ namespace DiegoG.CLI
                     args = args.ToLower().ToArray();
                     Log.Debug($"Command.Call({args.Flatten()})");
                     if (!EnableConcatenator)
-                        return await ProcessCommand(args.FirstOrDefault(), FullSplit(args));
-                    string r = null;
+                        return await ProcessCommand(args.First(), FullSplit(args));
+                    string r = string.Empty;
                     foreach (var i in args.Split(CommandConcatenator).Reverse())
                     {
-                        var s = i.FirstOrDefault();
+                        var s = i.First();
                         if (s is null || s == string.Empty)
                             continue;
                         var li = i.ToList();
@@ -240,8 +264,7 @@ namespace DiegoG.CLI
                         r = await ProcessCommand(s, FullSplit(liarr));
                     }
                     return r;
-                }
-            ) : throw new InvalidOperationException("Cannot utilize this class without calling Commands.Initialize(CommandProcessorSettings settings) first");
+                });
 
         private static async Task<string> ProcessCommand(string s, CommandArguments liarr)
         {
@@ -296,8 +319,8 @@ namespace DiegoG.CLI
         {
             try
             {
-                foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttribute(typeof(CLICommandAttribute), false))
-                    CommandList.Add(Activator.CreateInstance(ty) as ICommand);
+                foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttributeInAssemblies(typeof(CLICommandAttribute), false, assemblies))
+                    CommandList.Add((Activator.CreateInstance(ty) as ICommand)!);
             }
             catch (Exception e)
             {
@@ -309,7 +332,7 @@ namespace DiegoG.CLI
             try
             {
                 foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttribute(typeof(CLICommandAttribute), false))
-                    CommandList.Add(Activator.CreateInstance(ty) as ICommand);
+                    CommandList.Add((Activator.CreateInstance(ty) as ICommand)!);
             }
             catch (Exception e)
             {

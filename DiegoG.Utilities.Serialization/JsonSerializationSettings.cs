@@ -21,41 +21,10 @@ namespace DiegoG.Utilities.IO
 
         public static JsonSerializerOptions JsonSerializerOptions { get; } = new JsonSerializerOptions();
 
-        public class CallbacksJsonConverter<T> : JsonConverter<T>
-        {
-            public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-            {
-                T obj = (T)JsonSerializer.Deserialize(ref reader, typeToConvert, options);
-                var methods = from method in typeof(T).GetMethods() where method.GetCustomAttributes(typeof(OnDeserializedAttribute), false).FirstOrDefault() != null select method;
-                foreach (var method in methods)
-                {
-                    method.Invoke(obj, null);
-                }
-
-                return obj;
-            }
-            public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options)
-            {
-                var methods = from method in typeof(T).GetMethods() where method.GetCustomAttributes(typeof(OnSerializedAttribute), false).FirstOrDefault() != null select method;
-                foreach (var method in methods)
-                {
-                    method.Invoke(value, null);
-                }
-
-                JsonSerializer.Serialize(writer, value, options);
-            }
-        }
-
         /// <summary>
         /// Register the given type T to serialize and deserialize according to the given callbacks
         /// </summary>
         /// <typeparam name="T">The type to register</typeparam>
-        public static void RegisterClassCallbacksJsonConverter<T>()
-        {
-            Log.Verbose($"Adding a new instance of Converter CallbacksJsonConverter of type {typeof(T).Name} ({typeof(T).FullName})");
-            JsonSerializerOptions.Converters.Add(new CallbacksJsonConverter<T>());
-        }
-
         /// <summary>
         /// Code taken from https://docs.microsoft.com/en-us/dotnet/standard/serialization/system-text-json-converters-how-to?view=netcore-3.1#support-dictionary-with-non-string-key
         /// </summary>

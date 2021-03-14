@@ -1,4 +1,5 @@
 ﻿using DiegoG.Utilities.Collections;
+using DiegoG.Utilities.IO;
 using PropertyChanged;
 using Serilog;
 using Serilog.Events;
@@ -34,8 +35,8 @@ namespace DiegoG.Utilities.Settings
     }
     public interface ICommentedSettings : ISettings
     {
-        public string[] _Comments { get; }
-        public string[] _Usage { get; }
+        public string[]? _Comments { get; }
+        public Dictionary<string, string>? _Usage { get; }
     }
     /// <summary>
     /// You're not actually supposed to use this one, inherit this in your own class and use that
@@ -151,26 +152,39 @@ namespace DiegoG.Utilities.Settings
 
         public static void SaveSettings() => Serialize.Json(Current, Directory, FileName);
 
-        public static async Task SaveSettingsAsync() => await Serialize.JsonAsync(Current, Directory, FileName);
+        public static Task SaveSettingsAsync() => Serialize.JsonAsync(Current, Directory, FileName);
 
-        public static async Task<string> SerializeSettingsAsync() => await Serialize.JsonAsync(Current);
+        public static Task<string> SerializeSettingsAsync() => Serialize.JsonAsync(Current);
         public static string SerializeSettings() => Serialize.Json(Current);
 
         public static async Task DeserializeSettingsAsync(string jsonstring) => Current = await Deserialize<T>.JsonAsync(jsonstring);
         public static void DeserializeSettings(string jsonstring) => Current = Deserialize<T>.Json(jsonstring);
 
-        public static void LoadSettings(string directory, string fileName)
+        private static void LoadSettings(string directory, string fileName, bool doCheck, Func<T, bool> validation)
         {
+            if (doCheck && CheckFile(directory, fileName, out _, out _) != CheckFileCode.ValidFile)
+                throw new InvalidDataException("The supplied settings are not valid");
             FileName = fileName;
             Directory = directory;
-            Current = Deserialize<T>.Json(Directory, FileName);
+            var stgs = Deserialize<T>.Json(Directory, FileName);
+            if (!(validation?.Invoke(stgs) ?? true))
+                throw new InvalidDataException("The loaded settings did not pass validation");
+            Current = stgs;
         }
-        public static async Task LoadSettingsAsync(string directory, string fileName)
+        public static void LoadSettings(string directory, string fileName, Func<T, bool> validation = null)
+            => LoadSettings(directory, fileName, true, validation);
+
+        public static async Task LoadSettingsAsync(string directory, string fileName, Func<T, bool> validation = null)
         {
-            var tsk = Deserialize<T>.JsonAsync(Directory, FileName);
+            if (CheckFile(directory, fileName, out _, out _) != CheckFileCode.ValidFile)
+                throw new InvalidDataException("The supplied settings are not valid");
+            var tsk = Deserialize<T>.JsonAsync(directory, fileName);
             FileName = fileName;
             Directory = directory;
-            Current = await tsk;
+            var stgs = await tsk;
+            if (!(validation?.Invoke(stgs) ?? true))
+                throw new InvalidDataException("The loaded settings did not pass validation");
+            Current = stgs;
         }
 
         public enum CheckFileCode : byte
@@ -186,7 +200,6 @@ namespace DiegoG.Utilities.Settings
         /// <param name="directory"></param>
         /// <param name="filename"></param>
         /// <param name="version"></param>
-        /// <returns>Triple state bool, null if files are of different type, false if versions are unequal, true if the match is valid.</returns>
         public static CheckFileCode CheckFile(string directory, string filename, out ulong version, out string type)
         {
             var jsel = Parse.Json(directory, filename).RootElement;
@@ -206,7 +219,33 @@ namespace DiegoG.Utilities.Settings
 
         public static void RestoreToDefault() => Current = new();
 
-        public static void Initialize(string directory, string fileName)
+        /// <summary>
+        /// Serializes all the given setting instances under the specific filename
+        /// </summary>
+        /// <param name="declaringType">The type where to look. All objects must be static and be marked with DefaultSettingsObjectAttribute</param>
+        /// <param name="overwrite">Whether or not to overwrite the file if it already exists</param>
+        public static void CreateDefaults(IEnumerable<(T obj, string name)> objects, bool overwrite = false)
+        {
+            foreach(var(obj, name) in objects)
+                if (overwrite || !File.Exists(Path.Combine(Directory, name + JsonExtension)))
+                    Serialize.Json(obj, Directory, name);
+        }
+
+        /// <summary>
+        /// Serializes all the given setting instances under the specific filename. It's recommended to use this one, as each file is serialized in parallel
+        /// </summary>
+        /// <param name="declaringType">The type where to look. All objects must be static and be marked with DefaultSettingsObjectAttribute</param>
+        /// <param name="overwrite">Whether or not to overwrite the file if it already exists</param>
+        public static Task CreateDefaultsAsync(IEnumerable<(T obj, string name)> objects, bool overwrite = false) => Task.Run(async () =>
+        {
+            AsyncTaskManager tasks = new();
+            foreach (var (obj, name) in objects)
+                if (overwrite || !File.Exists(Path.Combine(Directory, name + JsonExtension)))
+                    tasks.Add(Serialize.JsonAsync(obj, Directory, name));
+            await tasks;
+        });
+
+        public static void Initialize(string directory, string fileName, bool defaultIfFail = true, Func<T, bool> validation = null)
         {
             FileName = fileName;
             Directory = directory;
@@ -219,51 +258,46 @@ namespace DiegoG.Utilities.Settings
                 switch (CheckFile(directory, fileName, out ulong version, out string type)) // This chunk of code is quite rocky. I apologize in advance.
                 {
                     case CheckFileCode.InvalidFile: //CASE 1: INVALID FILE------------------------------------------------------------------------------------
-                        str = "File is invalid. Unable to parse.";
+                        str = "File is invalid. Unable to parse or serialize.";
                         Log.Error(str);
-#if DEBUG
-                        throw new InvalidOperationException(str);
-#else
-                        Log.Information($"{fileName} in {directory} is invalid, restoring to default and creating a new file asynchronously");
-                        goto RestoreToDefault;
-#endif
+                        if (defaultIfFail)
+                            goto RestoreToDefault;
+                        throw new JsonException(str);
                     case CheckFileCode.DifferentType: //CASE 2: DIFFERENT TYPE--------------------------------------------------------------------------------
-                        str = $"Cannot parse a settings file of a different type. File specified: {type}, Settings to Parse: {Default.SettingsType}";
+                        str = $"Cannot serialize a settings file of a different type. File specified: {type}, Settings to Parse: {Default.SettingsType}";
                         Log.Error(str);
-#if DEBUG
-                        throw new InvalidOperationException(str);
-#else
-                        Log.Information($"{fileName} in {directory} is invalid, restoring to default and creating a new file asynchronously");
-                        goto RestoreToDefault;
-#endif
+                        if (defaultIfFail)
+                            goto RestoreToDefault;
+                        throw new JsonException(str);
                     case CheckFileCode.DifferentVersion: //CASE 3: DIFFERENT VERSION--------------------------------------------------------------------------
-                        Log.Debug($"Version verified, unequal: Expected: {Default.Version}; Read: {version}. Restoring to default and creating a new file asynchronously.");
+                        Log.Error($"Version verified, unequal: Expected: {Default.Version}; Read: {version}.");
                         File.Move(Path.Combine(directory, fileName + JsonExtension), Path.Combine(directory, fileName + $"_{version}_old" + JsonExtension), true);
-                        goto RestoreToDefault;
+                        if (defaultIfFail)
+                            goto RestoreToDefault;
+                        throw new JsonException($"Cannot serialize settings of a different version. Expected: {Default.Version}; Read: {version}");
 
                     case CheckFileCode.ValidFile: //CASE 4: VALID FILE----------------------------------------------------------------------------------------
                         try
                         {
                             Log.Debug($"Version verified, equal, loading {fileName}");
-                            LoadSettings(directory, fileName);
+                            LoadSettings(directory, fileName, false, validation);
                             return;
                         }
                         catch (JsonException e)
                         {
                             Log.Error($"Exception caught: {e}");
                             Log.Information($"{fileName} in {directory} is invalid, restoring to default and creating a new file asynchronously");
-                            goto RestoreToDefault;
+                            if(defaultIfFail)
+                                goto RestoreToDefault;
+                            throw;
                         }
                 }
             }
-            Log.Information($"{fileName} in {directory} could not be found, restoring to default and creating a new file asynchronously");
+            Log.Information($"{fileName} in {directory} could not be found");
         RestoreToDefault:;
+            Log.Information("Restoring to default and creating a new file");
             RestoreToDefault();
-#if !DEBUG
-            _ = SaveSettingsAsync();
-#else
             SaveSettings();
-#endif
         }
 
         private static void Current_PropertyChanged(object sender, PropertyChangedEventArgs e)

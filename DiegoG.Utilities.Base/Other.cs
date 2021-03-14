@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -29,10 +30,6 @@ namespace DiegoG.Utilities
 
             return secureString;
         }
-
-        public static string Format(this string str, params object[] args) => string.Format(str, args);
-
-        public static string Format(this string str, IFormatProvider provider, params object[] args) => string.Format(provider, str, args);
 
         public static bool GenericTryParse<T>(string input, out T result)
             where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T>
@@ -63,6 +60,14 @@ namespace DiegoG.Utilities
             }
 
             return str;
+        }
+
+        public static void Deconstruct(this Rectangle rect, out int x, out int y, out int width, out int height) 
+        { 
+            x = rect.X;
+            y = rect.Y;
+            width = rect.Width;
+            height = rect.Height;
         }
 
         public static T CapNumber<T>(T number, T min, T max)
@@ -327,5 +332,8 @@ namespace DiegoG.Utilities
                 ? input[(indexstart + start.Length)..(indexend - end.Length)]
                 : input[indexstart..indexend];
         }
+
+        public static string TruncateString(this string input, int max, string replacement = "...") 
+            => input.Length <= max ? input : input[..(max - replacement.Length)] + replacement;
     }
 }

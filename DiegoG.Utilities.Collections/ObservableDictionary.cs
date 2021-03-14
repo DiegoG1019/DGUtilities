@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace DiegoG.Utilities.Collections
 {
-    public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>,
+    public class ObservableDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IReadOnlyDictionary<TKey, TValue>,
         INotifyCollectionChanged
     {
         /// <summary>
@@ -43,6 +43,8 @@ namespace DiegoG.Utilities.Collections
         public bool IsReadOnly => false;
         public ICollection<TKey> Keys => Dict.Keys;
         public ICollection<TValue> Values => Dict.Values;
+        IEnumerable<TKey> IReadOnlyDictionary<TKey, TValue>.Keys => Keys;
+        IEnumerable<TValue> IReadOnlyDictionary<TKey, TValue>.Values => Values;
 
         public void Add(TKey key, TValue value)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace DiegoG.Utilities.Collections
@@ -176,6 +177,27 @@ namespace DiegoG.Utilities.Collections
             return trim ? rs.Trim()[0..(rslen > 0 ? rslen : 0)] : rs;
         }
 
+        public static bool ContainsAny(this string str, IEnumerable<string> possibilities)
+            => possibilities.Any(s => s == str);
+        public static bool ContainsAny(this string str, IEnumerable<string> possibilities, [NotNullWhen(true)] out string firstmatch)
+        {
+            firstmatch = possibilities.FirstOrDefault(s => s == str);
+            return firstmatch is null;
+        }
+
+        public static IEnumerable<LinkedListNode<T>> GetNodes<T>(this LinkedList<T> ts)
+        {
+            var c = ts.Count;
+            var n = ts.First;
+            yield return n;
+            while(n is not null)
+            {
+                if (c != ts.Count)
+                    throw new InvalidOperationException("Collection was modified; enumeration operation may not execute.");
+                n = n.Next;
+                yield return n;
+            }
+        }
 
         public static IEnumerable<(TKey, TValue)> GetKVTuple<TKey, TValue>(this Dictionary<TKey, TValue> dict)
         {

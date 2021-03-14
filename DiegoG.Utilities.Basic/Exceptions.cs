@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DiegoG.Utilities.Exceptions
+namespace DiegoG.Utilities.Debug
 {
-    [System.Serializable]
+    [Serializable]
     public class AssertionException : Exception
     {
         public AssertionException() { }
@@ -14,21 +14,14 @@ namespace DiegoG.Utilities.Exceptions
     }
     public static class Methods
     {
-        public static void Assert(this object obj, Func<bool> func, string message)
+        public static void Assert(this object obj, Func<bool> func, string message = "")
         {
             if (!func())
-            {
-                throw obj switch
-                {
-                    null => new AssertionException(message),
-                    _ => new AssertionException($"Thrown by object type: {obj.GetType()} | {message}"),
-                };
-            }
+                throw obj is null ?
+                    new AssertionException(message) :
+                    new AssertionException($"Thrown by object type: {obj.GetType()}{(string.IsNullOrWhiteSpace(message) ? "" : $" | {message}")}");
         }
-        public static void Assert(this object obj, Func<bool> func) => Assert(obj, func, "");
 
-        public static void Assert(this object obj, bool value, string message) => Assert(obj, () => value, message);
-
-        public static void Assert(this object obj, bool value) => Assert(obj, value, "");
+        public static void Assert(this object obj, bool value, string message = "") => Assert(obj, () => value, message);
     }
 }
