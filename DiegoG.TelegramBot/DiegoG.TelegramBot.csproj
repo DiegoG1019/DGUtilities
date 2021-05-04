@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Telegram.Bot" Version="15.7.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DiegoG.Utilities.Base\DiegoG.Utilities.Base.csproj" />
+    <ProjectReference Include="..\DiegoG.Utilities.Collections\DiegoG.Utilities.Collections.csproj" />
+  </ItemGroup>
+
+</Project>

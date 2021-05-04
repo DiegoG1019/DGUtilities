@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using DiegoG.Utilities.Collections;
 using System.Linq;
+using DiegoG.Utilities;
 
 namespace DiegoG.CLI.CLICommands
 {

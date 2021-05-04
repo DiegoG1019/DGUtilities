@@ -37,6 +37,32 @@ namespace DiegoG.Utilities.Collections
         /// <returns></returns>
         public static (IEnumerable<T> BeforeIndex, IEnumerable<T> AtAndAfterIndex) SplitAtIndex<T>(this IEnumerable<T> enumerable, int index) => (enumerable.UpToIndex(index), enumerable.StartingAtIndex(index));
 
+        /// <summary>
+        /// Obtain an enumerable that starts at the given index 'from' and ends at 'until'
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable"></param>
+        /// <param name="from"></param>
+        /// <param name="until"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> Range<T>(this IEnumerable<T> enumerable, int from, int until)
+            => enumerable.Select((v, i) => new { v, i }).Where(p => p.i >= from && p.i < until).Select(p => p.v);
+
+        public static TimeSpan Sum<T>(this IEnumerable<T> source, Func<T, TimeSpan> selector)
+        {
+            var Total = TimeSpan.Zero;
+            foreach (var ts in source)
+                Total += selector(ts);
+            return Total;
+        }
+        public static TimeSpan Sum(this IEnumerable<TimeSpan> source)
+        {
+            var Total = TimeSpan.Zero;
+            foreach (var ts in source)
+                Total += ts;
+            return Total;
+        }
+
         public static bool TryDequeue<T>(this Queue<T> queue, out T item)
         {
             var test = queue.Count > 0;
@@ -149,32 +175,6 @@ namespace DiegoG.Utilities.Collections
             }
 
             return narr;
-        }
-
-        public static IEnumerable<string> MembersToString<T>(this IEnumerable<T> ienum)
-        {
-            var res = new List<string>(ienum.Count());
-            foreach (var i in ienum)
-                res.Add(i.ToString());
-            return res;
-        }
-
-        public static string Flatten(this IEnumerable<string> strarr, string spacing = " ", bool trim = true)
-        {
-            var rs = "";
-            foreach (var s in strarr)
-                rs += s + spacing;
-            return trim ? rs.Trim()[0..(rs.Length - 1 - spacing.Length)] : rs;
-        }
-
-        public static string Flatten(this IEnumerable<char> strarr, string spacing = " ", bool trim = true)
-        {
-            var rs = "";
-            
-            foreach (var s in strarr)
-                rs += s + spacing;
-            var rslen = rs.Length - 1 - spacing.Length;
-            return trim ? rs.Trim()[0..(rslen > 0 ? rslen : 0)] : rs;
         }
 
         public static bool ContainsAny(this string str, IEnumerable<string> possibilities)

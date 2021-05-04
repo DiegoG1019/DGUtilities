@@ -30,7 +30,7 @@ namespace DiegoG.Utilities.Collections
                 }
             }
             byte WidthField;
-            private static byte Validate(byte offset, byte width) => (offset + width) < 8 ? 0 : throw new ArgumentOutOfRangeException($"Offset and Width must be less than 8. offset:{offset} + width:{width} = {offset + width}");
+            private static byte Validate(byte offset, byte width) => (offset + width) < 8 ? (byte)0 : throw new ArgumentOutOfRangeException($"Offset and Width must be less than 8. offset:{offset} + width:{width} = {offset + width}");
         }
 
 

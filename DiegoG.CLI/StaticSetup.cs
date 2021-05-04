@@ -21,13 +21,27 @@ namespace DiegoG.CLI
             [DllImport("kernel32.dll")]
             static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
 
+            static uint prevMode;
+            static bool EnabledFx = false;
             public static void InitConsoleEffects()
             {
+                if (EnabledFx)
+                    throw new InvalidOperationException("ConsoleEffects are already enabled");
                 var handle = GetStdHandle(STD_OUTPUT_HANDLE);
-                uint mode;
-                GetConsoleMode(handle, out mode);
+
+                GetConsoleMode(handle, out uint mode);
+                prevMode = mode;
                 mode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
                 SetConsoleMode(handle, mode);
+                EnabledFx = true;
+            }
+            public static void DisableConsoleEffects()
+            {
+                if (!EnabledFx)
+                    throw new InvalidOperationException("ConsoleEffects are not yet enabled");
+                var handle = GetStdHandle(STD_OUTPUT_HANDLE);
+                SetConsoleMode(handle, prevMode);
+                EnabledFx = false;
             }
         }
     }

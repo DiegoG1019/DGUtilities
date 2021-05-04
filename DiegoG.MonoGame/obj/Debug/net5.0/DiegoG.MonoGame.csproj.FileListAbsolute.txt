@@ -13,3 +13,30 @@ C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGam
 C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.dll
 C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\ref\DiegoG.MonoGame.dll
 C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.pdb
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.MonoGame.deps.json
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.MonoGame.dll
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\ref\DiegoG.MonoGame.dll
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.MonoGame.pdb
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Base.dll
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Basic.dll
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Collections.dll
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Common.dll
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Measures.dll
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Other.dll
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Serialization.dll
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Common.pdb
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Base.pdb
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Basic.pdb
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Collections.pdb
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Measures.pdb
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Other.pdb
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Serialization.pdb
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.csprojAssemblyReference.cache
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.AssemblyInfoInputs.cache
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.AssemblyInfo.cs
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.csproj.CoreCompileInputs.cache
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.csproj.CopyComplete
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.dll
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\ref\DiegoG.MonoGame.dll
+C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.pdb

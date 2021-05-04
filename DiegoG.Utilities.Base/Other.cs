@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Security;
 using System.Threading.Tasks;
 using System.Timers;
@@ -279,8 +280,31 @@ namespace DiegoG.Utilities
             }
             yield return str[nextPiece..];
         }
-        public static string TrimMatchingQuotes(this string input, char quote) 
-            => input.Length >= 2 && input[0] == quote && input[^1] == quote ? input[1..^1] : input;
+
+        public static IEnumerable<string> SplitMatchingCharacters(this string input, char character, char? closing = null, bool requireSpaceAfter = true)
+        {
+            bool inQuotes = false;
+            return closing is null
+                ? input.Split(c =>
+                {
+                    if (c == character)
+                        inQuotes = !inQuotes;
+                    return !inQuotes && c == ' ';
+                }) : input.Split(c =>
+                {
+                    if (!inQuotes && c == character)
+                    {
+                        inQuotes = true;
+                        return false;
+                    }
+                    if (inQuotes && c == closing)
+                        inQuotes = false;
+                    return !inQuotes && (!requireSpaceAfter || c == ' ');
+                });
+        }
+
+        public static string TrimMatchingCharacters(this string input, char character, char? closing = null) 
+            => input.Length >= 2 && input[0] == character && input[^1] == (closing ?? character) ? input[1..^1] : input;
 
         /// <summary>
         /// Outputs a substring of the input that starts at the first instance of 'start' and ends at the first instance of 'end' after 'start'
@@ -333,7 +357,37 @@ namespace DiegoG.Utilities
                 : input[indexstart..indexend];
         }
 
+        public static IEnumerable<string> MembersToString<T>(this IEnumerable<T> ienum)
+        {
+            var res = new List<string>(ienum.Count());
+            foreach (var i in ienum)
+                res.Add(i.ToString());
+            return res;
+        }
+
+        public static string Flatten(this IEnumerable<string> strarr, string spacing = " ", bool trim = true)
+        {
+            var rs = "";
+            foreach (var s in strarr)
+                rs += s + spacing;
+            var rslen = rs.Length - spacing.Length;
+            return trim ? rs.Trim().Substring(0, rslen > 0 ? rslen-1 : 0) : rs;
+        }
+
+        public static string Flatten(this IEnumerable<char> strarr, string spacing = " ", bool trim = true)
+        {
+            var rs = "";
+
+            foreach (var s in strarr)
+                rs += s + spacing;
+            var rslen = rs.Length - spacing.Length;
+            return trim ? rs.Trim().Substring(0, rslen > 0 ? rslen-1 : 0) : rs;
+        }
+
         public static string TruncateString(this string input, int max, string replacement = "...") 
             => input.Length <= max ? input : input[..(max - replacement.Length)] + replacement;
+
+        public static string GetMemberName(object caller, [CallerMemberName] string memberName = "") 
+            => caller.GetType().FullName + "." + memberName;
     }
 }

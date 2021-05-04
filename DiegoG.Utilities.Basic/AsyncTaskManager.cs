@@ -89,7 +89,15 @@ namespace DiegoG.Utilities
         private readonly List<Task> Ts = new List<Task>();
         private readonly Dictionary<string, Task> NamedTs = new();
 
-        public TaskAwaiter GetAwaiter() => WhenAll.GetAwaiter();
+        public TaskAwaiter GetAwaiter()
+        {
+            Task.Run(async () =>
+            {
+                await WhenAll;
+                Clear();
+            });
+            return WhenAll.GetAwaiter();
+        }
 
         public Task this[int index] => Ts[index];
         public Task this[string name] => NamedTs[name];

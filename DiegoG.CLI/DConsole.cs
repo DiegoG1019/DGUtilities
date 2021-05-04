@@ -12,6 +12,9 @@ namespace DiegoG.CLI
 {
     public static class DConsole
     {
+
+        //I do not implement a console descriptor, simply because 'Console' already does exactly that. WindowSize and, specially, input device, are done like that to allow combined usage with Console GUI Frameworks
+
         private static readonly Thread InputThread;
         private static readonly object Sync = new();
 
@@ -34,6 +37,57 @@ namespace DiegoG.CLI
         /// Could potentially break the application by taking too long between checks, serves as a throttle to avoid using too much CPU. NOT RECOMMENDED TO CHANGE.
         /// </summary>
         public static int InputDelayTime { get; set; } = 100;
+
+        /// <summary>
+        /// Defaults to Console.ReadKey; if it's ever set to null, an exception will be thrown.
+        /// </summary>
+        public static Func<ConsoleKeyInfo> InputDevice
+        {
+            private get => InputDevice_Field;
+            set
+            {
+                if (value is null)
+                    throw new ArgumentNullException(nameof(value));
+                InputDevice_Field = value;
+            }
+        }
+        static Func<ConsoleKeyInfo> InputDevice_Field = Console.ReadKey;
+
+        public static Func<Rectangle> WindowDescriptor
+        {
+            get => WindowDescriptor_Field;
+            set
+            {
+                if (value is null)
+                    throw new ArgumentNullException(nameof(value));
+                WindowDescriptor_Field = value;
+            }
+        }
+        static Func<Rectangle> WindowDescriptor_Field = () => new(Console.WindowLeft, Console.WindowTop, Console.WindowWidth, Console.WindowHeight);
+
+        /// <summary>
+        /// Buffer should have a position of 0,0
+        /// </summary>
+        public static Func<Rectangle> BufferDescriptor
+        {
+            get => BufferDescriptor_Field;
+            set
+            {
+                if (value is null)
+                    throw new ArgumentNullException(nameof(value));
+                BufferDescriptor_Field = value;
+            }
+        }
+        static Func<Rectangle> BufferDescriptor_Field = ()=> new(0, 0, Console.BufferWidth, Console.BufferHeight);
+
+        /// <summary>
+        /// Same as WindowDescriptor, but with position set to 0,0
+        /// </summary>
+        public static Func<Rectangle> WindowSize => () =>
+        {
+            var win = WindowDescriptor_Field();
+            return new(0, 0, win.Width, win.Height);
+        };
 
         private static readonly DConsoleObject Instance = new();
 
@@ -84,21 +138,29 @@ namespace DiegoG.CLI
 
         static DConsole()
         {
-            if (OperatingSystem.IsWindows())
-                StaticSetup.Windows.InitConsoleEffects();
             GotInput = new AutoResetEvent(false);
             GotLine = new AutoResetEvent(false);
 
             InputThread = new Thread(Reader) { IsBackground = true };
             InputThread.Start();
         }
+        
+        /// <summary>
+        /// Only necessary on Windows
+        /// </summary>
+        [SupportedOSPlatform("Windows")]
+        public static void EnableConsoleEffects() => StaticSetup.Windows.InitConsoleEffects();
+        /// <summary>
+        /// Only necessary on Windows
+        /// </summary>
+        [SupportedOSPlatform("Windows")]
+        public static void DisableConsoleEffects() => StaticSetup.Windows.DisableConsoleEffects();
 
         private static void Reader()
         {
             while (true)
             {
-                //lock(Sync)
-                KeyBuffer = Console.ReadKey();
+                KeyBuffer = InputDevice();
 
                 if (KeyBuffer.Key == ConsoleKey.Enter)
                     GotLine.Set();
@@ -107,10 +169,13 @@ namespace DiegoG.CLI
 
                 GotInput.Set();
 
-                if (Width != Console.WindowWidth || Height != Console.WindowHeight || WindowX != Console.WindowLeft || WindowY != Console.WindowTop)
-                    WindowChanged?.Invoke(GetWindow_Rectangle);
-                if (BufferHeight != Console.BufferHeight || BufferWidth != Console.BufferWidth)
-                    BufferSizeChanged?.Invoke(GetBufferSize_Rectangle);
+                var winRect = WindowDescriptor();
+                if (Width != winRect.Width || Height != winRect.Height || WindowX != winRect.X || WindowY != winRect.Y)
+                    WindowChanged?.Invoke(WindowDescriptor());
+
+                var bufRect = BufferDescriptor();
+                if (BufferHeight != bufRect.Height || BufferWidth != bufRect.Width)
+                    BufferSizeChanged?.Invoke(BufferDescriptor());
                                                                                                      
                 KeyPressed?.Invoke(KeyBuffer);
                 if (KeyBuffer.Modifiers is ConsoleModifiers.Control)
@@ -120,11 +185,7 @@ namespace DiegoG.CLI
             }
         }
 
-        private static Rectangle GetWindowSize_Rectangle => new(0, 0, Console.WindowWidth, Console.WindowHeight);
-        private static Rectangle GetBufferSize_Rectangle => new(0, 0, Console.BufferWidth, Console.BufferHeight);
-        private static Rectangle GetWindow_Rectangle => new(Console.WindowLeft, Console.WindowTop, Console.WindowWidth, Console.WindowHeight);
-
-        public static string ClearLineString => new string(' ', Console.BufferWidth);
+        public static string ClearLineString => new string(' ', BufferDescriptor().Width);
 
         public static ConsoleEffect Effect { get; set; }
 
@@ -140,95 +201,14 @@ namespace DiegoG.CLI
         public static int MiddleX => Width / 2;
         public static int MiddleY => Height / 2;
 
-        public static int BufferWidth
-        {
-            get => BufferSize.Width;
+        public static int BufferWidth => BufferDescriptor().Width;
+        public static int BufferHeight => BufferDescriptor().Height;
 
-            [SupportedOSPlatform("Windows")]
-            set => BufferSize = new(0, 0, value, BufferSize.Height);
-        }
-        public static int BufferHeight
-        {
-            get => BufferSize.Width;
+        public static int Width => WindowDescriptor().Width;
+        public static int Height => WindowDescriptor().Height;
 
-            [SupportedOSPlatform("Windows")]
-            set => BufferSize = new(0, 0, BufferSize.Width, value);
-        }
-
-        public static int Width
-        {
-            get => WindowSize.Width;
-
-            [SupportedOSPlatform("Windows")]
-            set => WindowSize = new(0, 0, value, WindowSize.Height);
-        }
-        public static int Height
-        {
-            get => WindowSize.Height;
-
-            [SupportedOSPlatform("Windows")]
-            set => WindowSize = new(0, 0, WindowSize.Width, value);
-        }
-
-        public static int WindowX { get; private set; } = Console.WindowLeft;
-        public static int WindowY { get; private set; } = Console.WindowTop;
-
-        private static Rectangle WindowSize_Field = GetWindowSize_Rectangle;
-        /// <summary>
-        /// Reports the Size of the window, with position 0,0
-        /// </summary>
-        public static Rectangle WindowSize
-        {
-            get => WindowSize_Field;
-
-            [SupportedOSPlatform("Windows")]
-            set
-            {
-                WindowSize_Field = value;
-                Console.WindowHeight = value.Height;
-                Console.WindowWidth = value.Width;
-                WindowChanged(value);
-            }
-        }
-
-        private static Rectangle BufferSize_Field = GetBufferSize_Rectangle;
-        /// <summary>
-        /// Reports the size of the buffer, with position 0,0
-        /// </summary>
-        public static Rectangle BufferSize
-        {
-            get => BufferSize_Field;
-
-            [SupportedOSPlatform("Windows")]
-            set
-            {
-                BufferSize_Field = value;
-                Console.BufferHeight = value.Height;
-                Console.BufferWidth = value.Width;
-                BufferSizeChanged(value);
-            }
-        }
-
-        private static Rectangle Window_Field = GetWindow_Rectangle;
-        /// <summary>
-        /// Reports the position and size of the windw
-        /// </summary>
-        public static Rectangle Window
-        {
-            get => Window_Field;
-
-            [SupportedOSPlatform("Windows")]
-            set
-            {
-                Window_Field = value;
-                Console.WindowHeight = value.Height;
-                Console.WindowWidth = value.Width;
-                Console.WindowTop = value.Y;
-                Console.WindowLeft = value.X;
-                WindowChanged(value);
-            }
-        }
-
+        public static int WindowX { get; private set; } = WindowDescriptor().X;
+        public static int WindowY { get; private set; } = WindowDescriptor().Y;
 
         public static int PlaceMiddleX(string s) => MiddleX - s.Length / 2;
 
@@ -281,7 +261,7 @@ namespace DiegoG.CLI
 
         public static DConsoleObject DrawRectangle(Rectangle rectangle, ConsoleColor? color = null, char filler = ' ', ConsoleColor? fillerColor = null)
         {
-            if (!WindowSize.Contains(rectangle))
+            if (!WindowDescriptor().Contains(rectangle))
                 throw new ArgumentException("Provided Rectangle must be contained within Console buffer (Position + Size cannot go beyond buffer bounds)", nameof(rectangle));
             lock (Sync)
             {
@@ -307,7 +287,7 @@ namespace DiegoG.CLI
         /// <returns></returns>
         public static DConsoleObject DrawRectangle(Rectangle rectangle, int strokewidth, ConsoleColor? color = null, char filler = ' ', ConsoleColor? fillerColor = null)
         {
-            if (!WindowSize.Contains(rectangle))
+            if (!WindowDescriptor().Contains(rectangle))
                 throw new ArgumentException("Provided Rectangle must be contained within Console buffer (Position + Size cannot go beyond buffer bounds)",nameof(rectangle));
 
             var clsy = new string(filler, rectangle.Width);
@@ -489,7 +469,7 @@ namespace DiegoG.CLI
 
             public Task<ConsoleKeyInfo> ReadKeyAsync(Action onComplete = null, Action onFailure = null)
                 => DConsole.ReadKeyAsync(onComplete, onFailure);
-
+            
             /// <summary>
             /// Clears and sets the cursor at the specified position
             /// </summary>

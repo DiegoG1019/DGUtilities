@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DiegoG.Utilities.Base\DiegoG.Utilities.Base.csproj" />
+    <ProjectReference Include="..\DiegoG.Utilities.Basic\DiegoG.Utilities.Basic.csproj" />
     <ProjectReference Include="..\DiegoG.Utilities.Collections\DiegoG.Utilities.Collections.csproj" />
   </ItemGroup>
 

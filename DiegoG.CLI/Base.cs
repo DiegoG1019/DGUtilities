@@ -14,6 +14,7 @@ using Version = DiegoG.Utilities.Version;
 using System.Threading.Tasks;
 using System.Reflection;
 using DiegoG.CLI.CLICommands;
+using System.Text.RegularExpressions;
 
 #nullable enable
 namespace DiegoG.CLI
@@ -22,9 +23,11 @@ namespace DiegoG.CLI
     (bool EnableHelpCmd = true, bool EnablePrintCmd = true, bool EnableHelloWorldCmd = true, bool EnableChainTestCmd = true, bool EnableConcatenator = true, bool SingleCharFlags = true)
     { }
 
-    public sealed record CommandArguments
+    public record CommandArguments
     (string[] Arguments, string[] Flags, string[] Options, string[] Original)
-    { }
+    {
+        public object? Embedded { get; set; }
+    }
 
     public interface ICommand
     {
@@ -57,7 +60,7 @@ namespace DiegoG.CLI
         /// <summary>
         /// Used to clear any data that might be stored in the command, be it instance or static
         /// </summary>
-        protected void ClearData();
+        protected void ClearData() { }
     }
 
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
@@ -127,16 +130,10 @@ namespace DiegoG.CLI
 
         public static IEnumerable<string> SplitCommandLine(string commandLine)
         {
-            bool inQuotes = false;
             commandLine = commandLine.Trim();
             if (commandLine.StartsWith(ModuleFileName))
                 commandLine = commandLine.Remove(0, ModuleFileName.Length - 1);
-            return commandLine.Split(c =>
-            {
-                if (c == '\"')
-                    inQuotes = !inQuotes;
-                return !inQuotes && c == ' ';
-            }).Select(arg => arg.Trim().TrimMatchingQuotes('\"')).Where(arg => !string.IsNullOrEmpty(arg));
+            return commandLine.SplitMatchingCharacters('\"').Select(arg => arg.Trim().TrimMatchingCharacters('\"')).Where(arg => !string.IsNullOrEmpty(arg));
         }
 
         public static CommandArguments FullSplit(string args) => FullSplit(SplitCommandLine(args).ToArray());
@@ -147,10 +144,10 @@ namespace DiegoG.CLI
             => args.Where(s => !s.StartsWith("-")).ToArray();
 
         public static string[] GetFlags_SingleChar(string[] args)
-            => ((IEnumerable<IEnumerable<char>>)args.Where(s => s.StartsWith('-') && !s.StartsWith("--"))).SelectMany(c => c).Where(ch => ch != '-').Select(c => new string(c, 1)).ToArray();
+            => ((IEnumerable<IEnumerable<char>>)args.Where(s => s.StartsWith('-') && !s.StartsWith("--") && Regex.IsMatch(s, @"-[^0-9]"))).SelectMany(c => c).Where(ch => ch != '-').Select(c => new string(c, 1)).ToArray();
 
         public static string[] GetFlags_String(string[] args)
-            => args.Where(s => s.StartsWith('-') && !s.StartsWith("--")).Select(s => s[1..]).ToArray();
+            => args.Where(s => s.StartsWith('-') && !s.StartsWith("--") && Regex.IsMatch(s, @"-[^0-9]")).Select(s => s[1..]).ToArray();
 
         public static string[] GetFlags(string[] args)
             => SingleCharFlags ? GetFlags_SingleChar(args) : GetFlags_String(args).ToArray();
@@ -296,14 +293,14 @@ namespace DiegoG.CLI
 
             Log.Verbose($"DiegoG.CLI Enabling default commands: Help {settings.EnableHelpCmd} | Print {settings.EnablePrintCmd} | HelloWorld {settings.EnableHelloWorldCmd} | ChainTest {settings.EnableChainTestCmd}");
             var (help, print, hw, chain, concat, scf) = settings;
-            if (help) CommandList.Add(new CLICommands.Help());
-            if (print) CommandList.Add(new CLICommands.Print());
-            if (hw) CommandList.Add(new CLICommands.HelloWorld());
+            if (help) _CommandList.Add(new CLICommands.Help());
+            if (print) _CommandList.Add(new CLICommands.Print());
+            if (hw) _CommandList.Add(new CLICommands.HelloWorld());
             if (chain)
             {
-                CommandList.Add(new CLICommands.ChainLinkACommand());
-                CommandList.Add(new CLICommands.ChainLinkBCommand());
-                CommandList.Add(new CLICommands.ChainLinkCCommand());
+                _CommandList.Add(new CLICommands.ChainLinkACommand());
+                _CommandList.Add(new CLICommands.ChainLinkBCommand());
+                _CommandList.Add(new CLICommands.ChainLinkCCommand());
             }
             EnableConcatenator = concat;
             SingleCharFlags = scf;
@@ -329,14 +326,18 @@ namespace DiegoG.CLI
         }
         private static void LoadCommands()
         {
+            Type? cty = null;
             try
             {
                 foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttribute(typeof(CLICommandAttribute), false))
-                    CommandList.Add((Activator.CreateInstance(ty) as ICommand)!);
+                {
+                    cty = ty;
+                    _CommandList.Add((Activator.CreateInstance(ty) as ICommand)!);
+                }
             }
             catch (Exception e)
             {
-                throw new TypeLoadException($"All classes attributed with CLICommandAttribute must not be generic, abstract, or static, must have a parameterless constructor, and must implement ICommand directly or indirectly. CLICommandAttribute is not inheritable. Check inner exception for more details.", e);
+                throw new TypeLoadException($"All classes attributed with CLICommandAttribute must not be generic, abstract, or static, must have a parameterless constructor, and must implement ICommand directly or indirectly. CLICommandAttribute is not inheritable. Check inner exception for more details. Type that caused the exception: {cty?.ToString() ?? "Unknown"}", e);
             }
         }
 

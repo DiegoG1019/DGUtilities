@@ -30,25 +30,41 @@ namespace DiegoG.Utilities.Collections
             set
             {
                 while (value < 0)
-                    value += Count;
+                    value += MaxIndex;
                 while (value > MaxIndex)
-                    value -= Count;
+                    value -= (MaxIndex - 1);
                 _index = value;
             }
         }
 
         public int NonDefault => _SetIndexes.Count;
 
-        public T this[int index] { get { Index = index; return Array[Index]; } }
+        public T this[int index] { 
 
-        public T Next() => Array[Index++];
-        public T Previous() => Array[Index--];
+            get 
+            {
+                if (Index > MaxIndex)
+                    throw new ArgumentOutOfRangeException(nameof(index), Index, $"The given index was Outside of Range for {MaxIndex} and 0");
+                Index = index;
+                return Array[Index];
+            }
+            internal set
+            {
+                if (Index > MaxIndex)
+                    throw new ArgumentOutOfRangeException(nameof(index), Index, $"The given index was Outside of Range for {MaxIndex} and 0");
+                Index = index;
+                Array[Index] = value;
+            }
+        }
+
+        public T Next() => this[Index++];
+        public T Previous() => this[Index--];
         public void SetNext(T item) => Set(Index++, item);
         public void SetPrevious(T item) => Set(Index--, item);
 
         private void Set(int index, T item)
         {
-            Array[index] = item;
+            this[index] = item;
             _SetIndexes.Add(index);
         }
 

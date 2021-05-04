@@ -1,12 +1,12 @@
 ﻿using DiegoG.Utilities.Collections;
 using DiegoG.Utilities.IO;
+using Microsoft.Extensions.Configuration;
 using PropertyChanged;
 using Serilog;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -17,6 +17,7 @@ using static DiegoG.Utilities.IO.Serialization;
 
 namespace DiegoG.Utilities.Settings
 {
+#nullable enable
     public interface ISettings : INotifyPropertyChanged
     {
         /// <summary>
@@ -33,19 +34,21 @@ namespace DiegoG.Utilities.Settings
         /// </summary>
         public ulong Version { get; }
     }
+
     public interface ICommentedSettings : ISettings
     {
         public string[]? _Comments { get; }
         public Dictionary<string, string>? _Usage { get; }
     }
+
     /// <summary>
     /// You're not actually supposed to use this one, inherit this in your own class and use that
     /// </summary>
     [Serializable, AddINotifyPropertyChangedInterface]
     public abstract class ApplicationSettings : ISettings
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void NotifyPC([CallerMemberName] string propertyName = "") => PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        public event PropertyChangedEventHandler? PropertyChanged;
+        protected void NotifyPC([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         public virtual ulong Version => 3;
 
         public abstract string SettingsType { get; }
@@ -70,7 +73,7 @@ namespace DiegoG.Utilities.Settings
     /// <typeparam name="T">The class that represents the settings</typeparam>
     public static class Settings<T> where T : class, ISettings, new()
     {
-        public static event PropertyChangedEventHandler SettingsChanged;
+        public static event PropertyChangedEventHandler? SettingsChanged;
         private readonly static Type TType = typeof(T);
         private static T Default { get; } = new T();
         private static Dictionary<PropertyInfo, object> ChangesDict { get; } = new();
@@ -79,31 +82,35 @@ namespace DiegoG.Utilities.Settings
         /// <summary>
         /// Returns null if the property has not changed
         /// </summary>
-        public static ReadOnlyIndexedProperty<PropertyInfo, object> Changes { get; } = new(i => ChangesDict.ContainsKey(i) ? ChangesDict[i] : null);
+        public static ReadOnlyIndexedProperty<PropertyInfo, object?> Changes { get; } = new(i => ChangesDict.ContainsKey(i) ? ChangesDict[i] : null);
         public static bool HasPropertyChanged(PropertyInfo i) => ChangesDict.ContainsKey(i);
         public static IEnumerable<(PropertyInfo Property, object Value)> GetChanges() => from i in ChangesDict select (i.Key, i.Value);
-        public static PropertyInfo GetProperty(string propertyName) => TType.GetProperty(propertyName);
+        public static PropertyInfo? GetProperty(string propertyName) => TType.GetProperty(propertyName);
 
         /// <summary>
         /// Returns a copy of current settings for modification, that can then be applied using Apply(T)
         /// </summary>
         /// <returns></returns>
-        public static T GetModifiable() => Current.CopyByBinarySerialization() as T;
+        public static T? GetModifiable() => Current.CopyByBinarySerialization() as T;
 
+        /// <summary>
+        /// Replace the current settings with the given object
+        /// </summary>
+        /// <param name="current"></param>
         public static void Apply(T current) => Current = current;
 
         public static T Current
         {
             get
             {
-                //I don't want it to lock and hold up threads when it's not setting
-                if (CurrentSettingsLocked)
-                    lock (CurrentSettingsKey)
-                        return CurrentField;
-                return CurrentField;
+                lock (CurrentSettingsKey)
+                    return CurrentField;
             }
             private set //I'm really worried about concurrency here
             {
+                if (value is null)
+                    throw new ArgumentNullException(nameof(value), "Current settings cannot be null");
+
                 CurrentSettingsLocked = true; // I think it's better if I set it before locking the object, so that a return doesn't happen right as itssetting the field
                 lock (CurrentSettingsKey)
                 {
@@ -116,6 +123,7 @@ namespace DiegoG.Utilities.Settings
                 }
             }
         }
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         private static T CurrentField;
         private static bool CurrentSettingsLocked = false;
         private static readonly object CurrentSettingsKey = new();
@@ -132,10 +140,11 @@ namespace DiegoG.Utilities.Settings
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
-        public static string CurrentGetString(params string[] address) => Other.GetProperty(Current, TType, address) as string;
+        public static string CurrentGetString(params string[] address) => (string)(Other.GetProperty(Current, TType, address)!);
 
         public static string Directory { get; private set; }
         public static string FileName { get; private set; }
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
         /// <summary>
         /// => Path.Combine(Directory, File);
@@ -146,9 +155,9 @@ namespace DiegoG.Utilities.Settings
         //It would normally be better to place these in the class, but then we woulnd't have access to T and we'd have to override it
         private static readonly TypeInfo typeinfo = (TypeInfo)typeof(T);
         public static IEnumerable<Pair<string, object>> CurrentProperties
-            => from item in typeinfo.GetProperties() select new Pair<string, object>(item.Name, item.GetValue(Current));
+            => from item in typeinfo.GetProperties() select new Pair<string, object>(item.Name, item.GetValue(Current)!);
         public static IEnumerable<Pair<string, object>> DefaultProperties
-        { get; } = from item in typeinfo.GetProperties() select new Pair<string, object>(item.Name, item.GetValue(Default));
+        { get; } = from item in typeinfo.GetProperties() select new Pair<string, object>(item.Name, item.GetValue(Default)!);
 
         public static void SaveSettings() => Serialize.Json(Current, Directory, FileName);
 
@@ -160,7 +169,10 @@ namespace DiegoG.Utilities.Settings
         public static async Task DeserializeSettingsAsync(string jsonstring) => Current = await Deserialize<T>.JsonAsync(jsonstring);
         public static void DeserializeSettings(string jsonstring) => Current = Deserialize<T>.Json(jsonstring);
 
-        private static void LoadSettings(string directory, string fileName, bool doCheck, Func<T, bool> validation)
+        public static void SerializeEmptyFile(string directory, string file) => Serialize.Json(new T(), directory, file);
+        public static Task SerializeEmptyFileAsync(string directory, string file) => Serialize.JsonAsync(new T(), directory, file);
+
+        private static void LoadSettings(string directory, string fileName, bool doCheck, Func<T, bool>? validation)
         {
             if (doCheck && CheckFile(directory, fileName, out _, out _) != CheckFileCode.ValidFile)
                 throw new InvalidDataException("The supplied settings are not valid");
@@ -171,13 +183,13 @@ namespace DiegoG.Utilities.Settings
                 throw new InvalidDataException("The loaded settings did not pass validation");
             Current = stgs;
         }
-        public static void LoadSettings(string directory, string fileName, Func<T, bool> validation = null)
+        public static void LoadSettings(string directory, string fileName, Func<T, bool>? validation = null)
             => LoadSettings(directory, fileName, true, validation);
 
-        public static async Task LoadSettingsAsync(string directory, string fileName, Func<T, bool> validation = null)
+        public static async Task LoadSettingsAsync(string directory, string fileName, Func<T, bool>? validation = null)
         {
-            if (CheckFile(directory, fileName, out _, out _) != CheckFileCode.ValidFile)
-                throw new InvalidDataException("The supplied settings are not valid");
+            if (CheckFile(directory, fileName, out var version, out var type) != CheckFileCode.ValidFile)
+                throw new InvalidDataException($"The supplied settings are not valid\nExpected: v.{Default.Version} type: {Default.SettingsType}\nRead: v.{version} type: {type}");
             var tsk = Deserialize<T>.JsonAsync(directory, fileName);
             FileName = fileName;
             Directory = directory;
@@ -186,6 +198,24 @@ namespace DiegoG.Utilities.Settings
                 throw new InvalidDataException("The loaded settings did not pass validation");
             Current = stgs;
         }
+
+        /// <summary>
+        /// Loads user secrets into the locally held instance of the given ISettings class -- DO NOT USE THIS IN PRODUCTION. Only for development purposes, use LoadSettings instead (Initialize is also not recommended, as it relies on default constructor and thus, in-project data to build the file if it doesn't exist, when these settings should already exist in your server)
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="section"></param>
+        /// <param name="configureOptions"></param>
+        public static void LoadUserSecrets(IConfiguration config, string? section = null, Action<BinderOptions>? configureOptions = null, Func<T, bool>? validation = null)
+        {
+            var c = section is null ? config : config.GetSection(section);
+            var stgs = configureOptions is null ? c.Get<T>() : c.Get<T>(configureOptions);
+            if (!(validation?.Invoke(stgs) ?? true))
+                throw new InvalidDataException("The loaded settings did not pass validation");
+            Current = stgs;
+        }
+
+        public static Task LoadUserSecretsAsync(IConfiguration config, string? section = null, Action<BinderOptions>? configureOptions = null, Func<T, bool>? validation = null)
+            => Task.Run(() => LoadUserSecrets(config, section, configureOptions, validation));
 
         public enum CheckFileCode : byte
         {
@@ -206,7 +236,7 @@ namespace DiegoG.Utilities.Settings
             try
             {
                 version = jsel.GetProperty(nameof(ISettings.Version)).GetUInt64();
-                type = jsel.GetProperty(nameof(ISettings.SettingsType)).GetString();
+                type = jsel.GetProperty(nameof(ISettings.SettingsType)).GetString()!;
             }
             catch (KeyNotFoundException)
             {
@@ -245,7 +275,14 @@ namespace DiegoG.Utilities.Settings
             await tasks;
         });
 
-        public static void Initialize(string directory, string fileName, bool defaultIfFail = true, Func<T, bool> validation = null)
+        /// <summary>
+        /// Validates, loads and initializes the given settings type. Do not use if you mean to load An UserSecrets file, use LoadUserSecrets instead.
+        /// </summary>
+        /// <param name="directory"></param>
+        /// <param name="fileName"></param>
+        /// <param name="defaultIfFail"></param>
+        /// <param name="validation"></param>
+        public static void Initialize(string directory, string fileName, bool defaultIfFail = true, Func<T, bool>? validation = null)
         {
             FileName = fileName;
             Directory = directory;
@@ -300,14 +337,14 @@ namespace DiegoG.Utilities.Settings
             SaveSettings();
         }
 
-        private static void Current_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private static void Current_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            var prop = GetProperty(e.PropertyName);
+            PropertyInfo prop = GetProperty(e.PropertyName!)!;
             HasChanged = true;
             if (HasPropertyChanged(prop))
-                ChangesDict[prop] = prop.GetValue(Current);
+                ChangesDict[prop] = prop.GetValue(Current)!;
             else
-                ChangesDict.Add(prop, prop.GetValue(Current));
+                ChangesDict.Add(prop, prop.GetValue(Current)!);
             SettingsChanged?.Invoke(sender, e);
         }
     }

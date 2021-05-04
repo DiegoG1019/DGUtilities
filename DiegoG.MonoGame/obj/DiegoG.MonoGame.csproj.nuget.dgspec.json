@@ -1,23 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj": {}
+    "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj": {
+    "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj",
+        "projectUniqueName": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj",
         "projectName": "DiegoG.MonoGame",
-        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj",
-        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\obj\\",
+        "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj",
+        "packagesPath": "C:\\Users\\DiegoG\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DiegoG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -32,8 +34,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj"
               }
             }
           }
@@ -80,24 +82,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
+    "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj",
+        "projectUniqueName": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj",
         "projectName": "DiegoG.Utilities.Base",
-        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj",
-        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\obj\\",
+        "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj",
+        "packagesPath": "C:\\Users\\DiegoG\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DiegoG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -138,24 +142,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj": {
+    "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj",
+        "projectUniqueName": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj",
         "projectName": "DiegoG.Utilities.Basic",
-        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj",
-        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\obj\\",
+        "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj",
+        "packagesPath": "C:\\Users\\DiegoG\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DiegoG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -170,14 +176,14 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj"
               },
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
               },
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj"
               }
             }
           }
@@ -197,6 +203,14 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[6.3.0, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Binder": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             },
             "PropertyChanged.Fody": {
               "target": "Package",
@@ -222,24 +236,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+    "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj",
+        "projectUniqueName": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj",
         "projectName": "DiegoG.Utilities.Collections",
-        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj",
-        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\obj\\",
+        "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj",
+        "packagesPath": "C:\\Users\\DiegoG\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DiegoG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -280,24 +296,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj": {
+    "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj",
+        "projectUniqueName": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj",
         "projectName": "DiegoG.Utilities.Common",
-        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj",
-        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\obj\\",
+        "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj",
+        "packagesPath": "C:\\Users\\DiegoG\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DiegoG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -312,23 +330,23 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj"
               },
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj"
               },
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
               },
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj"
               },
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj"
               },
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj"
               }
             }
           }
@@ -377,24 +395,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj": {
+    "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj",
+        "projectUniqueName": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj",
         "projectName": "DiegoG.Utilities.Measures",
-        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj",
-        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\obj\\",
+        "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\DiegoG.Utilities.Measures.csproj",
+        "packagesPath": "C:\\Users\\DiegoG\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Measures\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DiegoG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -409,14 +429,14 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Base\\DiegoG.Utilities.Base.csproj"
               },
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Basic\\DiegoG.Utilities.Basic.csproj"
               },
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
               }
             }
           }
@@ -445,24 +465,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj": {
+    "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj",
+        "projectUniqueName": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj",
         "projectName": "DiegoG.Utilities.Other",
-        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj",
-        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\obj\\",
+        "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\DiegoG.Utilities.Other.csproj",
+        "packagesPath": "C:\\Users\\DiegoG\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Other\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DiegoG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -503,24 +525,26 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj": {
+    "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj",
+        "projectUniqueName": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj",
         "projectName": "DiegoG.Utilities.Serialization",
-        "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj",
-        "packagesPath": "C:\\Users\\Diego Garcia\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\obj\\",
+        "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\DiegoG.Utilities.Serialization.csproj",
+        "packagesPath": "C:\\Users\\DiegoG\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Serialization\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\Diego Garcia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\DiegoG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -535,8 +559,8 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
-                "projectPath": "C:\\Users\\Diego Garcia\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
+              "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj": {
+                "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Collections\\DiegoG.Utilities.Collections.csproj"
               }
             }
           }
@@ -579,7 +603,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
