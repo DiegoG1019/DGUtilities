@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Telegram.Bot.Types;
 
 namespace DiegoG.TelegramBot.Types
 {
     public sealed class BotCommandList : IEnumerable<IBotCommand>
     {
         private readonly Dictionary<string, IBotCommand> dict = new();
+        private readonly static List<BotCommand> BotCommands = new();
+
+        public IEnumerable<BotCommand> AvailableCommands => BotCommands;
 
         public int Count { get; private set; }
         public IBotCommand this[string commandName]
@@ -23,11 +27,25 @@ namespace DiegoG.TelegramBot.Types
             var trigger = cmd.Trigger.ToLower();
             ThrowIfDuplicateOrInvalid(trigger);
             dict.Add(trigger, cmd);
+
+            var tn = trigger.StartsWith('/') ? trigger[1..] : trigger;
+
+            BotCommands.Add(new()
+            {
+                Command = tn,
+                Description = @$"{cmd.HelpUsage} - {cmd.HelpExplanation}"
+            });
+
             if (cmd.Alias is not null)
             {
                 var alias = cmd.Alias.ToLower();
                 ThrowIfDuplicateOrInvalid(alias);
-                dict.Add(alias, cmd);
+                dict.Add(alias, cmd); 
+                BotCommands.Add(new()
+                {
+                    Command = alias.StartsWith('/') ? alias[1..] : alias,
+                    Description = $"Alias of {tn}"
+                });
             }
         }
 

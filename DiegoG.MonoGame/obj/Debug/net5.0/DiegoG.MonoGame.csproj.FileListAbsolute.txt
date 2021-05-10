@@ -1,18 +1,3 @@
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.csprojAssemblyReference.cache
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.AssemblyInfoInputs.cache
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.AssemblyInfo.cs
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.csproj.CoreCompileInputs.cache
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.MonoGame.deps.json
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.MonoGame.dll
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\ref\DiegoG.MonoGame.dll
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.MonoGame.pdb
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Common.dll
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.Utilities.Common.pdb
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.csproj.CopyComplete
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.dll
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\ref\DiegoG.MonoGame.dll
-C:\Users\Diego Garcia\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\obj\Debug\net5.0\DiegoG.MonoGame.pdb
 C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.MonoGame.deps.json
 C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\DiegoG.MonoGame.dll
 C:\Users\DiegoG\Documents\Workspace\Programming\DGUtilities\DiegoG.MonoGame\bin\Debug\net5.0\ref\DiegoG.MonoGame.dll

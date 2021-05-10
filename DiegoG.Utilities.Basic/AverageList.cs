@@ -29,7 +29,10 @@ namespace DiegoG.Utilities.Basic
         /// </summary>
         /// <param name="sample"></param>
         public void AddSample(double sample) => ts.SetNext(sample);
-        
+
+        public override string ToString()
+            => $"Peak: {Peak:.####}, Average: {Average:.####}, Valley: {Valley:.####}";
+
         public double Peak => ts.Max();
         public double Valley => ts.Min();
         public double Average => ts.Sum() / ts.NonDefault;

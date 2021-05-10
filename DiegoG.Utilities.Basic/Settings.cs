@@ -278,11 +278,12 @@ namespace DiegoG.Utilities.Settings
         /// <summary>
         /// Validates, loads and initializes the given settings type. Do not use if you mean to load An UserSecrets file, use LoadUserSecrets instead.
         /// </summary>
-        /// <param name="directory"></param>
-        /// <param name="fileName"></param>
-        /// <param name="defaultIfFail"></param>
-        /// <param name="validation"></param>
-        public static void Initialize(string directory, string fileName, bool defaultIfFail = true, Func<T, bool>? validation = null)
+        /// <param name="directory">The directory where the settings file resides</param>
+        /// <param name="fileName">The file name of the settings file</param>
+        /// <param name="defaultIfFail">Whether to throw an exception, or use a default settings file upon failure to deserialize</param>
+        /// <param name="validation">A method that will validate the settings file for special cases</param>
+        /// <param name="update">A method that will update the settings file in case it's an outdated version</param>
+        public static void Initialize(string directory, string fileName, bool defaultIfFail = true, Func<T, bool>? validation = null, Action<T>? update = null)
         {
             FileName = fileName;
             Directory = directory;
@@ -307,6 +308,8 @@ namespace DiegoG.Utilities.Settings
                             goto RestoreToDefault;
                         throw new JsonException(str);
                     case CheckFileCode.DifferentVersion: //CASE 3: DIFFERENT VERSION--------------------------------------------------------------------------
+                        if (update is not null)
+                            goto case CheckFileCode.ValidFile;
                         Log.Error($"Version verified, unequal: Expected: {Default.Version}; Read: {version}.");
                         File.Move(Path.Combine(directory, fileName + JsonExtension), Path.Combine(directory, fileName + $"_{version}_old" + JsonExtension), true);
                         if (defaultIfFail)
@@ -318,6 +321,7 @@ namespace DiegoG.Utilities.Settings
                         {
                             Log.Debug($"Version verified, equal, loading {fileName}");
                             LoadSettings(directory, fileName, false, validation);
+                            update?.Invoke(Current);
                             return;
                         }
                         catch (JsonException e)

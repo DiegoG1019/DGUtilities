@@ -371,17 +371,16 @@ namespace DiegoG.Utilities
             foreach (var s in strarr)
                 rs += s + spacing;
             var rslen = rs.Length - spacing.Length;
-            return trim ? rs.Trim().Substring(0, rslen > 0 ? rslen-1 : 0) : rs;
+            return (trim ? rs.Substring(0, rslen > 1 ? rslen - 1 : 0) : rs).Trim();
         }
 
         public static string Flatten(this IEnumerable<char> strarr, string spacing = " ", bool trim = true)
         {
             var rs = "";
-
             foreach (var s in strarr)
                 rs += s + spacing;
             var rslen = rs.Length - spacing.Length;
-            return trim ? rs.Trim().Substring(0, rslen > 0 ? rslen-1 : 0) : rs;
+            return (trim ? rs.Substring(0, rslen > 1 ? rslen - 1 : 0) : rs).Trim();
         }
 
         public static string TruncateString(this string input, int max, string replacement = "...") 

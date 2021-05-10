@@ -156,14 +156,18 @@ namespace DiegoG.TelegramBot
         /// <param name="assemblies"></param>
         public static void LoadCommands(Assembly[] assemblies)
         {
+            Type? curtype = null;
             try
             {
                 foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttributeInAssemblies(typeof(BotCommandAttribute), false, assemblies))
+                {
+                    curtype = ty;
                     CommandList.Add((Activator.CreateInstance(ty) as IBotCommand)!);
+                }
             }
             catch (Exception e)
             {
-                throw new TypeLoadException($"All classes attributed with CLICommandAttribute must not be generic, abstract, or static, must have a parameterless constructor, and must implement ICommand directly or indirectly. CLICommandAttribute is not inheritable. Check inner exception for more details.", e);
+                throw new TypeLoadException($"All classes attributed with BotCommandAttribute must not be generic, abstract, or static, must have a parameterless constructor, and must implement IBotCommand directly or indirectly. BotCommandAttribute is not inheritable. Check inner exception for more details. Type that caused the exception: {curtype}", e);
             }
         }
         private static void LoadCommands()

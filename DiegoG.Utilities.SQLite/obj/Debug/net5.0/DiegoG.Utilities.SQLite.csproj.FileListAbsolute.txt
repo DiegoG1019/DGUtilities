@@ -1,5 +1,0 @@
-C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\DiegoG.Utilities.SQLite\bin\Debug\net5.0\DiegoG.Utilities.Common.dll
-C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\DiegoG.Utilities.SQLite\obj\Debug\net5.0\DiegoG.Utilities.SQLite.csprojAssemblyReference.cache
-C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\DiegoG.Utilities.SQLite\obj\Debug\net5.0\DiegoG.Utilities.SQLite.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\DiegoG.Utilities.SQLite\obj\Debug\net5.0\DiegoG.Utilities.SQLite.AssemblyInfoInputs.cache
-C:\Users\Barbara Patricia\Documents\Workspace\Programming\DGUtilities\DiegoG.Utilities.SQLite\obj\Debug\net5.0\DiegoG.Utilities.SQLite.AssemblyInfo.cs

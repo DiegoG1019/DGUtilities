@@ -17,11 +17,14 @@ namespace DiegoG.Utilities
         public Task<T> this[string name] => NamedTs[name];
         private int AddToList(Task<T> tsk)
         {
-
-            Ts.Add(tsk);
-            WhenAllFieldReload = true;
-            return Ts.Count - 1;
+            lock (sync)
+            {
+                Ts.Add(tsk);
+                WhenAllFieldReload = true;
+                return Ts.Count - 1;
+            }
         }
+        private readonly object sync = new();
         public Task<T>[] AllTasks => Ts.ToArray();
         public T[] AllResults => WhenAll.Result;
         public bool AllTasksCompleted => WhenAll.IsCompleted;
@@ -103,10 +106,14 @@ namespace DiegoG.Utilities
         public Task this[string name] => NamedTs[name];
         private int AddToList(Task tsk)
         {
-            Ts.Add(tsk);
-            WhenAllFieldReload = true;
-            return Ts.Count - 1;
+            lock (sync)
+            {
+                Ts.Add(tsk);
+                WhenAllFieldReload = true;
+                return Ts.Count - 1;
+            }
         }
+        private readonly object sync = new();
 
         public Task[] AllTasks => Ts.ToArray();
         public bool AllTasksCompleted => WhenAll.IsCompleted;

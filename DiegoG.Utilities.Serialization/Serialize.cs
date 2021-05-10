@@ -117,7 +117,7 @@ namespace DiegoG.Utilities.IO
             {
                 string fullpath = Path.Combine(path, file + JsonExtension);
                 string jsonstring = Json(obj);
-                using StreamWriter OutFile = new StreamWriter(new FileStream(fullpath, FileMode.Create, FileAccess.Write, FileShare.Read));
+                using StreamWriter OutFile = new(new FileStream(fullpath, FileMode.Create, FileAccess.Write, FileShare.Read));
                 OutFile.WriteLine(jsonstring);
                 return jsonstring;
             }
