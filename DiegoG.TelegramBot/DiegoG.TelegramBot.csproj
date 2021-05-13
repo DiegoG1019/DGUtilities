@@ -12,7 +12,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DiegoG.Utilities.Base\DiegoG.Utilities.Base.csproj" />
+    <ProjectReference Include="..\DiegoG.Utilities.Basic\DiegoG.Utilities.Basic.csproj" />
     <ProjectReference Include="..\DiegoG.Utilities.Collections\DiegoG.Utilities.Collections.csproj" />
+    <ProjectReference Include="..\DiegoG.Utilities.Reflection\DiegoG.Utilities.Reflection.csproj" />
   </ItemGroup>
 
 </Project>

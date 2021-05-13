@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DiegoG.Utilities.Collections
+#pragma warning disable CS8619
+#pragma warning disable CS8600
+
+namespace DiegoG.Utilities.Reflection
 {
     /// <summary>
     /// A class full of methods to effectively and easily create collections using reflection
@@ -11,7 +14,7 @@ namespace DiegoG.Utilities.Collections
     public static class ReflectionCollectionMethods<Ttype>
     {
         private static readonly Type typeinfo = typeof(Ttype);
-        private static readonly string typenamespace = (typeinfo as TypeInfo).Namespace;
+        private static readonly string? typenamespace = ((TypeInfo)typeinfo).Namespace;
 
         public static IEnumerable<PropertyInfo> GetAllStaticProperties() => ReflectionCollectionMethods.GetAllStaticProperties(typeinfo);
 
@@ -19,34 +22,34 @@ namespace DiegoG.Utilities.Collections
 
         public static IEnumerable<object> GetAllStaticPropertyValues() => ReflectionCollectionMethods.GetAllStaticPropertyValues(typeinfo);
 
-        public static IEnumerable<object> GetAllInstancePropertyValues(Ttype instance) => ReflectionCollectionMethods.GetAllInstancePropertyValues(typeinfo, instance);
+        public static IEnumerable<object> GetAllInstancePropertyValues(Ttype instance) => ReflectionCollectionMethods.GetAllInstancePropertyValues(typeinfo, instance!);
 
         public static IEnumerable<Tout> GetAllMatchingTypeStaticPropertyValues<Tout>() => ReflectionCollectionMethods.GetAllMatchingTypeStaticPropertyValues<Tout>(typeinfo);
 
-        public static IEnumerable<Tout> GetAllMatchingTypeInstancePropertyValues<Tout>(Ttype instance) => ReflectionCollectionMethods.GetAllMatchingTypeInstancePropertyValues<Tout>(typeinfo, instance);
+        public static IEnumerable<Tout> GetAllMatchingTypeInstancePropertyValues<Tout>(Ttype instance) => ReflectionCollectionMethods.GetAllMatchingTypeInstancePropertyValues<Tout>(typeinfo, instance!);
 
         public static IEnumerable<(string Name, object Value)> GetAllStaticPropertyNameValueTuple() => ReflectionCollectionMethods.GetAllStaticPropertyNameValueTuple(typeinfo);
 
-        public static IEnumerable<(string Name, object Value)> GetAllInstancePropertyNameValueTuple(Ttype instance) => ReflectionCollectionMethods.GetAllInstancePropertyNameValueTuple(typeinfo, instance);
+        public static IEnumerable<(string Name, object Value)> GetAllInstancePropertyNameValueTuple(Ttype instance) => ReflectionCollectionMethods.GetAllInstancePropertyNameValueTuple(typeinfo, instance!);
 
         public static IEnumerable<(string Name, Tout Value)> GetAllMatchingTypeStaticPropertyNameValueTuple<Tout>() => ReflectionCollectionMethods.GetAllMatchingTypeStaticPropertyNameValueTuple<Tout>(typeinfo);
 
-        public static IEnumerable<(string Name, Tout Value)> GetAllMatchingTypeInstancePropertyNameValueTuple<Tout>(Ttype instance) => ReflectionCollectionMethods.GetAllMatchingTypeInstancePropertyNameValueTuple<Tout>(typeinfo, instance);
+        public static IEnumerable<(string Name, Tout Value)> GetAllMatchingTypeInstancePropertyNameValueTuple<Tout>(Ttype instance) => ReflectionCollectionMethods.GetAllMatchingTypeInstancePropertyNameValueTuple<Tout>(typeinfo, instance!);
 
         //
-        public static IEnumerable<PropertyInfo> GetAllStaticPropertiesOfAllNamespaceClasses() => ReflectionCollectionMethods.GetAllStaticPropertiesOfAllNamespaceClasses(typenamespace);
+        public static IEnumerable<PropertyInfo> GetAllStaticPropertiesOfAllNamespaceClasses() => ReflectionCollectionMethods.GetAllStaticPropertiesOfAllNamespaceClasses(typenamespace!);
 
         //
-        public static IEnumerable<object> GetAllStaticPropertyValuesOfAllNamespaceClasses() => ReflectionCollectionMethods.GetAllStaticPropertyValuesOfAllNamespaceClasses(typenamespace);
+        public static IEnumerable<object> GetAllStaticPropertyValuesOfAllNamespaceClasses() => ReflectionCollectionMethods.GetAllStaticPropertyValuesOfAllNamespaceClasses(typenamespace!);
 
         //
-        public static IEnumerable<Tout> GetAllMatchingTypeStaticPropertyValuesOfAllNamespaceClasses<Tout>() => ReflectionCollectionMethods.GetAllMatchingTypeStaticPropertyValuesOfAllNamespaceClasses<Tout>(typenamespace);
+        public static IEnumerable<Tout> GetAllMatchingTypeStaticPropertyValuesOfAllNamespaceClasses<Tout>() => ReflectionCollectionMethods.GetAllMatchingTypeStaticPropertyValuesOfAllNamespaceClasses<Tout>(typenamespace!);
 
         //
-        public static IEnumerable<(string Name, object Value)> GetAllStaticPropertyNameValueTupleOfAllNamespaceClasses() => ReflectionCollectionMethods.GetAllStaticPropertyNameValueTupleOfAllNamespaceClasses(typenamespace);
+        public static IEnumerable<(string Name, object Value)> GetAllStaticPropertyNameValueTupleOfAllNamespaceClasses() => ReflectionCollectionMethods.GetAllStaticPropertyNameValueTupleOfAllNamespaceClasses(typenamespace!);
 
         //
-        public static IEnumerable<(string Name, Tout Value)> GetAllStaticMatchingTypePropertyNameValueTupleOfAllNamespaceClasses<Tout>() => ReflectionCollectionMethods.GetAllStaticMatchingTypePropertyNameValueTupleOfAllNamespaceClasses<Tout>(typenamespace);
+        public static IEnumerable<(string Name, Tout Value)> GetAllStaticMatchingTypePropertyNameValueTupleOfAllNamespaceClasses<Tout>() => ReflectionCollectionMethods.GetAllStaticMatchingTypePropertyNameValueTupleOfAllNamespaceClasses<Tout>(typenamespace!);
 
         public static IEnumerable<(PropertyInfo Property, IEnumerable<Attribute> Attributes)> GetAllInstancePropertiesWithAttribute(Type attribute) => ReflectionCollectionMethods.GetAllInstancePropertiesWithAttribute(typeinfo, attribute);
     }

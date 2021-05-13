@@ -1,5 +1,6 @@
 ﻿using DiegoG.TelegramBot.Types;
 using DiegoG.Utilities.Collections;
+using DiegoG.Utilities.Reflection;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -74,7 +75,9 @@ namespace DiegoG.TelegramBot
 
             SendMessageCallback = sendMessageCallback;
 
-            LoadCommands();
+            foreach (var c in TypeLoader.InstanceTypesWithAttribute<IBotCommand>(typeof(BotCommandAttribute)))
+                CommandList.Add(c);
+
             if (!CommandList.HasCommand("help") && !CommandList.HasCommand("h"))
                 CommandList.Add(new Help());
             if (!CommandList.HasCommand("start"))
@@ -82,6 +85,18 @@ namespace DiegoG.TelegramBot
 
             if (bot is not null)
                 bot.OnMessage += Bot_OnMessage;
+        }
+
+        /// <summary>
+        /// Searches through the provided assemblies, or the executing assembly, in search of new commands to instantiate. Automatically excludes already registered command types, but does not extend exclusion for duplicated names
+        /// </summary>
+        /// <param name="assemblies">The assemblies to search. Leave null for none</param>
+        /// <exception cref="InvalidBotCommandException">Thrown if one of the commands contains an invalid name</exception>
+        /// <exception cref="InvalidOperationException">Thrown if one of the commands is found to be a duplicate</exception>
+        public static void LoadNewCommands(params Assembly[] assemblies)
+        {
+            foreach (var c in TypeLoader.InstanceTypesWithAttribute<IBotCommand>(typeof(BotCommandAttribute), CommandList.Select(d => d.GetType()), assemblies))
+                CommandList.Add(c);
         }
 
         private static Config _cfg;
@@ -149,42 +164,5 @@ namespace DiegoG.TelegramBot
             }
         }
 
-        /// <summary>
-        /// USE ONLY FOR LOADING COMMANDS FROM DYNAMICALLY LOADED ASSEMBLIES (i.e. Assembly.Load()). Meant only for extensions
-        /// It's also preferrable to NOT call this, and instead load all extensions before loading commands
-        /// </summary>
-        /// <param name="assemblies"></param>
-        public static void LoadCommands(Assembly[] assemblies)
-        {
-            Type? curtype = null;
-            try
-            {
-                foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttributeInAssemblies(typeof(BotCommandAttribute), false, assemblies))
-                {
-                    curtype = ty;
-                    CommandList.Add((Activator.CreateInstance(ty) as IBotCommand)!);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new TypeLoadException($"All classes attributed with BotCommandAttribute must not be generic, abstract, or static, must have a parameterless constructor, and must implement IBotCommand directly or indirectly. BotCommandAttribute is not inheritable. Check inner exception for more details. Type that caused the exception: {curtype}", e);
-            }
-        }
-        private static void LoadCommands()
-        {
-            Type? cty = null;
-            try
-            {
-                foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttribute(typeof(BotCommandAttribute), false))
-                {
-                    cty = ty;
-                    CommandList.Add((Activator.CreateInstance(ty) as IBotCommand)!);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new TypeLoadException($"All classes attributed with CLICommandAttribute must not be generic, abstract, or static, must have a parameterless constructor, and must implement ICommand directly or indirectly. CLICommandAttribute is not inheritable. Check inner exception for more details. Type that caused the exception: {cty?.ToString() ?? "Unknown"}", e);
-            }
-        }
     }
 }
