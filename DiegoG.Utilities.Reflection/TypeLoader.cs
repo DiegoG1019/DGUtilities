@@ -19,7 +19,7 @@ namespace DiegoG.Utilities.Reflection
             Type? curtype = null;
             try
             {
-                foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttributeInAssemblies(attr.GetType(), false, assemblies.Length > 0 ? assemblies : ExecAsm).Except(exclude ?? NoExclude))
+                foreach (var ty in ReflectionCollectionMethods.GetAllTypesWithAttributeInAssemblies(attr), false, assemblies.Length > 0 ? assemblies : ExecAsm).Except(exclude ?? NoExclude))
                 {
                     curtype = ty;
                     types.Add((T)Activator.CreateInstance(ty)!);

@@ -75,7 +75,7 @@ namespace DiegoG.TelegramBot
 
             SendMessageCallback = sendMessageCallback;
 
-            foreach (var c in TypeLoader.InstanceTypesWithAttribute<IBotCommand>(typeof(BotCommandAttribute)))
+            foreach (var c in TypeLoader.InstanceTypesWithAttribute<IBotCommand>(typeof(BotCommandAttribute), Assembly.GetExecutingAssembly()))
                 CommandList.Add(c);
 
             if (!CommandList.HasCommand("help") && !CommandList.HasCommand("h"))
