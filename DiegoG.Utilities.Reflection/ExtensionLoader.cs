@@ -12,15 +12,15 @@ namespace DiegoG.Utilities.Reflection
 {
     public static class ExtensionLoader
     {
-        public static bool IsInit { get; private set; } = true;
-        public static void Initialize(string extensionDir, string appDomain)
+        public static bool IsInit { get; private set; } = false;
+        public static void Initialize(string extensionDir)
         {
             if (IsInit)
                 throw new InvalidOperationException("Cannot initiaize twice");
             IsInit = true;
 
             ExtensionsDir = extensionDir;
-            ExtensionsDomain = AppDomain.CreateDomain(appDomain);
+            ExtensionsDomain = AppDomain.CurrentDomain;
         }
         private static string ExtensionsDir;
         private static AppDomain ExtensionsDomain;

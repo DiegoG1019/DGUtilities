@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DiegoG.Utilities.Collections\DiegoG.Utilities.Collections.csproj" />
+    <ProjectReference Include="..\DiegoG.Utilities.Reflection\DiegoG.Utilities.Reflection.csproj" />
   </ItemGroup>
 
 </Project>
