@@ -11,7 +11,16 @@ namespace DiegoG.Utilities
     {
         private readonly List<Task<T>> Ts = new List<Task<T>>();
         private readonly Dictionary<string, Task<T>> NamedTs = new();
-        public TaskAwaiter<T[]> GetAwaiter() => WhenAll.GetAwaiter();
+
+        public TaskAwaiter<T[]> GetAwaiter()
+        {
+            Task.Run(async () =>
+            {
+                await WhenAll;
+                Clear();
+            });
+            return WhenAll.GetAwaiter();
+        }
 
         public Task<T> this[int index] => Ts[index];
         public Task<T> this[string name] => NamedTs[name];
@@ -65,6 +74,17 @@ namespace DiegoG.Utilities
         public void WaitAll() => Task.WaitAll(AllTasks);
 
         public void WaitAny() => Task.WaitAny(AllTasks);
+
+        /// <summary>
+        /// Returns the first completed task's value and automatically removes it.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<T> WhenFirst()
+        {
+            var t = await WhenAny;
+            Ts.Remove(t);
+            return await t;
+        }
 
         public IEnumerable<(Task<T> Task, string Name)> GetNamedTasks()
         {
@@ -135,7 +155,6 @@ namespace DiegoG.Utilities
             NamedTs.Add(name, task);
             return AddToList(task);
         }
-
 
         private Task WhenAllField;
         private bool WhenAllFieldReload = true;

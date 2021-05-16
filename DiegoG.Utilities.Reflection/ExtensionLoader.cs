@@ -12,7 +12,7 @@ namespace DiegoG.Utilities.Reflection
 {
     public static class ExtensionLoader
     {
-        private static string ExtensionsDir;
+        public static string ExtensionDirectory { get; private set; }
         private static AppDomain ExtensionsDomain;
         private readonly static List<string> LoadedExtensionsList = new();
         
@@ -31,7 +31,7 @@ namespace DiegoG.Utilities.Reflection
                 throw new InvalidOperationException("Cannot initiaize twice");
             IsInit = true;
 
-            ExtensionsDir = extensionDir;
+            ExtensionDirectory = extensionDir;
             ExtensionsDomain = AppDomain.CurrentDomain;
         }
 
@@ -44,8 +44,8 @@ namespace DiegoG.Utilities.Reflection
         public static IEnumerable<string> EnumerateAssemblies()
         {
             ThrowIfNotInit();
-            Directory.CreateDirectory(ExtensionsDir);
-            return Directory.EnumerateFiles(ExtensionsDir, "*.dll", SearchOption.AllDirectories);
+            Directory.CreateDirectory(ExtensionDirectory);
+            return Directory.EnumerateFiles(ExtensionDirectory, "*.dll", SearchOption.AllDirectories);
         }
 
         public static void Load(IEnumerable<string> paths)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,5 +49,15 @@ namespace DiegoG.TelegramBot.Types
         /// An alternate, usually shortened way to call the command. Set to null to ignore, can not be duplicate with any of the aliases or triggers
         /// </summary>
         string? Alias { get; }
+        /// <summary>
+        /// Used to validate the command upon load
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public bool Validate([NotNullWhen(false)]out string? message)
+        {
+            message = null;
+            return true;
+        }
     }
 }

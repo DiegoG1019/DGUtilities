@@ -23,6 +23,8 @@ namespace DiegoG.TelegramBot.Types
 
         internal void Add(IBotCommand cmd)
         {
+            if (!cmd.Validate(out var msg))
+                throw new InvalidOperationException($"Unable to load command {cmd.Trigger}: {msg}");
             Count++;
             var trigger = cmd.Trigger.ToLower();
             ThrowIfDuplicateOrInvalid(trigger);

@@ -10,7 +10,7 @@ namespace DiegoG.Utilities.Reflection
     public static class TypeLoader
     {
         private static readonly IEnumerable<Type> NoExclude = Array.Empty<Type>();
-        private static readonly Assembly[] ExecAsm = AppDomain.CurrentDomain.GetAssemblies();
+        private static Assembly[] ExecAsm => AppDomain.CurrentDomain.GetAssemblies();
         public static IEnumerable<T> InstanceTypesWithAttribute<T>(Type attr, IEnumerable<Type>? exclude, params Assembly[] assemblies) where T : class
         {
             if (!attr.IsAssignableTo(typeof(Attribute)))

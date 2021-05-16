@@ -20,7 +20,7 @@ namespace DiegoG.Utilities.Collections
         public static IEnumerable<T> UpToIndex<T>(this IEnumerable<T> enumerable, int index) => enumerable.Select((v, i) => new { v, i }).Where(p => p.i <= index).Select(p => p.v);
 
         /// <summary>
-        /// Takes all values until item index > specified index
+        /// Takes all values after the specified index
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="enumerable"></param>
