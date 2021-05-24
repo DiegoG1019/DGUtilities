@@ -14,6 +14,7 @@ using Telegram.Bot.Types;
 using System.Text.RegularExpressions;
 using System.Collections.Concurrent;
 using DiegoG.TelegramBot;
+using DiegoG.Utilities.Settings;
 
 namespace DiegoG.TelegramBot
 {
@@ -22,8 +23,8 @@ namespace DiegoG.TelegramBot
         /// <summary>
         /// Due to Telegram's Rate Limiting, it is not recommended to sink anything below `Information` events
         /// </summary>
-        public static LoggerConfiguration TelegramBot(this LoggerSinkConfiguration loggerConfiguration, ChatId chatid, TelegramBotClient botclient, LogEventLevel level = LogEventLevel.Information)
-            => loggerConfiguration.Sink(new TelegramBotSink(chatid, botclient, level));
+        public static LoggerConfiguration TelegramBot(this LoggerSinkConfiguration loggerConfiguration, ChatId chatid, TelegramBotClient botclient, LogEventLevel level = LogEventLevel.Information, string? hashtag = null)
+            => loggerConfiguration.Sink(new TelegramBotSink(chatid, botclient, level, hashtag));
     }
 
     /// <summary>
@@ -37,13 +38,16 @@ namespace DiegoG.TelegramBot
         private readonly Thread DequeueThread;
         private readonly CancellationTokenSource TokenSource = new();
         private readonly LogEventLevel Level;
+        private readonly string? Hashtag;
         private bool AllowNewMessages = true;
 
-        public TelegramBotSink(ChatId id, TelegramBotClient client, LogEventLevel level)
+        public TelegramBotSink(ChatId id, TelegramBotClient client, LogEventLevel level, string? hashtag)
         {
             Id = id;
             Client = client;
             Level = level;
+            if(hashtag is not null)
+                Hashtag = string.Join("", hashtag.Split(' '));
             DequeueThread = new(async o =>
             {
                 CancellationToken token = (CancellationToken)o!;
@@ -110,7 +114,7 @@ namespace DiegoG.TelegramBot
         public void Emit(LogEvent logEvent)
 		{
             if (AllowNewMessages && logEvent.Level >= Level)
-                MessageQueue.Enqueue($"*[{logEvent.Level}]:* {logEvent.RenderMessage()}\n\\{{{DateTime.Now.ToString("MM/dd/yyyy hh:mm:ss tt zzz")}\\}}".TelegramLegalizeMarkupV2());
+                MessageQueue.Enqueue($"{(Hashtag is not null ? $"#{Hashtag}\n" : "")}*[{logEvent.Level}]:* {logEvent.RenderMessage()}\n\\{{{DateTime.Now:MM/dd/yyyy hh:mm:ss tt zzz}\\}}".TelegramLegalizeMarkupV2());
 	    }
     }
 }

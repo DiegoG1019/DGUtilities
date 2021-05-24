@@ -339,6 +339,8 @@ namespace DiegoG.Utilities.Settings
             Log.Information("Restoring to default and creating a new file");
             RestoreToDefault();
             SaveSettings();
+            if (!(validation?.Invoke(Current) ?? true))
+                throw new InvalidDataException("Settings file did not pass validation");
         }
 
         private static void Current_PropertyChanged(object? sender, PropertyChangedEventArgs e)
