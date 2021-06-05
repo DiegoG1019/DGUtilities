@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 using System.Collections.ObjectModel;
+using DiegoG.Utilities.Reflection;
 
 namespace DiegoG.Utilities.Measures
 {

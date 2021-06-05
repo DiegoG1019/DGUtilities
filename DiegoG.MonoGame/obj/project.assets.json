@@ -626,11 +626,25 @@
           "bin/placeholder/DiegoG.Utilities.Other.dll": {}
         }
       },
+      "DiegoG.Utilities.Reflection/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v5.0",
+        "dependencies": {
+          "Serilog": "2.10.0"
+        },
+        "compile": {
+          "bin/placeholder/DiegoG.Utilities.Reflection.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/DiegoG.Utilities.Reflection.dll": {}
+        }
+      },
       "DiegoG.Utilities.Serialization/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v5.0",
         "dependencies": {
           "DiegoG.Utilities.Collections": "1.0.0",
+          "DiegoG.Utilities.Reflection": "1.0.0",
           "MessagePack": "2.2.85",
           "MessagePack.Annotations": "2.2.85",
           "Serilog": "2.10.0"
@@ -2322,6 +2336,11 @@
       "path": "../DiegoG.Utilities.Other/DiegoG.Utilities.Other.csproj",
       "msbuildProject": "../DiegoG.Utilities.Other/DiegoG.Utilities.Other.csproj"
     },
+    "DiegoG.Utilities.Reflection/1.0.0": {
+      "type": "project",
+      "path": "../DiegoG.Utilities.Reflection/DiegoG.Utilities.Reflection.csproj",
+      "msbuildProject": "../DiegoG.Utilities.Reflection/DiegoG.Utilities.Reflection.csproj"
+    },
     "DiegoG.Utilities.Serialization/1.0.0": {
       "type": "project",
       "path": "../DiegoG.Utilities.Serialization/DiegoG.Utilities.Serialization.csproj",
@@ -2338,25 +2357,25 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\DiegoG\\.nuget\\packages\\": {},
+    "C:\\Users\\duden\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
     "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj",
+      "projectUniqueName": "C:\\Users\\duden\\OneDrive\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj",
       "projectName": "DiegoG.MonoGame",
-      "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj",
-      "packagesPath": "C:\\Users\\DiegoG\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\obj\\",
+      "projectPath": "C:\\Users\\duden\\OneDrive\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj",
+      "packagesPath": "C:\\Users\\duden\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\duden\\OneDrive\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
         "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\DiegoG\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\duden\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
@@ -2372,8 +2391,8 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj": {
-              "projectPath": "C:\\Users\\DiegoG\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj"
+            "C:\\Users\\duden\\OneDrive\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj": {
+              "projectPath": "C:\\Users\\duden\\OneDrive\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.Utilities.Common\\DiegoG.Utilities.Common.csproj"
             }
           }
         }
@@ -2420,7 +2439,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   }
