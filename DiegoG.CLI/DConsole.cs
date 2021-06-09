@@ -247,6 +247,13 @@ namespace DiegoG.CLI
         public static DConsoleObject FWriteL(string s, ConsoleColor? textc = null, ConsoleColor? backc = null, ConsoleEffect? fx = null, int? x = null, int? y = null, params object[] format) => FWrite(s + "\n", textc, backc, fx, x, y, format);
         public static DConsoleObject InputField(int? x = null, int? y = null, string s = "> ", ConsoleColor? textc = null, ConsoleColor? backc = null, ConsoleEffect? fx = null)
                 => FWrite(s, textc, backc, fx, x, y);
+
+        public static string ReadInputLine(int? x = null, int? y = null, string s = "> ", ConsoleColor? textc = null, ConsoleColor? backc = null, ConsoleEffect? fx = null, int timeoutMs = -1)
+        {
+            InputField(x, y, s, textc, backc, fx);
+            return ReadLine(timeoutMs);
+        }
+
         public static DConsoleObject Clear(ConsoleColor? color = null)
         {
             lock (Sync)

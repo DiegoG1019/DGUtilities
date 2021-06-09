@@ -57,6 +57,7 @@ namespace DiegoG.Utilities.IO
             [Obsolete("BinaryFormatter serialization is obsolete and should not be used. See https://aka.ms/binaryformatter for more information.")]
             public static Stream Binary(object obj, string path, string file)
             {
+                Directory.CreateDirectory(path);
                 string fullpath = Path.Combine(path, file);
                 var stm = Binary(obj);
                 var filestream = File.Create(fullpath);
@@ -91,6 +92,7 @@ namespace DiegoG.Utilities.IO
             }
             public static string Xml(object obj, string path, string file)
             {
+                Directory.CreateDirectory(path);
                 string fullpath = Path.Combine(path, file + XmlExtension);
                 string xmlstring = Xml(obj);
                 using (StreamWriter OutFile = new StreamWriter(new FileStream(fullpath, FileMode.Create, FileAccess.Write, FileShare.Read)))
@@ -115,6 +117,7 @@ namespace DiegoG.Utilities.IO
 
             public static string Json(object obj, string path, string file)
             {
+                Directory.CreateDirectory(path);
                 string fullpath = Path.Combine(path, file + JsonExtension);
                 string jsonstring = Json(obj);
                 using StreamWriter OutFile = new(new FileStream(fullpath, FileMode.Create, FileAccess.Write, FileShare.Read));
@@ -132,6 +135,7 @@ namespace DiegoG.Utilities.IO
             }
             public static byte[] MsgPk(object obj, string path, string file)
             {
+                Directory.CreateDirectory(path);
                 string fullpath = Path.Combine(path, file);
                 byte[] bytearray = MsgPk(obj);
                 using BinaryWriter OutFile = new(new FileStream(fullpath, FileMode.Create, FileAccess.Write, FileShare.Read));

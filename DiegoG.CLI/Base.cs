@@ -276,7 +276,7 @@ namespace DiegoG.CLI
             catch (CommandProcessException e) { Log.Error(e, liarr.Original.Flatten()); throw; }
             catch (Exception e)
             {
-                var ex = new InvalidCommandException($"The command {liarr.Original.Flatten()} threw an unspecified exception.", e);
+                var ex = new InvalidCommandException($"The command {string.Join(" ", liarr.Original)} threw an unspecified exception.", e);
                 Log.Fatal(e, liarr.Original.Flatten());
                 throw ex;
             }
