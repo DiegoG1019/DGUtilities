@@ -53,7 +53,7 @@ namespace DiegoG.Utilities.Collections
                 }
             }
         }
-        private static bool CheckBounds(int key) => key > 0 && key < 8 ? true : throw new ArgumentOutOfRangeException(nameof(key), $"Must be within 0 and 7");
+        private static bool CheckBounds(int key) => key is >0 and <8 ? true : throw new ArgumentOutOfRangeException(nameof(key), $"Must be within 0 and 7");
 
         public BitVector8(bool b1 = false, bool b2 = false, bool b3 = false, bool b4 = false, bool b5 = false, bool b6 = false, bool b7 = false, bool b8 = false)
         {
