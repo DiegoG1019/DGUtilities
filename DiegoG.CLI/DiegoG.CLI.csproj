@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AssemblyName>DiegoG.Utilities.CLI</AssemblyName>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Authors>DiegoG1019</Authors>
+    <Description>A small library to facilitate command line processing asynchronously, along with features to enrich a console</Description>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -14,11 +18,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DiegoG.Utilities.Base\DiegoG.Utilities.Base.csproj" />
-    <ProjectReference Include="..\DiegoG.Utilities.Basic\DiegoG.Utilities.Basic.csproj" />
-    <ProjectReference Include="..\DiegoG.Utilities.Collections\DiegoG.Utilities.Collections.csproj" />
-    <ProjectReference Include="..\DiegoG.Utilities.Other\DiegoG.Utilities.Other.csproj" />
-    <ProjectReference Include="..\DiegoG.Utilities.Serialization\DiegoG.Utilities.Serialization.csproj" />
+    <PackageReference Include="DiegoG.Utilities.Base" Version="1.0.0" />
+    <PackageReference Include="DiegoG.Utilities.Basic" Version="1.0.0" />
+    <PackageReference Include="DiegoG.Utilities.Collections" Version="1.0.0" />
+    <PackageReference Include="DiegoG.Utilities.Other" Version="1.0.0" />
+    <PackageReference Include="DiegoG.Utilities.Reflection" Version="1.0.0" />
+    <PackageReference Include="DiegoG.Utilities.Serialization" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

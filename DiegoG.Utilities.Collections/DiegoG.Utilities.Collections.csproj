@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>DiegoG1019</Authors>
+    <Description>A small library of utility collections</Description>
   </PropertyGroup>
 
 </Project>

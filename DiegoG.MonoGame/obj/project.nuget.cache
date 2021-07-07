@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aSSDlAVkg2qvE17kanlbVIgUVTrRft3aDnQvwOEs24lthO/73YYJF2blFg9rElsTdhTCbxbAl/lDunOxoBJvOw==",
+  "dgSpecHash": "TLLq86o2UBW/5YVcWZI4rGBXTisNJ3Ym5r8DQjVWLuWPmwCc3PCea0PuEfKjaJNLzjSvURE8g7qqOdXe05dFYg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\duden\\OneDrive\\Documents\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj",
+  "projectFilePath": "C:\\Users\\duden\\Workspace\\Programming\\DGUtilities\\DiegoG.MonoGame\\DiegoG.MonoGame.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\duden\\.nuget\\packages\\messagepack\\2.2.85\\messagepack.2.2.85.nupkg.sha512",
     "C:\\Users\\duden\\.nuget\\packages\\messagepack.annotations\\2.2.85\\messagepack.annotations.2.2.85.nupkg.sha512",

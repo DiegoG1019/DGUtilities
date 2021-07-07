@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>DIegoG1019</Authors>
+    <Description>A library containing methods wrapping common reflection use-cases in the form of extension methods, and other</Description>
   </PropertyGroup>
 
   <ItemGroup>

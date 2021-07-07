@@ -3,6 +3,10 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>DiegoG.Utilities</RootNamespace>
+    <Company>DiegoG1019</Company>
+    <Authors>DiegoG1019</Authors>
+    <Description>A library of small classes for utilities</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>

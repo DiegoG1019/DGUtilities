@@ -2,12 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Authors>DiegoG1019</Authors>
+    <Description>A library containing classes to represent physical measurements in a variety of units, and perform operations with them</Description>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DiegoG.Utilities.Base\DiegoG.Utilities.Base.csproj" />
-    <ProjectReference Include="..\DiegoG.Utilities.Basic\DiegoG.Utilities.Basic.csproj" />
-    <ProjectReference Include="..\DiegoG.Utilities.Collections\DiegoG.Utilities.Collections.csproj" />
+    <PackageReference Include="DiegoG.Utilities.Basic" Version="1.0.0" />
   </ItemGroup>
 
 </Project>

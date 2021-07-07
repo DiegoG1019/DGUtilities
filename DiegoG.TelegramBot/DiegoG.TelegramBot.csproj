@@ -3,18 +3,20 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <Authors>DiegoG1019</Authors>
+    <Description>A small library to facilitate some of the processes to creating bots for telegram</Description>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DiegoG.Utilities.Base" Version="1.0.0" />
+    <PackageReference Include="DiegoG.Utilities.Basic" Version="1.0.0" />
+    <PackageReference Include="DiegoG.Utilities.Collections" Version="1.0.0" />
+    <PackageReference Include="DiegoG.Utilities.Reflection" Version="1.0.0" />
     <PackageReference Include="Serilog" Version="2.10.0" />
     <PackageReference Include="Telegram.Bot" Version="15.7.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DiegoG.Utilities.Base\DiegoG.Utilities.Base.csproj" />
-    <ProjectReference Include="..\DiegoG.Utilities.Basic\DiegoG.Utilities.Basic.csproj" />
-    <ProjectReference Include="..\DiegoG.Utilities.Collections\DiegoG.Utilities.Collections.csproj" />
-    <ProjectReference Include="..\DiegoG.Utilities.Reflection\DiegoG.Utilities.Reflection.csproj" />
   </ItemGroup>
 
 </Project>
