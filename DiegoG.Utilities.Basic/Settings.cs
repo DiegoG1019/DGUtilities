@@ -111,16 +111,9 @@ namespace DiegoG.Utilities.Settings
                 if (value is null)
                     throw new ArgumentNullException(nameof(value), "Current settings cannot be null");
 
-                CurrentSettingsLocked = true; // I think it's better if I set it before locking the object, so that a return doesn't happen right as itssetting the field
                 lock (CurrentSettingsKey)
-                {
-                    CurrentSettingsLocked = true; //If another thread comes through and sets it to false, then the next one hops in and it's already set to false despite waiting for this to be unlocked, so the "get" will flow through freely.
-                    if(CurrentField is not null)
-                        CurrentField.PropertyChanged -= Current_PropertyChanged;
                     CurrentField = value;
-                    CurrentField.PropertyChanged += Current_PropertyChanged;
-                    CurrentSettingsLocked = false;
-                }
+                SettingsChanged?.Invoke(null, new(nameof(Current)));
             }
         }
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -341,17 +334,6 @@ namespace DiegoG.Utilities.Settings
             SaveSettings();
             if (!(validation?.Invoke(Current) ?? true))
                 throw new InvalidDataException("Settings file did not pass validation");
-        }
-
-        private static void Current_PropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            PropertyInfo prop = GetProperty(e.PropertyName!)!;
-            HasChanged = true;
-            if (HasPropertyChanged(prop))
-                ChangesDict[prop] = prop.GetValue(Current)!;
-            else
-                ChangesDict.Add(prop, prop.GetValue(Current)!);
-            SettingsChanged?.Invoke(sender, e);
         }
     }
 }
