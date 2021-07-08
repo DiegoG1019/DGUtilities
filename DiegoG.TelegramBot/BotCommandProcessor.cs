@@ -30,6 +30,7 @@ namespace DiegoG.TelegramBot
         public event EventHandler<BotCommandArguments>? CommandCalled;
         public MessageQueue MessageQueue { get; init; }
         public BotCommandList CommandList { get; init; }
+        public TelegramBotClient BotClient { get; init; }
 
         /// <summary>
         /// Initializes the BotCommandProcessor
@@ -57,7 +58,7 @@ namespace DiegoG.TelegramBot
                 CommandList.Add(new Start());
 
             MessageQueue = new(bot);
-
+            BotClient = bot;
             bot.OnMessage += Bot_OnMessage;
         }
         
