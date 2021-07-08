@@ -62,7 +62,7 @@ namespace DiegoG.TelegramBot
                             {
                                 try
                                 {
-                                    await Client.SendTextMessageAsync(Id, msg, Telegram.Bot.Types.Enums.ParseMode.MarkdownV2, false, true);
+                                    await Client.SendTextMessageAsync(Id, msg, Telegram.Bot.Types.Enums.ParseMode.MarkdownV2, null, false, true);
                                 }
                                 catch (Exception e)
                                 {
@@ -101,7 +101,7 @@ namespace DiegoG.TelegramBot
                         Thread.Sleep(60000);
                         for (int i = 0; i < 15 && !MessageQueue.IsEmpty; i++)
                             if(MessageQueue.TryDequeue(out var msg))
-                                tasks.Add(Client.SendTextMessageAsync(Id, msg, Telegram.Bot.Types.Enums.ParseMode.MarkdownV2, false, true));
+                                tasks.Add(Client.SendTextMessageAsync(Id, msg, Telegram.Bot.Types.Enums.ParseMode.MarkdownV2, null, false, true));
                         tasks.WaitAll();
                     }
                 }catch(Exception)

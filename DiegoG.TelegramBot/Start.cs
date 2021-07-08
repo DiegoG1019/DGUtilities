@@ -20,6 +20,8 @@ namespace DiegoG.TelegramBot
 
         public string? Alias => null;
 
+        public BotCommandProcessor Processor { get; set; }
+
         public Task<(string, bool)> Action(BotCommandArguments args) => Task.FromResult(("Hello! Welcome! Please type /help", false));
 
         public Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args)

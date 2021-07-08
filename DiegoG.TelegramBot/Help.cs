@@ -6,6 +6,7 @@ using System.Linq;
 using DiegoG.Utilities;
 using DiegoG.TelegramBot.Types;
 using Telegram.Bot.Types;
+using Telegram.Bot;
 
 namespace DiegoG.TelegramBot
 {
@@ -16,6 +17,8 @@ namespace DiegoG.TelegramBot
         public string HelpExplanation => "Returns a string explaining the uses of a specific command.";
         public string HelpUsage => "[Command]";
         public IEnumerable<(string, string)>? HelpOptions => null;
+        public BotCommandProcessor Processor { get; set; }
+
 
         private static string GetAlias(IBotCommand cmd) => cmd.Alias is not null ? $" ({cmd.Alias})" : "";
 
@@ -38,12 +41,12 @@ namespace DiegoG.TelegramBot
             {
                 string str = "CommandName (Argument) [OptionalArgument]\n";
 
-                foreach (var command in BotCommandProcessor.CommandList)
+                foreach (var command in Processor.CommandList)
                     str += $"{command.Trigger}{GetAlias(command)} | {command.HelpUsage}\n";
                 return Task.FromResult((str[0..^1], false));
             }
 
-            var clist = BotCommandProcessor.CommandList;
+            var clist = Processor.CommandList;
             var cmd = args.Arguments[1];
 
             IBotCommand c;

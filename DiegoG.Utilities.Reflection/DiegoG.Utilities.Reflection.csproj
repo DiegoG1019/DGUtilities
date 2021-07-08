@@ -6,6 +6,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>DIegoG1019</Authors>
     <Description>A library containing methods wrapping common reflection use-cases in the form of extension methods, and other</Description>
+    <Version>1.1.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

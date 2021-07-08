@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace DiegoG.TelegramBot.Types
@@ -11,6 +12,11 @@ namespace DiegoG.TelegramBot.Types
     
     public interface IBotCommand
     {
+        /// <summary>
+        /// The Bot Command Processor this instance of the command is tied to
+        /// </summary>
+        BotCommandProcessor Processor { get; set; }
+
         /// <summary>
         /// The action to be taken when the command is invoked. Please be aware that the engine will try to remove the slash
         /// </summary>
