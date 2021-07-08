@@ -16,7 +16,7 @@ namespace DiegoG.TelegramBot
 {
     public static class BotCommandProcessor
     {
-        public record Config() { }
+        public record Config(bool ProcessNormalMessages = true) { }
 
         const string q = "\"";
 
@@ -32,9 +32,12 @@ namespace DiegoG.TelegramBot
             var command = e.Message.Text;
             try
             {
-                var cr = await Call(command, user);
-                SendMessageCallback(e.Message.Chat.Id, cr, ParseMode.Default, false, false, e.Message.MessageId);
-                Log.Debug($"Command {command} from user {user} succesfully processed.");
+                if (Cfg.ProcessNormalMessages || command.StartsWith("/"))
+                {
+                    var cr = await Call(command, user);
+                    SendMessageCallback(e.Message.Chat.Id, cr, ParseMode.Default, false, false, e.Message.MessageId);
+                    Log.Debug($"Command {command} from user {user} succesfully processed.");
+                }
             }
             catch (InvalidBotCommandException exc)
             {
