@@ -17,6 +17,7 @@ namespace DiegoG.TelegramBot
     public class BotCommandProcessor
     {
         const string q = "\"";
+        public const string DefaultName = "___DEFAULT";
 
         public record Config(bool ProcessNormalMessages = true) { }
 
@@ -56,6 +57,8 @@ namespace DiegoG.TelegramBot
                 CommandList.Add(new Help());
             if (!CommandList.HasCommand("start"))
                 CommandList.Add(new Start());
+            if (!CommandList.HasCommand(DefaultName))
+                CommandList.Add(new Default_());
 
             MessageQueue = new(bot);
             BotClient = bot;
@@ -150,10 +153,8 @@ namespace DiegoG.TelegramBot
                 if (HeldCommands.ContainsKey(args.User))
                     return await ReplyCall(args);
 
-                if (!CommandList.HasCommand(args.Arguments[0]))
-                    return "Unknown Command";
+                var cmd = CommandList.HasCommand(args.Arguments[0]) ? CommandList[args.Arguments[0]] : CommandList[DefaultName];
 
-                var cmd = CommandList[args.Arguments[0]];
                 var t = cmd.Action(args);
                 CommandCalled?.Invoke(null, args);
 
