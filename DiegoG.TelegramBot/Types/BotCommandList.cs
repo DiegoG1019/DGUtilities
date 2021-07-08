@@ -11,7 +11,7 @@ namespace DiegoG.TelegramBot.Types
     public sealed class BotCommandList : IEnumerable<IBotCommand>
     {
         private readonly Dictionary<string, IBotCommand> dict = new();
-        private readonly static List<BotCommand> BotCommands = new();
+        private readonly List<BotCommand> BotCommands = new();
 
         public IEnumerable<BotCommand> AvailableCommands => BotCommands;
 

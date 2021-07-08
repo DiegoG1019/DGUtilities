@@ -9,9 +9,19 @@ using Telegram.Bot.Types;
 namespace DiegoG.TelegramBot.Types
 {
     public sealed record BotCommandArguments
-    (string[] Arguments, User User)
     {
+        public string ArgString { get; init; }
+        public User User { get; init; }
+        public string[] Arguments { get; init; }
+
+        public BotCommandArguments(string argString, User user)
+        {
+            ArgString = argString;
+            User = user;
+            Arguments = BotCommandProcessor.SeparateArgs(argString);
+        }
+
         public override string ToString()
-            => $"Command {Arguments.Flatten()} sent by User {User}";
+            => $"Command {ArgString} sent by User {User}";
     }
 }

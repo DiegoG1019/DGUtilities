@@ -17,7 +17,7 @@ namespace DiegoG.TelegramBot
     public class BotCommandProcessor
     {
         const string q = "\"";
-        public const string DefaultName = "___DEFAULT";
+        public const string DefaultName = "___default";
 
         public record Config(bool ProcessNormalMessages = true) { }
 
@@ -123,7 +123,6 @@ namespace DiegoG.TelegramBot
             }
         }
 
-        public Task<string> Call(string input, User sender) => Call(SeparateArgs(input), sender);
         private async Task<string> ReplyCall(BotCommandArguments args)
         {
             try
@@ -144,7 +143,7 @@ namespace DiegoG.TelegramBot
             }
         }
 
-        public Task<string> Call(string[] input, User sender)
+        public Task<string> Call(string input, User sender) 
             => Call(new(input, sender));
         public async Task<string> Call(BotCommandArguments args)
         {

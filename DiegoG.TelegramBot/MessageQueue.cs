@@ -41,7 +41,7 @@ namespace DiegoG.TelegramBot
         public void Stop()
             => QueueStatus = MessageSinkStatus.Stopping;
 
-        public void Stopping()
+        public void ForceStop()
             => QueueStatus = MessageSinkStatus.ForceStopping;
 
         public TelegramBotClient BotClient { get; private set; }
