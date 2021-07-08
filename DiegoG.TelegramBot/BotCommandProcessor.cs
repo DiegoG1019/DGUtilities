@@ -54,11 +54,11 @@ namespace DiegoG.TelegramBot
             }
 
             if (!CommandList.HasCommand("help") && !CommandList.HasCommand("h"))
-                CommandList.Add(new Help());
+                CommandList.Add(new Help() { Processor = this });
             if (!CommandList.HasCommand("start"))
-                CommandList.Add(new Start());
+                CommandList.Add(new Start() { Processor = this });
             if (!CommandList.HasCommand(DefaultName))
-                CommandList.Add(new Default_());
+                CommandList.Add(new Default_() { Processor = this });
 
             MessageQueue = new(bot);
             BotClient = bot;
