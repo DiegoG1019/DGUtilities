@@ -114,7 +114,8 @@ namespace DiegoG.TelegramBot
                         Requests.Enqueue(DateTime.Now);
                         tasks.Run(() => action(BotClient));
                     }
-                    Log.Verbose($"Fired {tasks.Count} new requests");
+                    if(tasks.Count > 0)
+                        Log.Verbose($"Fired {tasks.Count} new requests");
                     await tasks;
                 }
                 catch
