@@ -30,11 +30,12 @@ namespace DiegoG.TelegramBot.Types
             ThrowIfDuplicateOrInvalid(trigger);
             dict.Add(trigger, cmd);
 
-            BotCommands.Add(new()
-            {
-                Command = trigger,
-                Description = @$"{(cmd.Alias is not null ? $"({cmd.Alias})" : "")} {cmd.HelpUsage} - {cmd.HelpExplanation}"
-            });
+            if(trigger is not BotCommandProcessor.DefaultName)
+                BotCommands.Add(new()
+                {
+                    Command = trigger,
+                    Description = @$"{(cmd.Alias is not null ? $"({cmd.Alias})" : "")} {cmd.HelpUsage} - {cmd.HelpExplanation}"
+                });
         }
 
         public bool HasCommand(string cmd) => dict.ContainsKey(cmd);

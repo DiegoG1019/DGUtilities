@@ -89,11 +89,18 @@ namespace DiegoG.TelegramBot
                     if (CheckForceStopping())
                         return;
 
-                    if (Requests.TryPeek(out var x) && x - DateTime.Now >= OneMinute)
+                    var start = Requests.Count;
+
+                    if (Requests.TryPeek(out var x) && DateTime.Now - x >= OneMinute)
                     {
                         Requests.TryDequeue(out _);
                         continue;
                     }
+
+                    var now = Requests.Count;
+                    if (start != now)
+                        Log.Verbose($"{start - now} requests cooled down, {now} still hot");
+
                     break;
                 }
 
@@ -107,6 +114,7 @@ namespace DiegoG.TelegramBot
                         Requests.Enqueue(DateTime.Now);
                         tasks.Run(() => action(BotClient));
                     }
+                    Log.Verbose($"Fired {tasks.Count} new requests");
                     await tasks;
                 }
                 catch

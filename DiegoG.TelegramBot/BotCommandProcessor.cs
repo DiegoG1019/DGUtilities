@@ -61,7 +61,7 @@ namespace DiegoG.TelegramBot
                 CommandList.Add(new Start() { Processor = this });
             if (!CommandList.HasCommand(DefaultName))
                 CommandList.Add(new Default_() { Processor = this });
-
+            
             MessageQueue = new(bot);
             bot.OnMessage += MessageHandler;
 

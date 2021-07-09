@@ -1,4 +1,5 @@
 ﻿using DiegoG.TelegramBot.Types;
+using Serilog;
 using System;
 using System.Threading.Tasks;
 using Telegram.Bot;
@@ -10,8 +11,17 @@ namespace DiegoG.TelegramBot.Test
     {
         static async Task Main(string[] args)
         {
-            var bot = new TelegramBotClient("");
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            var bot = new TelegramBotClient("1787830577:AAENYWvgMaEERt1VFO8SgPxDLcR35d8q5kw");
             var proc = new BotCommandProcessor(bot);
+
+            bot.StartReceiving();
+
+            Log.Information($"Connected to {await bot.GetMeAsync()}");
 
             while(true)
                 await Task.Delay(500);
@@ -23,7 +33,7 @@ namespace DiegoG.TelegramBot.Test
     {
         public override Task<(string, bool)> Action(BotCommandArguments args)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(("a", false));
         }
 
         public override Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args)
