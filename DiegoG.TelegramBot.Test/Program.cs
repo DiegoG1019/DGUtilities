@@ -19,7 +19,7 @@ namespace DiegoG.TelegramBot.Test
     }
 
     [BotCommand]
-    class DefaultTest : Default
+    class DefaultTest : Help
     {
         public override Task<(string, bool)> Action(BotCommandArguments args)
         {

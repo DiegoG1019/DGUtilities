@@ -30,11 +30,9 @@ namespace DiegoG.TelegramBot.Types
             ThrowIfDuplicateOrInvalid(trigger);
             dict.Add(trigger, cmd);
 
-            var tn = trigger.StartsWith('/') ? trigger[1..] : trigger;
-
             BotCommands.Add(new()
             {
-                Command = tn,
+                Command = trigger,
                 Description = @$"{(cmd.Alias is not null ? $"({cmd.Alias})" : "")} {cmd.HelpUsage} - {cmd.HelpExplanation}"
             });
         }

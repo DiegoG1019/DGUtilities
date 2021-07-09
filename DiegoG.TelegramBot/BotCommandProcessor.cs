@@ -55,9 +55,9 @@ namespace DiegoG.TelegramBot
                 CommandList.Add(c);
             }
 
-            if (!CommandList.HasCommand("help") && !CommandList.HasCommand("h"))
+            if (!CommandList.HasCommand("/help"))
                 CommandList.Add(new Help() { Processor = this });
-            if (!CommandList.HasCommand("start"))
+            if (!CommandList.HasCommand("/start"))
                 CommandList.Add(new Start() { Processor = this });
             if (!CommandList.HasCommand(DefaultName))
                 CommandList.Add(new Default_() { Processor = this });
