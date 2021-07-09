@@ -35,20 +35,8 @@ namespace DiegoG.TelegramBot.Types
             BotCommands.Add(new()
             {
                 Command = tn,
-                Description = @$"{cmd.HelpUsage} - {cmd.HelpExplanation}"
+                Description = @$"{(cmd.Alias is not null ? $"({cmd.Alias})" : "")} {cmd.HelpUsage} - {cmd.HelpExplanation}"
             });
-
-            if (cmd.Alias is not null)
-            {
-                var alias = cmd.Alias.ToLower();
-                ThrowIfDuplicateOrInvalid(alias);
-                dict.Add(alias, cmd); 
-                BotCommands.Add(new()
-                {
-                    Command = alias.StartsWith('/') ? alias[1..] : alias,
-                    Description = $"Alias of {tn}"
-                });
-            }
         }
 
         public bool HasCommand(string cmd) => dict.ContainsKey(cmd);

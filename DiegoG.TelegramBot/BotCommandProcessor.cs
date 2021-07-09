@@ -19,7 +19,7 @@ namespace DiegoG.TelegramBot
         const string q = "\"";
         public const string DefaultName = "___default";
 
-        public record Config(bool ProcessNormalMessages = true) { }
+        public record Config(bool ProcessNormalMessages = true, bool AddBotMeCommandInfo = true) { }
 
         public static string[] SeparateArgs(string input) => Regex.Split(input, $@"{q}([^{q}]*){q}|(\S+)").Where(s => !string.IsNullOrWhiteSpace(s)).ToArray();
 
@@ -45,6 +45,8 @@ namespace DiegoG.TelegramBot
 
             CommandList = new();
 
+            BotClient = bot;
+
             foreach (var c in TypeLoader.InstanceTypesWithAttribute<IBotCommand>(typeof(BotCommandAttribute), 
                 ValidateCommandAttribute,
                 AppDomain.CurrentDomain.GetAssemblies()))
@@ -61,8 +63,10 @@ namespace DiegoG.TelegramBot
                 CommandList.Add(new Default_() { Processor = this });
 
             MessageQueue = new(bot);
-            BotClient = bot;
             bot.OnMessage += Bot_OnMessage;
+
+            if (Cfg.AddBotMeCommandInfo) 
+                MessageQueue.EnqueueAction(async b => await b.SetMyCommandsAsync(CommandList.AvailableCommands));
         }
         
         private bool ValidateCommandAttribute(Type type, Attribute[] attributes)
