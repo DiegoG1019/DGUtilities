@@ -32,6 +32,7 @@ namespace DiegoG.TelegramBot
         public MessageQueue MessageQueue { get; init; }
         public BotCommandList CommandList { get; init; }
         public TelegramBotClient BotClient { get; init; }
+        public string BotHandle { get; init; }
 
         /// <summary>
         /// Initializes the BotCommandProcessor
@@ -67,6 +68,8 @@ namespace DiegoG.TelegramBot
 
             if (Cfg.AddBotMeCommandInfo) 
                 MessageQueue.EnqueueAction(async b => await b.SetMyCommandsAsync(CommandList.AvailableCommands));
+
+            BotHandle = bot.GetMeAsync().Result.Username;
         }
         
         private bool ValidateCommandAttribute(Type type, Attribute[] attributes)
@@ -76,6 +79,7 @@ namespace DiegoG.TelegramBot
 
             var b = ((BotCommandAttribute)attributes.First(y => y is BotCommandAttribute)).BotKey;
             return (BotKey & b) is not BotKey.Any; //x & x will always return x, and x & y will return whichever values are shared among them. So if we already know it's not 0 (Any), then if it returns anything other than that, we know it contains at least one of the desired flags
+            //Also, if BotKey is Any, that means that this command is only meant only for certain bots, and not one marked as Any
         }
 
         /// <summary>
@@ -86,7 +90,7 @@ namespace DiegoG.TelegramBot
         /// <exception cref="InvalidOperationException">Thrown if one of the commands is found to be a duplicate</exception>
         public void LoadNewCommands(params Assembly[] assemblies)
         {
-            foreach (var c in TypeLoader.InstanceTypesWithAttribute<IBotCommand>(typeof(BotCommandAttribute), CommandList.Select(d => d.GetType()), assemblies))
+            foreach (var c in TypeLoader.InstanceTypesWithAttribute<IBotCommand>(typeof(BotCommandAttribute), ValidateCommandAttribute, CommandList.Select(d => d.GetType()), assemblies))
                 CommandList.Add(c);
         }
 
@@ -105,6 +109,7 @@ namespace DiegoG.TelegramBot
             {
                 if (Cfg.ProcessNormalMessages || command.StartsWith("/"))
                 {
+                    command = command.Replace(BotHandle, "");
                     var cr = await Call(command, user, e.Message);
                     MessageQueue.EnqueueAction(b => b.SendTextMessageAsync(e.Message.Chat.Id, cr, ParseMode.Default, null, false, false, e.Message.MessageId));
                     Log.Debug($"Command {command} from user {user} succesfully processed.");
