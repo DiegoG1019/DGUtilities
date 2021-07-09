@@ -36,7 +36,7 @@ namespace DiegoG.TelegramBot
         /// <summary>
         /// Initializes the BotCommandProcessor
         /// </summary>
-        /// <param name="bots">A bot to subscribe onto, if you decide to leave blank, please make sure to manually subscribe <see cref="Bot_OnMessage(object?, Telegram.Bot.Args.MessageEventArgs)"/> to your bots' OnMessage event </param>
+        /// <param name="bots">A bot to subscribe onto, if you decide to leave blank, please make sure to manually subscribe <see cref="MessageHandler(object?, Telegram.Bot.Args.MessageEventArgs)"/> to your bots' OnMessage event </param>
         /// <param name="config"></param>
         public BotCommandProcessor(TelegramBotClient bot, BotKey key = BotKey.Any, Config? config = null)
         {
@@ -63,7 +63,7 @@ namespace DiegoG.TelegramBot
                 CommandList.Add(new Default_() { Processor = this });
 
             MessageQueue = new(bot);
-            bot.OnMessage += Bot_OnMessage;
+            bot.OnMessage += MessageHandler;
 
             if (Cfg.AddBotMeCommandInfo) 
                 MessageQueue.EnqueueAction(async b => await b.SetMyCommandsAsync(CommandList.AvailableCommands));
@@ -90,7 +90,12 @@ namespace DiegoG.TelegramBot
                 CommandList.Add(c);
         }
 
-        public async void Bot_OnMessage(object? sender, Telegram.Bot.Args.MessageEventArgs e)
+        /// <summary>
+        /// This method is automatically subscribed to Bot.OnMessage if set to true (the default) in BotCommandProcessor.Config fed to this instance
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public async void MessageHandler(object? sender, Telegram.Bot.Args.MessageEventArgs e)
         {
             var user = e.Message.From;
             var client = sender as TelegramBotClient;
@@ -100,7 +105,7 @@ namespace DiegoG.TelegramBot
             {
                 if (Cfg.ProcessNormalMessages || command.StartsWith("/"))
                 {
-                    var cr = await Call(command, user);
+                    var cr = await Call(command, user, e.Message);
                     MessageQueue.EnqueueAction(b => b.SendTextMessageAsync(e.Message.Chat.Id, cr, ParseMode.Default, null, false, false, e.Message.MessageId));
                     Log.Debug($"Command {command} from user {user} succesfully processed.");
                 }
@@ -147,8 +152,9 @@ namespace DiegoG.TelegramBot
             }
         }
 
-        public Task<string> Call(string input, User sender) 
-            => Call(new(input, sender));
+        public Task<string> Call(string input, User sender, Message message) 
+            => Call(new(input, sender, message));
+
         public async Task<string> Call(BotCommandArguments args)
         {
             try

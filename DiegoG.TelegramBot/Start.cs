@@ -22,16 +22,13 @@ namespace DiegoG.TelegramBot
 
         public BotCommandProcessor Processor { get; set; }
 
-        public Task<(string, bool)> Action(BotCommandArguments args) => Task.FromResult(("Hello! Welcome! Please type /help", false));
+        public virtual Task<(string, bool)> Action(BotCommandArguments args) => Task.FromResult(("Hello! Welcome! Please type /help", false));
 
-        public Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args) => Task.FromResult(("", false));
 
-        public void Cancel(User user)
+        public virtual void Cancel(User user)
         {
-            throw new NotImplementedException();
+            return;
         }
     }
 }

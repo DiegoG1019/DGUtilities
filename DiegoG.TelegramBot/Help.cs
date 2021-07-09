@@ -35,7 +35,7 @@ namespace DiegoG.TelegramBot
 
         //0 : trigger | 1 : alias | 2 : HelpExplanation | 3 : HelpUsage | 4 : HelpOptions (if available)
         private const string HelpFormat = " > {0}{1} | {2}\n >> {3}{4}";
-        public Task<(string Result, bool Hold)> Action(BotCommandArguments args)
+        public virtual Task<(string Result, bool Hold)> Action(BotCommandArguments args)
         {
             if (args.Arguments.Length <= 1)
             {
@@ -59,14 +59,8 @@ namespace DiegoG.TelegramBot
             return Task.FromResult((string.Format(HelpFormat, c.Trigger, GetAlias(c), c.HelpExplanation, c.HelpUsage, GetHelpExplanation(c)), false));
         }
 
-        public Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args) => Task.FromResult(("", false));
 
-        public void Cancel(User user)
-        {
-            throw new NotImplementedException();
-        }
+        public virtual void Cancel(User user) { return; }
     }
 }
