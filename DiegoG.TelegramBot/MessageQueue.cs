@@ -12,11 +12,18 @@ using DiegoG.Utilities;
 using System.Collections.Concurrent;
 using Telegram.Bot;
 using Serilog;
+using Telegram.Bot.Exceptions;
+using Serilog.Events;
 
 namespace DiegoG.TelegramBot
 {
     public class MessageQueue
     {
+        /// <summary>
+        /// The limit of requests per minute that can be issued
+        /// </summary>
+        public int ApiSaturationLimit { get; set; } = 60;
+
         public enum MessageSinkStatus
         {
             Inactive,
@@ -50,11 +57,17 @@ namespace DiegoG.TelegramBot
             BotClient = client;
             BotActionQueue = new();
             SenderThread = new(Sender);
+
+            for (int i = 0; i < 21; i++)
+                Requests.Enqueue(DateTime.Now);
+            while (!Requests.IsEmpty)
+                Requests.TryDequeue(out _);
+
             SenderThread.Start();
             QueueStatus = MessageSinkStatus.Active;
         }
 
-        const int StandardWait = 1000;
+        const int StandardWait = 500;
         const int FailureWait = 60_000;
         int Wait___ = StandardWait;
         int Wait
@@ -84,12 +97,12 @@ namespace DiegoG.TelegramBot
 
                 Thread.Sleep(Wait);
 
-                while(!Requests.IsEmpty)
+                var start = Requests.Count;
+
+                while (!Requests.IsEmpty)
                 {
                     if (CheckForceStopping())
                         return;
-
-                    var start = Requests.Count;
 
                     if (Requests.TryPeek(out var x) && DateTime.Now - x >= OneMinute)
                     {
@@ -97,16 +110,16 @@ namespace DiegoG.TelegramBot
                         continue;
                     }
 
-                    var now = Requests.Count;
-                    if (start != now)
-                        Log.Verbose($"{start - now} requests cooled down, {now} still hot");
-
                     break;
                 }
 
+                var now = Requests.Count;
+                if (start != now)
+                    Log.Verbose($"{start - now} requests cooled down, {now} still hot");
+
                 try
                 {
-                    while (Requests.Count < 20 && BotActionQueue.TryDequeue(out var action))
+                    while (Requests.Count < ApiSaturationLimit && BotActionQueue.TryDequeue(out var action))
                     {
                         if (CheckForceStopping())
                             return;
@@ -115,13 +128,19 @@ namespace DiegoG.TelegramBot
                         tasks.Run(() => action(BotClient));
                     }
                     if(tasks.Count > 0)
-                        Log.Verbose($"Fired {tasks.Count} new requests");
+                        Log.Verbose($"Fired {tasks.Count} new requests, {BotActionQueue.Count} still queued");
                     await tasks;
                 }
-                catch
+                catch(ApiRequestException e)
                 {
-                    Log.Error("An error ocurred while executing the queued actions, some data may have been lost");
+                    Log.Fatal($"An while executing the queued actions, too many API Requests, some data may have been lost: {e}");
+                    tasks.Clear();
                     Wait = FailureWait;
+                }
+                catch(Exception e)
+                {
+                    Log.Error($"An error ocurred while executing the queued actions, some data may have been lost: {e}");
+                    tasks.Clear();
                 }
             }
 

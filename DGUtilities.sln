@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.Reflection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DiegoG.TelegramBot", "DiegoG.TelegramBot", "{96A9BA73-B2F0-4B85-9B26-07D2298D3EB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiegoG.TelegramBot.Test", "DiegoG.TelegramBot.Test\DiegoG.TelegramBot.Test.csproj", "{66D89C4E-E351-4C41-ABD7-C093B773872A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.TelegramBot.Test", "DiegoG.TelegramBot.Test\DiegoG.TelegramBot.Test.csproj", "{66D89C4E-E351-4C41-ABD7-C093B773872A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
