@@ -27,6 +27,7 @@ namespace DiegoG.TelegramBot
         private BotKey BotKey { get; init; }
         private Config Cfg;
         private Dictionary<User, IBotCommand> HeldCommands { get; } = new();
+        private readonly Func<Message, bool> MessageFilter;
 
         public event EventHandler<BotCommandArguments>? CommandCalled;
         public MessageQueue MessageQueue { get; init; }
@@ -39,9 +40,11 @@ namespace DiegoG.TelegramBot
         /// </summary>
         /// <param name="bots">A bot to subscribe onto, if you decide to leave blank, please make sure to manually subscribe <see cref="MessageHandler(object?, Telegram.Bot.Args.MessageEventArgs)"/> to your bots' OnMessage event </param>
         /// <param name="config"></param>
-        public BotCommandProcessor(TelegramBotClient bot, BotKey key = BotKey.Any, Config? config = null)
+        public BotCommandProcessor(TelegramBotClient bot, BotKey key = BotKey.Any, Config? config = null, Func<Message, bool>? messageFilter = null)
         {
             Cfg = config ?? new();
+            MessageFilter = messageFilter ?? (m => true);
+            
             BotKey = key;
 
             CommandList = new();
@@ -104,6 +107,12 @@ namespace DiegoG.TelegramBot
             var user = e.Message.From;
             var client = sender as TelegramBotClient;
             Log.Debug($"Message from user {user}, processing");
+            if (!MessageFilter(e.Message))
+            {
+                Log.Debug($"Message from user {user} filtered out");
+                return;
+            }
+
             var command = e.Message.Text;
             try
             {

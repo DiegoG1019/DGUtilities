@@ -19,6 +19,12 @@ namespace DiegoG.TelegramBot
 {
     public class MessageQueue
     {
+        class TResultCapsule<TResult>
+        {
+            public bool IsReady { get; set; } = false;
+            public TResult Result { get; set; }
+        }
+
         /// <summary>
         /// The limit of requests per minute that can be issued
         /// </summary>
@@ -35,6 +41,7 @@ namespace DiegoG.TelegramBot
         }
 
         public delegate Task BotAction(TelegramBotClient bot);
+        public delegate Task<TResult> BotFunc<TResult>(TelegramBotClient bot);
 
         public MessageSinkStatus QueueStatus { get; private set; } = MessageSinkStatus.Inactive;
 
@@ -44,6 +51,20 @@ namespace DiegoG.TelegramBot
 
         public void EnqueueAction(BotAction action)
             => BotActionQueue.Enqueue(action);
+
+        public async Task<TResult> EnqueueFunc<TResult>(BotFunc<TResult> func)
+        {
+            var result = new TResultCapsule<TResult>();
+            EnqueueAction(async b =>
+            {
+                result.Result = await func(b);
+                result.IsReady = true;
+            });
+
+            while (!result.IsReady)
+                await Task.Delay(200);
+            return result.Result;
+        }
 
         public void Stop()
             => QueueStatus = MessageSinkStatus.Stopping;
