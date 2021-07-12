@@ -63,14 +63,4 @@ namespace DiegoG.Utilities.Enumerations
         Double,
         Decimal
     }
-
-    public static class MemberCount
-    {
-        public static readonly int Directions = Enum.GetNames(typeof(Directions)).Length;
-    }
-    public static class EnumUtil
-    {
-        public static IEnumerable<T> GetValues<T>() => Enum.GetValues(typeof(T)).Cast<T>();
-    }
-
 }

@@ -19,7 +19,7 @@ namespace DiegoG.TelegramBot
 
         public IEnumerable<(string Option, string Explanation)>? HelpOptions => null;
 
-        public string Trigger => BotCommandProcessor.DefaultName;
+        public virtual string Trigger => BotCommandProcessor.DefaultName;
 
         public string? Alias => null;
 

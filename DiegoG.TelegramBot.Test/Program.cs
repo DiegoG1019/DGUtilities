@@ -18,7 +18,7 @@ namespace DiegoG.TelegramBot.Test
                 .WriteTo.Console()
                 .CreateLogger();
 
-            var bot = new TelegramBotClient("1787830577:AAENYWvgMaEERt1VFO8SgPxDLcR35d8q5kw");
+            var bot = new TelegramBotClient(CheapTacticGitIgnore.DGSandboxApiKey);
             var proc = new BotCommandProcessor(bot);
 
             bot.StartReceiving();
