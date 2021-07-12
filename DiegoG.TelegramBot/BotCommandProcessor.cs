@@ -94,7 +94,10 @@ namespace DiegoG.TelegramBot
         public void LoadNewCommands(params Assembly[] assemblies)
         {
             foreach (var c in TypeLoader.InstanceTypesWithAttribute<IBotCommand>(typeof(BotCommandAttribute), ValidateCommandAttribute, CommandList.Select(d => d.GetType()), assemblies))
+            {
+                c.Processor = this;
                 CommandList.Add(c);
+            }
         }
 
         /// <summary>

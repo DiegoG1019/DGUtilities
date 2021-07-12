@@ -23,7 +23,7 @@ namespace DiegoG.TelegramBot
         /// <summary>
         /// Due to Telegram's Rate Limiting, it is not recommended to sink anything below `Information` events
         /// </summary>
-        public static LoggerConfiguration TelegramBot(this LoggerSinkConfiguration loggerConfiguration, ChatId chatid, TelegramBotClient botclient, LogEventLevel level = LogEventLevel.Information, string? hashtag = null)
+        public static LoggerConfiguration TelegramBot(this LoggerSinkConfiguration loggerConfiguration, ChatId chatid, BotCommandProcessor botclient, LogEventLevel level = LogEventLevel.Information, string? hashtag = null)
             => loggerConfiguration.Sink(new TelegramBotSink(chatid, botclient, level, hashtag));
     }
 
@@ -32,7 +32,7 @@ namespace DiegoG.TelegramBot
     /// </summary>
     public class TelegramBotSink : ILogEventSink
     {
-        private readonly TelegramBotClient Client;
+        private readonly BotCommandProcessor Client;
         private readonly ChatId Id;
         private readonly ConcurrentQueue<string> MessageQueue = new();
         private readonly Thread DequeueThread;
@@ -41,50 +41,22 @@ namespace DiegoG.TelegramBot
         private readonly string? Hashtag;
         private bool AllowNewMessages = true;
 
-        public TelegramBotSink(ChatId id, TelegramBotClient client, LogEventLevel level, string? hashtag)
+        public TelegramBotSink(ChatId id, BotCommandProcessor client, LogEventLevel level, string? hashtag)
         {
             Id = id;
             Client = client;
             Level = level;
             if(hashtag is not null)
                 Hashtag = string.Join("", hashtag.Split(' '));
-            DequeueThread = new(async o =>
+            DequeueThread = new(o =>
             {
                 CancellationToken token = (CancellationToken)o!;
-                AsyncTaskManager tasks = new();
                 while (!token.IsCancellationRequested)
                 {
                     Thread.Sleep(60000);
-                    for (int i = 0; i < 10 && !MessageQueue.IsEmpty; i++)
-                    {
+                    for (int i = 0; i < 20 && !MessageQueue.IsEmpty; i++)
                         if(MessageQueue.TryDequeue(out var msg))
-                            tasks.Run(async () =>
-                            {
-                                try
-                                {
-                                    await Client.SendTextMessageAsync(Id, msg, Telegram.Bot.Types.Enums.ParseMode.MarkdownV2, null, false, true);
-                                }
-                                catch (Exception e)
-                                {
-                                    const string Delayed = " !!delayed";
-                                    int d = 1;
-                                    if (msg.Contains(Delayed))
-                                    {
-                                        var match = Regex.Match(msg, Delayed + @"\d+");
-                                        if (match.Success && int.TryParse(match.Value.Replace(Delayed, ""), out d))
-                                        {
-                                            MessageQueue.Enqueue(Regex.Replace(msg, Delayed + @"\d+", Delayed + (d + 1)));
-                                            return;
-                                        }
-                                        MessageQueue.Enqueue(msg + d);
-                                        return;
-                                    }
-                                    MessageQueue.Enqueue(msg + Delayed);
-                                    return;
-                                }
-                            });
-                    }
-                    await tasks;
+                            Client.MessageQueue.EnqueueAction(b => b.SendTextMessageAsync(Id, msg, Telegram.Bot.Types.Enums.ParseMode.MarkdownV2, null, false, true));
                 }
             });
             DequeueThread.Start(TokenSource.Token);
@@ -98,11 +70,9 @@ namespace DiegoG.TelegramBot
                 {
                     while (!MessageQueue.IsEmpty)
                     {
-                        Thread.Sleep(60000);
-                        for (int i = 0; i < 15 && !MessageQueue.IsEmpty; i++)
+                        while(!MessageQueue.IsEmpty)
                             if(MessageQueue.TryDequeue(out var msg))
-                                tasks.Add(Client.SendTextMessageAsync(Id, msg, Telegram.Bot.Types.Enums.ParseMode.MarkdownV2, null, false, true));
-                        tasks.WaitAll();
+                                    Client.MessageQueue.EnqueueAction(b => b.SendTextMessageAsync(Id, msg, Telegram.Bot.Types.Enums.ParseMode.MarkdownV2, null, false, true));
                     }
                 }catch(Exception)
                 {
