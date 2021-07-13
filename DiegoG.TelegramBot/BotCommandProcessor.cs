@@ -165,6 +165,7 @@ namespace DiegoG.TelegramBot
             {
                 var ex = new InvalidBotCommandException(args.ToString(), "threw an unspecified exception", e);
                 Log.Fatal(e, args.ToString());
+                HeldCommands.Remove(args.User);
                 throw ex;
             }
         }
