@@ -86,15 +86,18 @@ namespace DiegoG.TelegramBot.Types
             Actions = actions;
         }
 
-        public CommandResponse(ChatId id, bool hold = false, params string[] messages)
+        public CommandResponse(Message msg, bool hold = false, params string[] messages)
         {
             Hold = hold;
             var act = new BotAction[messages.Length];
             for (int i = 0; i < messages.Length; i++)
-                act[i] = b => b.SendTextMessageAsync(id, messages[i]);
+            {
+                var m = messages[i];
+                act[i] = b => b.SendTextMessageAsync(msg.Chat.Id, m, replyToMessageId: msg.MessageId);
+            }
             Actions = act;
         }
 
-        public CommandResponse(BotCommandArguments args, bool hold = false, params string[] messages) : this(args.FromChat, hold, messages) { }
+        public CommandResponse(BotCommandArguments args, bool hold = false, params string[] messages) : this(args.Message, hold, messages) { }
     }
 }
