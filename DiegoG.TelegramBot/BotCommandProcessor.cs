@@ -39,9 +39,10 @@ namespace DiegoG.TelegramBot
         /// <summary>
         /// Initializes the BotCommandProcessor
         /// </summary>
+        /// <param name="apiSaturation">The maximum number of request the MessageQueue can send per minute</param>
         /// <param name="bots">A bot to subscribe onto, if you decide to leave blank, please make sure to manually subscribe <see cref="MessageHandler(object?, Telegram.Bot.Args.MessageEventArgs)"/> to your bots' OnMessage event </param>
         /// <param name="config"></param>
-        public BotCommandProcessor(TelegramBotClient bot, BotKey key = BotKey.Any, Config? config = null, Func<Message, bool>? messageFilter = null)
+        public BotCommandProcessor(TelegramBotClient bot, int apiSaturation, BotKey key = BotKey.Any, Config? config = null, Func<Message, bool>? messageFilter = null)
         {
             Cfg = config ?? new();
             MessageFilter = messageFilter ?? (m => true);
@@ -67,7 +68,7 @@ namespace DiegoG.TelegramBot
             if (!CommandList.HasCommand(DefaultName))
                 CommandList.Add(new Default_() { Processor = this });
             
-            MessageQueue = new(bot);
+            MessageQueue = new(bot, apiSaturation);
             bot.OnMessage += MessageHandler;
 
             if (Cfg.AddBotMeCommandInfo) 

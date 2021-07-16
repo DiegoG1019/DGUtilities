@@ -28,7 +28,7 @@ namespace DiegoG.TelegramBot
         /// <summary>
         /// The limit of requests per minute that can be issued
         /// </summary>
-        public int ApiSaturationLimit { get; set; } = 60;
+        public int ApiSaturationLimit { get; set; }
 
         public enum MessageSinkStatus
         {
@@ -73,7 +73,7 @@ namespace DiegoG.TelegramBot
             => QueueStatus = MessageSinkStatus.ForceStopping;
 
         public TelegramBotClient BotClient { get; private set; }
-        public MessageQueue(TelegramBotClient client)
+        public MessageQueue(TelegramBotClient client, int apiSaturationLimit)
         {
             BotClient = client;
             BotActionQueue = new();
@@ -86,6 +86,8 @@ namespace DiegoG.TelegramBot
 
             SenderThread.Start();
             QueueStatus = MessageSinkStatus.Active;
+
+            ApiSaturationLimit = apiSaturationLimit;
         }
 
         const int StandardWait = 500;
@@ -145,6 +147,7 @@ namespace DiegoG.TelegramBot
                         if (CheckForceStopping())
                             return;
 
+                        await Task.Delay(100);
                         Requests.Enqueue(DateTime.Now);
                         tasks.Run(() => action(BotClient));
                     }

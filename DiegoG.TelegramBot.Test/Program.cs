@@ -20,7 +20,7 @@ namespace DiegoG.TelegramBot.Test
                 .CreateLogger();
 
             var bot = new TelegramBotClient(CheapTacticGitIgnore.DGSandboxApiKey);
-            var proc = new BotCommandProcessor(bot);
+            var proc = new BotCommandProcessor(bot, 30);
 
             bot.StartReceiving();
 
