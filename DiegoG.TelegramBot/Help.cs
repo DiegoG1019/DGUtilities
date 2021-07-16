@@ -39,11 +39,8 @@ namespace DiegoG.TelegramBot
         {
             if (args.Arguments.Length <= 1)
             {
-                string str = "CommandName (Argument) [OptionalArgument]\n";
-
-                foreach (var command in Processor.CommandList.Where(s => s.Trigger is not BotCommandProcessor.DefaultName))
-                    str += $"{command.Trigger}{GetAlias(command)} | {command.HelpUsage}\n";
-                return Task.FromResult(new CommandResponse(args, false, str[0..^1]));
+                return Task.FromResult(new CommandResponse(args, false, string.Join("\n", 
+                    Processor.CommandList.Where(s => s.Trigger is not BotCommandProcessor.DefaultName).Select(command => $"{command.Trigger}{GetAlias(command)} - {command.HelpUsage}"))));
             }
 
             var clist = Processor.CommandList;
