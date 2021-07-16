@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
+using static DiegoG.TelegramBot.MessageQueue;
 
 namespace DiegoG.TelegramBot
 {
@@ -123,7 +124,10 @@ namespace DiegoG.TelegramBot
                 {
                     command = command.Replace(BotHandle, "");
                     var cr = await Call(command, user, e.Message);
-                    MessageQueue.EnqueueAction(b => b.SendTextMessageAsync(e.Message.Chat.Id, cr, ParseMode.Default, null, false, false, e.Message.MessageId));
+
+                    foreach (var act in cr)
+                        MessageQueue.EnqueueAction(act);
+
                     Log.Debug($"Command {command} from user {user} succesfully processed.");
                 }
             }
@@ -149,7 +153,7 @@ namespace DiegoG.TelegramBot
             }
         }
 
-        private async Task<string> ReplyCall(BotCommandArguments args)
+        private async Task<IEnumerable<BotAction>> ReplyCall(BotCommandArguments args)
         {
             try
             {
@@ -170,10 +174,10 @@ namespace DiegoG.TelegramBot
             }
         }
 
-        public Task<string> Call(string input, User sender, Message message) 
+        public Task<IEnumerable<BotAction>> Call(string input, User sender, Message message) 
             => Call(new(input, sender, message));
 
-        public async Task<string> Call(BotCommandArguments args)
+        public async Task<IEnumerable<BotAction>> Call(BotCommandArguments args)
         {
             try
             {

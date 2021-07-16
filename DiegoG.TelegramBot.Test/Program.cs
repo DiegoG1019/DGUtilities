@@ -109,13 +109,13 @@ namespace DiegoG.TelegramBot.Test
 
         public string HelpUsage => Trigger;
 
-        public IEnumerable<(string Option, string Explanation)> HelpOptions => null;
+        public IEnumerable<OptionDescription> HelpOptions => null;
 
         public string Trigger => "/testget";
 
         public string Alias => null;
 
-        public Task<(string Result, bool Hold)> Action(BotCommandArguments args)
+        public Task<CommandResponse> Action(BotCommandArguments args)
         {
             Processor.MessageQueue.ApiSaturationLimit = 3;
             AsyncTaskManager tasks = new();
@@ -126,10 +126,10 @@ namespace DiegoG.TelegramBot.Test
             tasks.Add(Processor.MessageQueue.EnqueueFunc(async b => { Log.Verbose("D1"); await Task.Delay(600); Log.Verbose("D2"); return 0; }));
             tasks.Add(Processor.MessageQueue.EnqueueFunc(async b => { Log.Verbose("E1"); await Task.Delay(600); Log.Verbose("E2"); return 0; }));
             Log.Verbose("End");
-            return Task.FromResult(("Done, check the console", false));
+            return Task.FromResult(new CommandResponse(args, false, "Done, check the console"));
         }
 
-        public Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args)
+        public Task<CommandResponse> ActionReply(BotCommandArguments args)
         {
             throw new NotImplementedException();
         }
@@ -143,12 +143,12 @@ namespace DiegoG.TelegramBot.Test
     //[BotCommand]
     class DefaultTest : Default
     {
-        public override Task<(string, bool)> Action(BotCommandArguments args)
+        public override Task<CommandResponse> Action(BotCommandArguments args)
         {
-            return Task.FromResult(("a", false));
+            return Task.FromResult(new CommandResponse(args, false, "a"));
         }
 
-        public override Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args)
+        public override Task<CommandResponse> ActionReply(BotCommandArguments args)
         {
             throw new NotImplementedException();
         }

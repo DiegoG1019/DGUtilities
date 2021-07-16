@@ -16,7 +16,7 @@ namespace DiegoG.TelegramBot
         public string Alias => "/h";
         public string HelpExplanation => "Returns a string explaining the uses of a specific command.";
         public string HelpUsage => "[Command]";
-        public IEnumerable<(string, string)>? HelpOptions => null;
+        public IEnumerable<OptionDescription>? HelpOptions => null;
         public BotCommandProcessor Processor { get; set; }
 
 
@@ -27,15 +27,15 @@ namespace DiegoG.TelegramBot
         {
             if(cmd.HelpOptions is not null)
             {
-                int padding = cmd.HelpOptions.Max(s => s.Option.Length);
-                return HelpExplanationFormat + cmd.HelpOptions.Select(s => $"{s.Option.PadLeft(padding)}: {s.Explanation}").Flatten("\n\t\t");
+                int padding = cmd.HelpOptions.Max(s => s.OptionName.Length);
+                return HelpExplanationFormat + cmd.HelpOptions.Select(s => $"{s.OptionName.PadLeft(padding)}: {s.Explanation}").Flatten("\n\t\t");
             }
             return "";
         }
 
         //0 : trigger | 1 : alias | 2 : HelpExplanation | 3 : HelpUsage | 4 : HelpOptions (if available)
         private const string HelpFormat = " > {0}{1} | {2}\n >> {3}{4}";
-        public virtual Task<(string Result, bool Hold)> Action(BotCommandArguments args)
+        public virtual Task<CommandResponse> Action(BotCommandArguments args)
         {
             if (args.Arguments.Length <= 1)
             {
@@ -43,7 +43,7 @@ namespace DiegoG.TelegramBot
 
                 foreach (var command in Processor.CommandList.Where(s => s.Trigger is not BotCommandProcessor.DefaultName))
                     str += $"{command.Trigger}{GetAlias(command)} | {command.HelpUsage}\n";
-                return Task.FromResult((str[0..^1], false));
+                return Task.FromResult(new CommandResponse(args, false, str[0..^1]));
             }
 
             var clist = Processor.CommandList;
@@ -56,10 +56,10 @@ namespace DiegoG.TelegramBot
                 c = clist["/" + cmd];
             else
                 throw new InvalidBotCommandArgumentsException(args.ToString(), "Unknown Command");
-            return Task.FromResult((string.Format(HelpFormat, c.Trigger, GetAlias(c), c.HelpExplanation, c.HelpUsage, GetHelpExplanation(c)), false));
+            return Task.FromResult(new CommandResponse(args, false, string.Format(HelpFormat, c.Trigger, GetAlias(c), c.HelpExplanation, c.HelpUsage, GetHelpExplanation(c))));
         }
 
-        public virtual Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args) => Task.FromResult(("", false));
+        public virtual Task<CommandResponse> ActionReply(BotCommandArguments args) => Task.FromResult(new CommandResponse(false));
 
         public virtual void Cancel(User user) { return; }
     }

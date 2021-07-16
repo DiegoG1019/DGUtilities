@@ -17,13 +17,13 @@ namespace DiegoG.TelegramBot
         public abstract ChatSequenceStep<TContext> FirstStep { get; }
         protected readonly Dictionary<long, ChatSequence<TContext>> ActiveContexts = new();
 
-        public override async Task<(string, bool)> Action(BotCommandArguments args)
+        public override async Task<CommandResponse> Action(BotCommandArguments args)
         {
             ActiveContexts.Add(args.User.Id, new(FirstStep));
-            return (await ActiveContexts[args.User.Id].EnterFirst(), true);
+            return new(args, true, await ActiveContexts[args.User.Id].EnterFirst());
         }
 
-        public override async Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args)
+        public override async Task<CommandResponse> ActionReply(BotCommandArguments args)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace DiegoG.TelegramBot
                         ? throw new InvalidOperationException("Unexpected End of Sequence")
                         : ad.Success is Advancement.SuccessCode.Failure
                         ? throw new InvalidOperationException("Unable to advance, none of the next possible steps have favorable conditions")
-                        : (ad.EnterValue!, true);
+                        : new(args, true, ad.EnterValue!);
                 }
 
                 var act = r.Action is Response.ResponseAction.Continue;
@@ -46,7 +46,7 @@ namespace DiegoG.TelegramBot
                 if (!act)
                     Cancel(args.User);
 
-                return (r.ResponseValue, act);
+                return new(args, act, r.ResponseValue);
             }
             catch
             {

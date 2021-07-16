@@ -6,10 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
+using static DiegoG.TelegramBot.MessageQueue;
 
 namespace DiegoG.TelegramBot.Types
 {
-    
     public interface IBotCommand
     {
         /// <summary>
@@ -21,14 +21,14 @@ namespace DiegoG.TelegramBot.Types
         /// The action to be taken when the command is invoked. Please be aware that the engine will try to remove the slash
         /// </summary>
         /// <returns>The return value of the command. If the method cannot be made async, consider returning Task.FromResult(YourResult)</returns>
-        Task<(string Result, bool Hold)> Action(BotCommandArguments args);
+        Task<CommandResponse> Action(BotCommandArguments args);
 
         /// <summary>
         /// While Hold is set to not null, the command processor will call ActionReply whenever another message is sent by the users
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args);
+        Task<CommandResponse> ActionReply(BotCommandArguments args);
 
         /// <summary>
         /// Cancels the currently ongoing ActionReply executed by the command
@@ -46,7 +46,7 @@ namespace DiegoG.TelegramBot.Types
         /// <summary>
         /// Provides detailed information of each option setting. Set to null to ignore
         /// </summary>
-        IEnumerable<(string Option, string Explanation)>? HelpOptions { get; }
+        IEnumerable<OptionDescription>? HelpOptions { get; }
         /// <summary>
         /// Defines the trigger of the command (Case Insensitive)
         /// </summary>
@@ -65,5 +65,36 @@ namespace DiegoG.TelegramBot.Types
             message = null;
             return true;
         }
+    }
+
+    public record OptionDescription(string OptionName, string Explanation) { }
+
+    public record CommandResponse
+    {
+        public IEnumerable<BotAction> Actions { get; init; }
+        public bool Hold { get; init; }
+
+        public void Deconstruct(out IEnumerable<BotAction> actions, out bool hold)
+        {
+            hold = Hold;
+            actions = Actions;
+        }
+
+        public CommandResponse(bool hold = false, params BotAction[] actions)
+        {
+            Hold = hold;
+            Actions = actions;
+        }
+
+        public CommandResponse(ChatId id, bool hold = false, params string[] messages)
+        {
+            Hold = hold;
+            var act = new BotAction[messages.Length];
+            for (int i = 0; i < messages.Length; i++)
+                act[i] = b => b.SendTextMessageAsync(id, messages[i]);
+            Actions = act;
+        }
+
+        public CommandResponse(BotCommandArguments args, bool hold = false, params string[] messages) : this(args.FromChat, hold, messages) { }
     }
 }

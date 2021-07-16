@@ -14,7 +14,7 @@ namespace DiegoG.TelegramBot
 
         public string HelpUsage => "/start";
 
-        public IEnumerable<(string Option, string Explanation)>? HelpOptions => null;
+        public IEnumerable<OptionDescription>? HelpOptions => null;
 
         public string Trigger => "/start";
 
@@ -22,9 +22,9 @@ namespace DiegoG.TelegramBot
 
         public BotCommandProcessor Processor { get; set; }
 
-        public virtual Task<(string, bool)> Action(BotCommandArguments args) => Task.FromResult(("Hello! Welcome! Please type /help", false));
+        public virtual Task<CommandResponse> Action(BotCommandArguments args) => Task.FromResult(new CommandResponse(args, false, "Hello! Welcome! Please type /help"));
 
-        public virtual Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args) => Task.FromResult(("", false));
+        public virtual Task<CommandResponse> ActionReply(BotCommandArguments args) => Task.FromResult(new CommandResponse(args, false, ""));
 
         public virtual void Cancel(User user)
         {

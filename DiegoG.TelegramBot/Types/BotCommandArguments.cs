@@ -12,6 +12,7 @@ namespace DiegoG.TelegramBot.Types
     {
         public Message Message { get; init; }
         public string ArgString { get; init; }
+        public ChatId FromChat { get; init; }
         public User User { get; init; }
         public string[] Arguments { get; init; }
 
@@ -21,6 +22,7 @@ namespace DiegoG.TelegramBot.Types
             User = user;
             Arguments = BotCommandProcessor.SeparateArgs(argString);
             Message = message;
+            FromChat = message.Chat.Id;
         }
 
         public override string ToString()

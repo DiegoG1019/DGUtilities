@@ -17,7 +17,7 @@ namespace DiegoG.TelegramBot
 
         public string HelpUsage => string.Empty;
 
-        public IEnumerable<(string Option, string Explanation)>? HelpOptions => null;
+        public IEnumerable<OptionDescription>? HelpOptions => null;
 
         public virtual string Trigger => BotCommandProcessor.DefaultName;
 
@@ -25,18 +25,18 @@ namespace DiegoG.TelegramBot
 
         public BotCommandProcessor Processor { get; set; }
 
-        public abstract Task<(string, bool)> Action(BotCommandArguments args);
+        public abstract Task<CommandResponse> Action(BotCommandArguments args);
 
-        public abstract Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args);
+        public abstract Task<CommandResponse> ActionReply(BotCommandArguments args);
 
         public abstract void Cancel(User user);
     }
 
     internal class Default_ : Default
     {
-        public override Task<(string, bool)> Action(BotCommandArguments args) => Task.FromResult(("Unknown Command", false));
+        public override Task<CommandResponse> Action(BotCommandArguments args) => Task.FromResult(new CommandResponse(args, false, "Unknown Command"));
 
-        public override Task<(string Result, bool Hold)> ActionReply(BotCommandArguments args)
+        public override Task<CommandResponse> ActionReply(BotCommandArguments args)
         {
             throw new NotImplementedException();
         }
