@@ -7,6 +7,7 @@
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Authors>DiegoG1019</Authors>
     <Description>A small library to facilitate command line processing asynchronously, along with features to enrich a console</Description>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -18,12 +19,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DiegoG.Utilities.Base" Version="1.0.0" />
-    <PackageReference Include="DiegoG.Utilities.Basic" Version="1.0.0" />
+    <PackageReference Include="DiegoG.Utilities.Base" Version="1.0.1" />
+    <PackageReference Include="DiegoG.Utilities.Basic" Version="1.0.3" />
     <PackageReference Include="DiegoG.Utilities.Collections" Version="1.0.0" />
     <PackageReference Include="DiegoG.Utilities.Other" Version="1.0.0" />
-    <PackageReference Include="DiegoG.Utilities.Reflection" Version="1.0.0" />
-    <PackageReference Include="DiegoG.Utilities.Serialization" Version="1.0.0" />
+    <PackageReference Include="DiegoG.Utilities.Reflection" Version="1.1.2" />
+    <PackageReference Include="DiegoG.Utilities.Serialization" Version="1.0.1" />
   </ItemGroup>
 
 </Project>

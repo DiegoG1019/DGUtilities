@@ -6,13 +6,14 @@
     <Authors>DiegoG1019</Authors>
     <Description>A small library to facilitate serialization</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="DiegoG.Utilities.Collections" Version="1.0.0" />
-    <PackageReference Include="DiegoG.Utilities.Reflection" Version="1.0.0" />
-    <PackageReference Include="MessagePack" Version="2.2.85" />
-    <PackageReference Include="MessagePack.Annotations" Version="2.2.85" />
+    <PackageReference Include="DiegoG.Utilities.Reflection" Version="1.1.2" />
+    <PackageReference Include="MessagePack" Version="2.3.75" />
+    <PackageReference Include="MessagePack.Annotations" Version="2.3.75" />
     <PackageReference Include="Serilog" Version="2.10.0" />
   </ItemGroup>
 

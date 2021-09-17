@@ -2,17 +2,21 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DiegoG.Utilities.Base" Version="1.0.2" />
+    <PackageReference Include="DiegoG.Utilities.Basic" Version="1.0.4" />
+    <PackageReference Include="DiegoG.Utilities.Measures" Version="1.0.1" />
+    <PackageReference Include="DiegoG.Utilities.Reflection" Version="1.1.2" />
+    <PackageReference Include="DiegoG.Utilities.Serialization" Version="1.0.1" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.0.1641" />
     <PackageReference Include="MonoGame.Extended" Version="3.8.0" />
     <PackageReference Include="MonoGame.Extended.Graphics" Version="3.8.0" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.0.1641" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DiegoG.Utilities.Common\DiegoG.Utilities.Common.csproj" />
+    <PackageReference Include="System.Runtime" Version="4.3.1" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties _1_1_4_1_1_4_1_1_4_1_1_4_1_1_4_1nuget_4packages_4monogame_1extended_43_18_10_4contentfiles_4any_4netstandard2_10_4mgfxc_1runtimeconfig_1json__JsonSchema="https://beaujs.com/schema.json" /></VisualStudio></ProjectExtensions>

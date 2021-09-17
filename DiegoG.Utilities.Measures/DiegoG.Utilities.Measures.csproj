@@ -1,14 +1,15 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>DiegoG1019</Authors>
     <Description>A library containing classes to represent physical measurements in a variety of units, and perform operations with them</Description>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DiegoG.Utilities.Basic" Version="1.0.0" />
+    <PackageReference Include="DiegoG.Utilities.Basic" Version="1.0.3" />
   </ItemGroup>
 
 </Project>
