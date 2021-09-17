@@ -66,7 +66,7 @@ namespace DiegoG.Utilities.Measures
         /// <returns></returns>
         public static Density Parse(string str)
         {
-            Other.ThrowIfNull((str, nameof(str)));
+            DGHelper.ThrowIfNull((str, nameof(str)));
             var s = str.Split('/');
             if (s.Length == 2)
             {
@@ -79,7 +79,7 @@ namespace DiegoG.Utilities.Measures
         public static bool TryParse(string str, [MaybeNullWhen(false)] out Density density)
         {
             density = null;
-            Other.ThrowIfNull((str, nameof(str)));
+            DGHelper.ThrowIfNull((str, nameof(str)));
             var s = str.Split('/');
             if (s.Length == 2 && Mass.TryParse(s[0], out Mass mss) && Volume.TryParse(s[1], out Volume vlm))
             {

@@ -133,7 +133,7 @@ namespace DiegoG.Utilities.Settings
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
-        public static string CurrentGetString(params string[] address) => (string)(Other.GetProperty(Current, TType, address)!);
+        public static string CurrentGetString(params string[] address) => (string)(DGHelper.GetProperty(Current, TType, address)!);
 
         public static string Directory { get; private set; }
         public static string FileName { get; private set; }

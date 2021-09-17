@@ -13,7 +13,7 @@ using System.Timers;
 
 namespace DiegoG.Utilities
 {
-    public static class Other
+    public static class DGHelper
     {
         [Obsolete("SecureString itself is obsolete")]
         public static SecureString ToSecureString(this string plainString)
@@ -32,7 +32,7 @@ namespace DiegoG.Utilities
             return secureString;
         }
 
-        public static bool GenericTryParse<T>(string input, out T result)
+        public static bool GenericTryParse<T>(this string input, out T result)
             where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T>
         {
             result = default;
@@ -81,6 +81,34 @@ namespace DiegoG.Utilities
         }
         public static T Cap<T>(ref this T number, (T min, T max) mm) where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T> 
             => number.Cap(mm.min, mm.max);
+
+        public static T Min<T>(this T a, T b) where T : IComparable, IComparable<T>
+            => a.CompareTo(b) switch
+            {
+                1 => b,
+                _ => a
+            };
+
+        public static T Min<T>(this ref T a, ref T b) where T : struct, IComparable, IComparable<T>
+            => a.CompareTo(b) switch
+            {
+                1 => b,
+                _ => a
+            };
+
+        public static T Max<T>(this T a, T b) where T : IComparable, IComparable<T>
+            => a.CompareTo(b) switch
+            {
+                -1 => b,
+                _  => a
+            };
+
+        public static T Max<T>(this ref T a, ref T b) where T : struct, IComparable, IComparable<T>
+            => a.CompareTo(b) switch
+            {
+                -1 => b,
+                _  => a
+            };
 
         /// <summary>
         /// Checks if all of the values within bool[] b are true
@@ -210,7 +238,6 @@ namespace DiegoG.Utilities
             var mi = objectToCheck.GetMethod(methodName, parameters);
             return mi is not null && mi.ReturnType == returnType;
         }
-
 
         public static void Reset(this Timer timer) { timer.Stop(); timer.Start(); }
 

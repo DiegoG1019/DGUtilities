@@ -1,6 +1,6 @@
 ﻿using DiegoG.Utilities.Measures;
 using Microsoft.Xna.Framework;
-using static DiegoG.Utilities.Other;
+using static DiegoG.Utilities.DGHelper;
 
 namespace DiegoG.MonoGame
 {
