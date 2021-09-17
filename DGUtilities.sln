@@ -1,10 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31710.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.Common", "DiegoG.Utilities.Common\DiegoG.Utilities.Common.csproj", "{9F6E29BB-8E9C-45A0-BAA3-CE3BFD31F15C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.CLI", "DiegoG.CLI\DiegoG.CLI.csproj", "{0DF8909C-BCAB-4E57-BC7B-BC0E0CAA1834}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.MonoGame", "DiegoG.MonoGame\DiegoG.MonoGame.csproj", "{0774E26E-813F-4FF2-A3AE-8B4B5CA2772E}"
@@ -25,8 +23,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.Serializat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Benchmarks", "DiegoG.Benchmarks\DiegoG.Benchmarks.csproj", "{B1C576A0-08A7-4890-A0F0-A6513FA448BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.AspBlazor", "DiegoG.Utilities.AspBlazor\DiegoG.Utilities.AspBlazor.csproj", "{312E84AF-CF17-4EF9-9F7A-C47DE0197C0E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.DBModels", "DiegoG.Utilities.DBModels\DiegoG.Utilities.DBModels.csproj", "{4D557F63-42F4-4CAA-9205-6E2A5062300D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.Reflection", "DiegoG.Utilities.Reflection\DiegoG.Utilities.Reflection.csproj", "{B0ABBE18-F8F8-42DA-AC2F-FBA94FB0515B}"
@@ -37,10 +33,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9F6E29BB-8E9C-45A0-BAA3-CE3BFD31F15C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9F6E29BB-8E9C-45A0-BAA3-CE3BFD31F15C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9F6E29BB-8E9C-45A0-BAA3-CE3BFD31F15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9F6E29BB-8E9C-45A0-BAA3-CE3BFD31F15C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0DF8909C-BCAB-4E57-BC7B-BC0E0CAA1834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0DF8909C-BCAB-4E57-BC7B-BC0E0CAA1834}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DF8909C-BCAB-4E57-BC7B-BC0E0CAA1834}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -77,10 +69,6 @@ Global
 		{B1C576A0-08A7-4890-A0F0-A6513FA448BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1C576A0-08A7-4890-A0F0-A6513FA448BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1C576A0-08A7-4890-A0F0-A6513FA448BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{312E84AF-CF17-4EF9-9F7A-C47DE0197C0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{312E84AF-CF17-4EF9-9F7A-C47DE0197C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{312E84AF-CF17-4EF9-9F7A-C47DE0197C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{312E84AF-CF17-4EF9-9F7A-C47DE0197C0E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4D557F63-42F4-4CAA-9205-6E2A5062300D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4D557F63-42F4-4CAA-9205-6E2A5062300D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D557F63-42F4-4CAA-9205-6E2A5062300D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -94,7 +82,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9F6E29BB-8E9C-45A0-BAA3-CE3BFD31F15C} = {D83B7A15-8601-4609-821E-937305BF4674}
 		{87C08CB2-43BA-4106-B0FB-8652988AEF59} = {D83B7A15-8601-4609-821E-937305BF4674}
 		{E34726AA-E547-4A80-BBAE-729E9F2D239B} = {D83B7A15-8601-4609-821E-937305BF4674}
 		{A0BD6F1B-4455-4187-963F-E0C474FFFEAD} = {D83B7A15-8601-4609-821E-937305BF4674}
