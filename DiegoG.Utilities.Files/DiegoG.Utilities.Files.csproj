@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ErrorReport>prompt</ErrorReport>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>DiegoG</Authors>
+    <Description>A library of utilties to compress and send files over a TCP network</Description>
+    <Copyright>MIT</Copyright>
+    <EnableNETAnalyzers>True</EnableNETAnalyzers>
+    <RootNamespace>DiegoG.Utilities.IO.Files</RootNamespace>
+  </PropertyGroup>
+
+</Project>
