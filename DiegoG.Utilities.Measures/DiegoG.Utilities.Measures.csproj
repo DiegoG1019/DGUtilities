@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>DiegoG1019</Authors>
     <Description>A library containing classes to represent physical measurements in a variety of units, and perform operations with them</Description>
-    <Version>1.0.2</Version>
+    <Version>1.1.6</Version>
   </PropertyGroup>
 
   <ItemGroup>

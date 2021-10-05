@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace DiegoG.Utilities.Measures
 {
-    public record Mass : Measure<Mass.Units, Mass>
+    public class Mass : Measure<Mass.Units, Mass>
     {
         public class MassMeasureProperty<T> where T : struct, IComparable, IConvertible, IFormattable, IComparable<T>, IEquatable<T>
         {
@@ -18,7 +18,7 @@ namespace DiegoG.Utilities.Measures
             }
         }
 
-        public static MassMeasureProperty<decimal> UserUnitDefinition { get; set; } = new MassMeasureProperty<decimal>(Units.Kilogram, 1);
+        public static MassMeasureProperty<double> UserUnitDefinition { get; set; } = new MassMeasureProperty<double>(Units.Kilogram, 1);
 
         [XmlType(TypeName = "MassUnits")]
         public enum Units { Kilogram, Pound, Gram, UserUnits }
@@ -28,50 +28,42 @@ namespace DiegoG.Utilities.Measures
             ShortUnitsDict.Add(Units.Pound, "Lbs.");
             DefaultUnit = Units.Kilogram;
         }
-        public const decimal KgLb = 2.20462M;
-        public const decimal LbKg = 0.453592M;
-        public const decimal KgG = 1000;
-        public const decimal GKg = 0.001M;
+        public const double KgLb = 2.20462d;
+        public const double LbKg = 0.453592d;
+        public const double KgG = 1000d;
+        public const double GKg = 0.001d;
 
         [UnitProperty(nameof(Units.Kilogram))]
-        public decimal Kilogram
+        public double Kilogram
         {
             get => DefaultValue;
             init => DefaultValue = value;
         }
-        public double KilogramD => (double)Kilogram;
-        public float KilogramF => (float)Kilogram;
 
         [UnitProperty(nameof(Units.Pound)), IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public decimal Pound
+        public double Pound
         {
             get => Kilogram * KgLb;
             init => Kilogram = value * LbKg;
         }
-        public double PoundD => (double)Pound;
-        public float PoundF => (float)Pound;
 
         [UnitProperty(nameof(Units.UserUnits)), IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public decimal UserUnit
+        public double UserUnit
         {
             get => this[UserUnitDefinition.BaseUnit] * UserUnitDefinition.ConversionValue;
-            init => this[UserUnitDefinition.BaseUnit] = (value / UserUnitDefinition.ConversionValue);
+            init => this[UserUnitDefinition.BaseUnit] = value / UserUnitDefinition.ConversionValue;
         }
-        public double UserUnitD => (double)UserUnit;
-        public float UserUnitF => (float)UserUnit;
 
         [UnitProperty(nameof(Units.Gram)), JsonIgnore, IgnoreDataMember, XmlIgnore]
-        public decimal Gram
+        public double Gram
         {
             get => Kilogram * KgG;
             init => Kilogram = GKg * value;
         }
-        public double GramD => (double)Gram;
-        public float GramF => (float)Gram;
 
         public Mass() => Kilogram = 0;
 
-        public Mass(decimal V, Units i) : this() => this[i] = V;
+        public Mass(double V, Units i) : this() => this[i] = V;
 
         public Mass(Mass mass) : base(mass) { }
 

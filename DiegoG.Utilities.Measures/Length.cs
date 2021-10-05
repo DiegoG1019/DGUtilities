@@ -5,13 +5,13 @@ using System.Xml.Serialization;
 
 namespace DiegoG.Utilities.Measures
 {
-    public record Length : Measure<Length.Units, Length>
+    public class Length : Measure<Length.Units, Length>
     {
         public class LengthMeasureProperty
         {
             public Units BaseUnit { get; set; }
-            public decimal ConversionValue { get; set; }
-            public LengthMeasureProperty(Units unit, decimal value)
+            public double ConversionValue { get; set; }
+            public LengthMeasureProperty(Units unit, double value)
             {
                 BaseUnit = unit;
                 ConversionValue = value;
@@ -35,67 +35,55 @@ namespace DiegoG.Utilities.Measures
             DefaultUnit = Units.Meter;
         }
 
-        public const decimal MCm = 100M; //Meter to Centimeter
-        public const decimal MFt = 3.28084M; //Meter to Foot
-        public const decimal MIn = 39.37008M; //Meter to Inch
+        public const double MCm = 100d; //Meter to Centimeter
+        public const double MFt = 3.28084d; //Meter to Foot
+        public const double MIn = 39.37008d; //Meter to Inch
         //
-        public const decimal CmM = 1 / MCm; //Centimeter to Meter
-        public const decimal FtM = 1 / MFt; //Foot to Meter
-        public const decimal InM = 1 / MIn; //Inch to Meter
+        public const double CmM = 1 / MCm; //Centimeter to Meter
+        public const double FtM = 1 / MFt; //Foot to Meter
+        public const double InM = 1 / MIn; //Inch to Meter
 
         [UnitProperty(nameof(Units.Meter))]
-        public decimal Meter
+        public double Meter
         {
             get => DefaultValue;
             init => DefaultValue = value;
         }
-        public double MeterD => (double)Meter;
-        public float MeterF => (float)Meter;
 
         [UnitProperty(nameof(Units.Foot)), IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public decimal Foot
+        public double Foot
         {
             get => Meter * MFt;
             init => Meter = value * FtM;
         }
-        public double FootD => (double)Foot;
-        public float FootF => (float)Foot;
 
         [UnitProperty(nameof(Units.Inch)), IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public decimal Inch
+        public double Inch
         {
             get => Meter * MIn;
             init => Meter = value * InM;
         }
-        public double InchD => (double)Inch;
-        public float InchF => (float)Inch;
 
         [UnitProperty(nameof(Units.Square)), IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public decimal Square
+        public double Square
         {
             get => Math.Floor(this[SquareUnitDefinition.BaseUnit] * SquareUnitDefinition.ConversionValue);
             init => this[SquareUnitDefinition.BaseUnit] = value / SquareUnitDefinition.ConversionValue;
         }
-        public double SquareD => (double)Square;
-        public float SquareF => (float)Square;
 
         [UnitProperty(nameof(Units.UserUnit)), IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public decimal UserUnit
+        public double UserUnit
         {
             get => this[UserUnitDefinition.BaseUnit] * UserUnitDefinition.ConversionValue;
             init => this[UserUnitDefinition.BaseUnit] = value / UserUnitDefinition.ConversionValue;
         }
-        public double UserUnitD => (double)UserUnit;
-        public float UserUnitF => (float)UserUnit;
 
         [UnitProperty(nameof(Units.Pixel)), IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public decimal Pixel
+        public double Pixel
         {
             get => Math.Floor(this[PixelUnitDefinition.BaseUnit] * PixelUnitDefinition.ConversionValue);
             init => this[PixelUnitDefinition.BaseUnit] = value / PixelUnitDefinition.ConversionValue;
         }
-        public double PixelD => (double)Pixel;
-        public float PixelF => (float)Pixel;
         /// <summary>
         /// Floored, unchecked.
         /// </summary>
@@ -103,7 +91,7 @@ namespace DiegoG.Utilities.Measures
 
         public Length() => Meter = 0;
 
-        public Length(decimal V, Units i) : this() => this[i] = V;
+        public Length(double V, Units i) : this() => this[i] = V;
 
         public Length(Length length) : base(length) { }
 

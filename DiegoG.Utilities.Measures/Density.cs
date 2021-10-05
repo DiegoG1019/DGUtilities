@@ -6,13 +6,13 @@ using System.Xml.Serialization;
 
 namespace DiegoG.Utilities.Measures
 {
-    public record Density
+    public class Density
     {
         private Volume VolumeLocal { get; set; }
         private Mass MassLocal { get; set; }
 
         [JsonIgnore, XmlIgnore, IgnoreDataMember]
-        public decimal this[Mass.Units munit, Volume.Units vunit]
+        public double this[Mass.Units munit, Volume.Units vunit]
         {
             get => MassLocal[munit] / VolumeLocal[vunit];
             init
@@ -23,10 +23,8 @@ namespace DiegoG.Utilities.Measures
                 MassLocal = new(value, munit);
             }
         }
-        public double AsDouble(Mass.Units munit, Volume.Units vunit) => (double)this[munit, vunit];
-        public double AsFloat(Mass.Units munit, Volume.Units vunit) => (float)this[munit, vunit];
 
-        public decimal KgOverCubicMeter
+        public double KgOverCubicMeter
         {
             get => this[Mass.Units.Kilogram, Volume.Units.Cubicmeter];
             init
@@ -37,16 +35,14 @@ namespace DiegoG.Utilities.Measures
                 MassLocal = new(value, Mass.Units.Kilogram);
             }
         }
-        public double KgOverCubicMeterD => (double)KgOverCubicMeter;
-        public float KgOverCubicMeterF => (float)KgOverCubicMeter;
 
         public Density(Density density) => KgOverCubicMeter = density.KgOverCubicMeter;
-        public Density(decimal density, Mass.Units munit, Volume.Units vunit) => this[munit, vunit] = density;
+        public Density(double density, Mass.Units munit, Volume.Units vunit) => this[munit, vunit] = density;
 
         /// <summary>
         /// Density is assumed to be defined as Kg/m^3 (Kilogram over Cubic Meter)
         /// </summary>
-        public Density(decimal density) => KgOverCubicMeter = density;
+        public Density(double density) => KgOverCubicMeter = density;
 
         public Density(Mass mass, Volume volume)
         {

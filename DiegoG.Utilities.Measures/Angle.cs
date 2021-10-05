@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 
 namespace DiegoG.Utilities.Measures
 {
-    public record Angle : Measure<Angle.Units, Angle>
+    public class Angle : Measure<Angle.Units, Angle>
     {
         [XmlType(TypeName = "AngleUnits")]
         public enum Units
@@ -15,15 +15,15 @@ namespace DiegoG.Utilities.Measures
             Cycle
         }
 
-        public const decimal PI = 3.1415926535897932384626433M;
+        public const double PI = 3.1415926535897932384626433;
 
-        public const decimal RD = 180M / PI;
-        public const decimal RG = 200M / PI;
-        public const decimal DC = 1 / 360;
+        public const double RD = 180d / PI;
+        public const double RG = 200d / PI;
+        public const double DC = 1 / 360d;
 
-        public const decimal CD = 360;
-        public const decimal DR = PI / 180M;
-        public const decimal GR = PI / 200M;
+        public const double CD = 360d;
+        public const double DR = PI / 180d;
+        public const double GR = PI / 200d;
 
         static Angle()
         {
@@ -73,7 +73,7 @@ namespace DiegoG.Utilities.Measures
         public Types? TypeField;
 
         [UnitProperty(nameof(Units.Radian))]
-        public decimal Radian
+        public double Radian
         {
             get => DefaultValue;
             init { DefaultValue = value; TypeField = null; }
@@ -82,7 +82,7 @@ namespace DiegoG.Utilities.Measures
         public float RadianF => (float)Radian;
 
         [UnitProperty(nameof(Units.Cycle)), IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public decimal Cycle
+        public double Cycle
         {
             get => Degree * DC;
             init => Degree = value * CD;
@@ -91,7 +91,7 @@ namespace DiegoG.Utilities.Measures
         public float CycleF => (float)Cycle;
 
         [UnitProperty(nameof(Units.Degree)), IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public decimal Degree
+        public double Degree
         {
             get => Radian * RD;
             init => Radian = value * DR;
@@ -100,7 +100,7 @@ namespace DiegoG.Utilities.Measures
         public float DegreeF => (float)Degree;
 
         [UnitProperty(nameof(Units.Gradian)), IgnoreDataMember, JsonIgnore, XmlIgnore]
-        public decimal Gradian
+        public double Gradian
         {
             get => Radian * RG;
             init => Radian = value * GR;
@@ -109,25 +109,25 @@ namespace DiegoG.Utilities.Measures
         public float GradianF => (float)Gradian;
 
         public Angle() : base() { }
-        public Angle(decimal V, Units i) : base(V, i) { }
+        public Angle(double V, Units i = Units.Degree) : base(V, i) { }
         public Angle(Angle angle) : base(angle) { }
 
         public new static Angle Parse(string str) => Measure<Units, Angle>.Parse(str);
 
         public new static bool TryParse(string str, out Angle angle) => Measure<Units, Angle>.TryParse(str, out angle);
 
-        public const decimal RightAngleValue = PI / 2M;
+        public const double RightAngleValue = PI / 2d;
         public static Angle RightAngle => new Angle(RightAngleValue, Units.Radian);
         static readonly Angle RightAngleLocal = RightAngle;
 
         public static Angle ZeroAngle => new(0, Units.Radian);
         public static readonly Angle MinValue = ZeroAngle;
 
-        public const decimal StraightAngleValue = PI;
+        public const double StraightAngleValue = PI;
         public static Angle StraightAngle => new(StraightAngleValue, Units.Radian);
         static readonly Angle StraightAngleLocal = StraightAngle;
 
-        public const decimal FullAngleValue = 2 * PI;
+        public const double FullAngleValue = 2 * PI;
         public static Angle FullAngle => new(FullAngleValue, Units.Radian);
         public static readonly Angle MaxValue = FullAngle;
     }
