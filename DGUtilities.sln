@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31710.8
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.CLI", "DiegoG.CLI\DiegoG.CLI.csproj", "{0DF8909C-BCAB-4E57-BC7B-BC0E0CAA1834}"
 EndProject
@@ -25,9 +25,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.DBModels",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.Reflection", "DiegoG.Utilities.Reflection\DiegoG.Utilities.Reflection.csproj", "{B0ABBE18-F8F8-42DA-AC2F-FBA94FB0515B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiegoG.Utilities.Files", "DiegoG.Utilities.Files\DiegoG.Utilities.Files.csproj", "{4282B1D4-6A02-4CB7-AD8B-878CCB981284}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiegoG.Utilities.Files", "DiegoG.Utilities.Files\DiegoG.Utilities.Files.csproj", "{4282B1D4-6A02-4CB7-AD8B-878CCB981284}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IO.Files.Test", "IO.Files.Test\IO.Files.Test.csproj", "{C6A0A6E9-C6A9-43F4-A252-84C14EE85196}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IO.Files.Test", "IO.Files.Test\IO.Files.Test.csproj", "{C6A0A6E9-C6A9-43F4-A252-84C14EE85196}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiegoG.Utilities.Settings", "DiegoG.Utilities.Settings\DiegoG.Utilities.Settings.csproj", "{25A02860-4B6A-4941-A56E-AF1408294B59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +85,10 @@ Global
 		{C6A0A6E9-C6A9-43F4-A252-84C14EE85196}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6A0A6E9-C6A9-43F4-A252-84C14EE85196}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C6A0A6E9-C6A9-43F4-A252-84C14EE85196}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25A02860-4B6A-4941-A56E-AF1408294B59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25A02860-4B6A-4941-A56E-AF1408294B59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25A02860-4B6A-4941-A56E-AF1408294B59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25A02860-4B6A-4941-A56E-AF1408294B59}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{4D557F63-42F4-4CAA-9205-6E2A5062300D} = {D83B7A15-8601-4609-821E-937305BF4674}
 		{B0ABBE18-F8F8-42DA-AC2F-FBA94FB0515B} = {D83B7A15-8601-4609-821E-937305BF4674}
 		{4282B1D4-6A02-4CB7-AD8B-878CCB981284} = {D83B7A15-8601-4609-821E-937305BF4674}
+		{25A02860-4B6A-4941-A56E-AF1408294B59} = {D83B7A15-8601-4609-821E-937305BF4674}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0674B578-4EE1-4150-9B09-AB6AB8F0F49F}
