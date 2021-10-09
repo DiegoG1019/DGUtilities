@@ -2,8 +2,10 @@
 
 namespace DiegoG.Utilities.Settings
 {
-#nullable enable
-    public interface ISettings : INotifyPropertyChanged
+    /// <summary>
+    /// Enables a class to be used by Settings`T`
+    /// </summary>
+    public interface ISettings : INotifyPropertyChanged, ISettingsSection
     {
         /// <summary>
         /// Changing this in the .json file will result in that specific file being invalid

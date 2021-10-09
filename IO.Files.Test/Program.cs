@@ -1,15 +1,45 @@
-﻿using DiegoG.Utilities.IO.Files;
-using System.Net;
-using System.Text;
+﻿using DiegoG.Utilities.Settings;
+using System;
+using System.ComponentModel;
 
-var memstream = new MemoryStream();
-var memstreamsend = new MemoryStream(Encoding.UTF8.GetBytes("There are six hundred twenty seven thousand trillion stars in the universe, and likely much more"));
-var receiver = new FileReceiverTask(IPAddress.Loopback, 65321, memstream, 1024 * 1024);
-var transmitter = new FileTransmitterTask(IPAddress.Loopback, 65321, memstreamsend, 1024 * 1024);
+Environment.SetEnvironmentVariable("Anth", "asdw");
+Environment.SetEnvironmentVariable("Absol", "asdw");
+Environment.SetEnvironmentVariable("Valery", "asdw");
 
-await receiver.WaitForConnection();
-await transmitter.Transmit();
-await receiver.Receive();
+Settings<MySettings>.Initialize("A", "s");
 
-var result = Encoding.UTF8.GetString(memstreamsend.ToArray());
+var x = Settings<MySettings>.Current;
+
 ;
+
+public class MySettings : ISettings
+{
+    public string SettingsType { get; }
+    public ulong Version { get; }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public MySubSettings MySubSettings { get; init; } = new();
+
+    public MySecondSub MySecondSub { get; init; } = new();
+}
+
+public class Abs : ISettingsSection
+{
+    [FromEnvironmentVariable(nameof(Anth), Required = true)]
+    public string Anth { get; set; }
+}
+
+public class MySubSettings : ISettingsSection
+{
+    [FromEnvironmentVariable(nameof(Absol), Required = true)]
+    public string? Absol { get; set; }
+
+    public Abs Absolute { get; init; } = new();
+}
+
+public class MySecondSub : ISettingsSection
+{
+    [FromEnvironmentVariable(nameof(Valery), Required = true)]
+    public string? Valery { get; set; }
+}

@@ -203,25 +203,41 @@ namespace DiegoG.Utilities.Settings
 
         public static void ApplyEnvironmentVariables(bool throwIfFail = true)
         {
-            Action<PropertyInfo, object> set = throwIfFail ? SetValue : TrySetValue;
-            foreach (var (prop, attributes) in ReflectionCollectionMethods<T>.GetAllInstancePropertiesWithAttribute(typeof(FromEnvironmentVariable)))
+            Action<PropertyInfo, object, object> set = throwIfFail ? SetValue : TrySetValue;
+            var recursivenessSet = new HashSet<ISettingsSection>();
+            EnvVarsSet(set, Current, ReflectionCollectionMethods<T>.GetAllInstanceProperties());
+        }
+
+        private static void EnvVarsSet(Action<PropertyInfo, object, object> set, object target, IEnumerable<PropertyInfo> dat)
+        {
+            foreach (var prop in dat)
             {
-                var x = prop.GetValue(Current);
-                var at = (FromEnvironmentVariable)attributes.First();
-                if (at.Precedence is false && prop.GetValue(Current) is not null)
+                if (prop.PropertyType.IsAssignableTo(typeof(ISettingsSection)))
+                {
+                    var val = prop.GetValue(target);
+                    EnvVarsSet(set,
+                               prop.GetValue(target) ?? throw new ArgumentNullException(nameof(target), "A Settings Section can never be null"), 
+                               ReflectionCollectionMethods.GetAllInstanceProperties(prop.PropertyType));
                     continue;
-                SetValue(prop, at.FetchValue(prop.PropertyType) ?? default);
+                }
+
+                var at = prop.GetCustomAttribute<FromEnvironmentVariable>();
+                if (at is null || at.Precedence is false && prop.GetValue(target) is not null)
+                    continue;
+
+                var x = at.FetchValue(prop.PropertyType);
+                set(prop, target, x ?? default);
             }
         }
 
-        private static void SetValue(PropertyInfo prop, object value)
-            => prop.SetValue(Current, value);
+        private static void SetValue(PropertyInfo prop, object target, object value)
+            => prop.SetValue(target, value);
 
-        private static void TrySetValue(PropertyInfo prop, object value)
+        private static void TrySetValue(PropertyInfo prop, object target, object value)
         {
             try
             {
-                SetValue(prop, value);
+                SetValue(prop, target, value);
             }
             catch (Exception e) 
             { 

@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
 	<Nullable>enable</Nullable>
+	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	<Authors>Diego Garcia</Authors>
+	<Description>A simple configurations framework with built-in file loading and saving as well as Environment Variables</Description>
   </PropertyGroup>
 
   <ItemGroup>

@@ -5,7 +5,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>DiegoG1019</Authors>
     <Description>A small collection of extension methods</Description>
-    <Version>1.0.4</Version>
+    <Version>1.5.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

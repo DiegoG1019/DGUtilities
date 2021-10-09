@@ -35,12 +35,12 @@ namespace DiegoG.Utilities.Settings
         public EnvironmentVariableTarget EnvironmentVariableTarget { get; set; } = EnvironmentVariableTarget.Process;
         
         /// <summary>
-        /// Denotes that this attribute is required and should throw if not found
+        /// Denotes that this attribute is required and should throw if not found. Defaults to <see cref="true"/>
         /// </summary>
         public bool Required { get; set; } = true;
-        
+
         /// <summary>
-        /// Denotes that this attribute takes precedence over non-null reference types, does nothing for value types
+        /// Denotes that this attribute takes precedence over non-null reference types, does nothing for value types. Defaults to <see cref="false"/>
         /// </summary>
         public bool Precedence { get; set; } = false;
 
