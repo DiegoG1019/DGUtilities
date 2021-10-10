@@ -53,7 +53,13 @@ namespace DiegoG.Utilities.Settings
             return Required && x is null ? throw new InvalidOperationException($"The Environment Variable {VariableName} does not exist") : x;
         }
 
-        private object GetJson(Type type) => Serialization.Deserialize.Json(GetVariable(), type!);
+        private object? GetJson(Type type)
+        {
+            string? val = GetVariable();
+            return val is null && !Required
+                ? val : Serialization.Deserialize.Json(GetVariable(), type!);
+        }
+
         private object? GetValue(Type type)
         {
             string? val = GetVariable();
