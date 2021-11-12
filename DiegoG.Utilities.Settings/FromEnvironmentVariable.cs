@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,10 +19,10 @@ namespace DiegoG.Utilities.Settings
             }
         };
 
-        public static void AddConverter(Type type, Converter<string?, object?> converter) => Converters[type] = converter;
-        private static Converter<string?, object?> GetConverter(Type type) => Converters.GetValueOrDefault(type) ?? new DefaultConverter(type).Convert;
+        public static Converter<string?, object?> AddConverter(Type type, Converter<string?, object?> converter) => Converters[type] = converter;
+        private static Converter<string?, object?> GetConverter(Type type) => Converters.GetValueOrDefault(type) ?? AddConverter(type, new DefaultConverter(type).Convert);
 
-        private struct DefaultConverter 
+        private class DefaultConverter 
         {
             private readonly Type Type;
             public DefaultConverter(Type type) => Type = type;
@@ -47,31 +48,29 @@ namespace DiegoG.Utilities.Settings
         public object? FetchValue(Type type)
             => IsJson ? GetJson(type) : GetValue(type);
 
-        private string? GetVariable()
-        {
-            string? x = Environment.GetEnvironmentVariable(VariableName, EnvironmentVariableTarget);
-            return Required && x is null ? throw new InvalidOperationException($"The Environment Variable {VariableName} does not exist") : x;
-        }
+        private string? GetVariable() => Environment.GetEnvironmentVariable(VariableName, EnvironmentVariableTarget);
 
         private object? GetJson(Type type)
         {
             string? val = GetVariable();
-            return val is null && !Required
-                ? val : Serialization.Deserialize.Json(GetVariable(), type!);
+            return val is null ? null : Serialization.Deserialize.Json(val, type);
         }
 
         private object? GetValue(Type type)
         {
             string? val = GetVariable();
-            return val is null && !Required
-                ? val
-                : GetConverter(type).Invoke(val) ?? throw new InvalidOperationException($"Could not convert {VariableName} with value {val} to {type?.Name ?? "null"}");
+            return val is null
+                ? null
+                : GetConverter(type)?.Invoke(val) ?? throw new InvalidOperationException($"Could not convert {VariableName} with value {val ?? "null"} to {type?.Name ?? "null"}");
         }
 
-        public FromEnvironmentVariable(string variableName, bool isJson = false)
+        public FromEnvironmentVariable([CallerMemberName]string? variableName = null, bool isJson = false)
         {
-            VariableName = variableName;
+            VariableName = variableName ?? throw new InvalidOperationException("VariableName cannot be null. Either don't pass an argument for this variable, or provide a valid variable name");
             IsJson = isJson;
         }
+
+        public FromEnvironmentVariable(bool isJson, [CallerMemberName] string? variableName = null)
+            : this(variableName, isJson) { }
     }
 }

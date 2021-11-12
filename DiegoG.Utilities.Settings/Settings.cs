@@ -78,7 +78,7 @@ namespace DiegoG.Utilities.Settings
         /// <summary>
         /// => Path.Combine(Directory, File);
         /// </summary>
-        public static string FullPath => Path.Combine(Directory, FileName);
+        public static string FullPath => Path.GetFullPath(Path.Combine(Directory, FileName));
         public static bool SettingsFileExist => File.Exists(FullPath + JsonExtension);
 
         //It would normally be better to place these in the class, but then we woulnd't have access to T and we'd have to override it
@@ -203,6 +203,7 @@ namespace DiegoG.Utilities.Settings
 
         public static void ApplyEnvironmentVariables(bool throwIfFail = true)
         {
+            Current ??= new();
             Action<PropertyInfo, object, object> set = throwIfFail ? SetValue : TrySetValue;
             var recursivenessSet = new HashSet<ISettingsSection>();
             EnvVarsSet(set, Current, ReflectionCollectionMethods<T>.GetAllInstanceProperties());
@@ -226,7 +227,9 @@ namespace DiegoG.Utilities.Settings
                     continue;
 
                 var x = at.FetchValue(prop.PropertyType);
-                set(prop, target, x ?? default);
+                if (x is null && at.Required && prop.GetValue(target) is null)
+                    throw new InvalidOperationException($"Could not obtain a value for required settings property {prop.Name}");
+                set(prop, target, x);
             }
         }
 
@@ -291,7 +294,7 @@ namespace DiegoG.Utilities.Settings
                         {
                             Log.Debug($"Version verified, equal, loading {fileName}");
                             LoadSettings(directory, fileName, false, validation);
-                            ApplyEnvironmentVariables(true);
+                            ApplyEnvironmentVariables(false);
                             update?.Invoke(Current);
                             return;
                         }
@@ -309,8 +312,8 @@ namespace DiegoG.Utilities.Settings
         RestoreToDefault:;
             Log.Information("Restoring to default and creating a new file");
             RestoreToDefault();
-            ApplyEnvironmentVariables(false);
             SaveSettings();
+            ApplyEnvironmentVariables(false);
             if (!(validation?.Invoke(Current) ?? true))
                 throw new InvalidDataException("Settings file did not pass validation");
         }

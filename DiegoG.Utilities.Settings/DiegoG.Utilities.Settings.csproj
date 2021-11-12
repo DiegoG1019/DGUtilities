@@ -6,7 +6,7 @@
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<Authors>Diego Garcia</Authors>
 	<Description>A simple configurations framework with built-in file loading and saving as well as Environment Variables</Description>
-	<Version>1.0.2</Version>
+	<Version>1.0.6</Version>
   </PropertyGroup>
 
   <ItemGroup>
